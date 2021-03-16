@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public abstract class Command {
 
-    private int nPrice;
-    private int nQuantity;
-    private String sDate;
-    private boolean bDirection; // true = BUY false = SELL
+    protected int nPrice;
+    protected int nQuantity;
+    protected String sDate;
+    protected boolean bDirection; // true = BUY false = SELL
 
     public Command() {
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
@@ -67,5 +67,6 @@ public abstract class Command {
         return Objects.hash(nPrice, nQuantity, sDate, bDirection);
     }
 
-
+    @Override
+    public abstract String toString();
 }
