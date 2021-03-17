@@ -1,26 +1,18 @@
 package engine;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public abstract class Command {
 
+    public enum Type {
+        BUY,
+        SELL
+    }
+
     protected int nPrice;
     protected int nQuantity;
     protected String sDate;
-    protected boolean bDirection; // true = BUY false = SELL
-
-    public Command() {
-        this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-    }
-
-    public Command(int nPrice, int nQuantity, String sDate, boolean bDirection) {
-        this.nPrice = nPrice;
-        this.nQuantity = nQuantity;
-        this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-        this.bDirection = bDirection;
-    }
+    protected Type Type;
 
     public int getPrice() {
         return nPrice;
@@ -46,12 +38,12 @@ public abstract class Command {
         this.sDate = sDate;
     }
 
-    public boolean getDirection() {
-        return bDirection;
+    public Type getDirection() {
+        return this.Type;
     }
 
-    public void setDirection(boolean bDirection) {
-        this.bDirection = bDirection;
+    public void setDirection(Type bDirection) {
+        this.Type = bDirection;
     }
 
     @Override
@@ -59,12 +51,12 @@ public abstract class Command {
         if (this == o) return true;
         if (!(o instanceof Command)) return false;
         Command command = (Command) o;
-        return nPrice == command.nPrice && nQuantity == command.nQuantity && bDirection == command.bDirection && sDate.equals(command.sDate);
+        return nPrice == command.nPrice && nQuantity == command.nQuantity && Type == command.Type && sDate.equals(command.sDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nPrice, nQuantity, sDate, bDirection);
+        return Objects.hash(nPrice, nQuantity, sDate, Type);
     }
 
     @Override

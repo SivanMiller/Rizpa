@@ -12,6 +12,9 @@ public class ExchangeCollection {
 
 
     public ExchangeCollection() {
+        pqBuyCommand = new PriorityQueue<>();
+        pqSellCommand = new PriorityQueue<>();
+        setTransaction = new HashSet<>();
     }
 
     public ExchangeCollection(PriorityQueue<Command> pqBuyCommand, PriorityQueue<Command> pqSellCommand,
@@ -110,7 +113,7 @@ public class ExchangeCollection {
                     addNewTransation(cmdNewCommand.getPrice(), pqSellCommand.peek().getQuantity(), sDate);
                     // update BUY command??
                     cmdNewCommand.setQuantity(nQuantity * (-1));
-                    // delete Sell commad??
+                    // delete Sell command??
                 }
             }
         }
