@@ -9,20 +9,32 @@ public class LMTCommand extends Command {
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public LMTCommand(int nPrice, int nQuantity, String sDate, Type Type) {
+    public LMTCommand(int nPrice, int nQuantity, String sDate, CmdType Type) {
         this.nPrice = nPrice;
         this.nQuantity = nQuantity;
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.Type = Type;
+        //if (this.Type == CmdType.SELL){
+            this.Order = order;
+            order++;
+//        }
+//
+//        else if (this.Type == CmdType.BUY){
+//            this.Order = buy_order;
+//            buy_order++;
+//        }
     }
 
     @Override
     public String toString() {
-        return "LMT Command{" +
-                "Price=" + nPrice +
-                ", Quantity=" + nQuantity +
-                ", Date='" + sDate + '\'' +
-                ", Direction=" + Type +
+        return "Command{" +
+                "nPrice=" + nPrice +
+                ", nQuantity=" + nQuantity +
+                ", sDate='" + sDate + '\'' +
+                ", Type=" + Type +
+                ", Order=" + Order +
                 '}';
     }
 }
+
+

@@ -1,24 +1,30 @@
 package engine;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Transaction {
+
+    static int order = 1;
     private int nPrice;
     private int nQuantity;
     private String sDate;
     private int nTurnover;
+    protected int Order;
 
     public Transaction(){
         this.sDate=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
-    public Transaction(int nPrice, int nQuantity, String sDate, int nTurnover) {
+    public Transaction(int nPrice, int nQuantity, String sDate, int nTurnover, int Order) {
         this.nPrice = nPrice;
         this.nQuantity = nQuantity;
         this.nTurnover = nTurnover;
         this.sDate=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-    }
+        this.Order = Order;
+     }
 
     public int getPrice() {
         return nPrice;
@@ -68,6 +74,7 @@ public class Transaction {
                 ", nQuantity=" + nQuantity +
                 "  , nPrice=" + nPrice +
               ", nTurnover=" + nTurnover +
+              ", Order=" + Order +
                 '}';
     }
 }

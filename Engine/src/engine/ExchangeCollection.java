@@ -3,6 +3,7 @@ package engine;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import engine.Command;
 
 public class ExchangeCollection {
 
@@ -12,8 +13,8 @@ public class ExchangeCollection {
 
 
     public ExchangeCollection() {
-        pqBuyCommand = new PriorityQueue<>();
-        pqSellCommand = new PriorityQueue<>();
+        pqBuyCommand = new PriorityQueue<>(new SortCommands());
+        pqSellCommand = new PriorityQueue<>(new SortCommands());
         setTransaction = new HashSet<>();
     }
 
@@ -70,16 +71,28 @@ public class ExchangeCollection {
                 '}';
     }
 
-    public void addNewTransation(int nPrice, int nQuantity, String sDate) {
-        Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity);
+    public void addNewTransation(int nPrice, int nQuantity, String sDate, int Order) {
+        Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set
         setTransaction.add(trNewTransaction);
     }
+    public void addNewCommand(Command cmdNewCommand){
 
-    public void addBuyCommand(Command cmdNewCommand) {
+        if (cmdNewCommand.getType() == Command.CmdType.BUY)
+        {
+            addBuyCommand(cmdNewCommand);
+        }
+        else if (cmdNewCommand.getType() == Command.CmdType.SELL)
+        {
+            addSellCommand(cmdNewCommand);
+        }
+
+    }
+
+    private void addBuyCommand(Command cmdNewCommand) {
         int nQuantity;
         String sDate;
-        while (cmdNewCommand.getQuantity() != 0) {
+        while (cmdNewCommand.getQuantity() > 0) {
             //if the cheapest sell Command is more expensive than my max price, then there is no deal!
             if (pqSellCommand.isEmpty() || pqSellCommand.peek().getPrice() > cmdNewCommand.getPrice()) {
                 pqBuyCommand.add(cmdNewCommand);
@@ -89,74 +102,84 @@ public class ExchangeCollection {
             else {
                 nQuantity = pqSellCommand.peek().getQuantity() - cmdNewCommand.getQuantity();
 
+                sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+
                 // the quantity is matching
                 if (nQuantity == 0) {
-                    sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), cmdNewCommand.getQuantity(), sDate);
+                    addNewTransation(pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
-                    // delete Sell command??
+                    // delete Sell command
+                    pqSellCommand.remove(pqSellCommand.peek());
                 }
                 // there is more Stock to sell
                 else if (nQuantity > 0) {
-                    sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), cmdNewCommand.getQuantity(), sDate);
+                    addNewTransation(pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
                     // update Sell command??
                     pqSellCommand.peek().setQuantity(nQuantity);
                 }
                 // there is more Stock to BUY----> nQuantity < 0
                 else {
-                    sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), pqSellCommand.peek().getQuantity(), sDate);
+                    addNewTransation(pqSellCommand.peek().getPrice(), pqSellCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
+
                     // update BUY command??
                     cmdNewCommand.setQuantity(nQuantity * (-1));
-                    // delete Sell command??
+
+                    // delete Sell command
+                    pqSellCommand.remove(pqSellCommand.peek());
                 }
             }
         }
     }
 
-    public void addSellCommand(Command cmdNewCommand) {
+    private void addSellCommand(Command cmdNewCommand) {
         int nQuantity;
         String sDate;
-        while (cmdNewCommand.getQuantity() != 0) {
-            //All the other are cheap, then there is no deal!
+        //There are still more stock to sell
+        while (cmdNewCommand.getQuantity() > 0) {
+            //All the others are cheaper, then there is no deal!
             if (pqBuyCommand.isEmpty() || pqBuyCommand.peek().getPrice() < cmdNewCommand.getPrice()) {
                 pqSellCommand.add(cmdNewCommand);
                 break;
             }
             //there is a compatibility of prices! lets SELL!
             else {
-                nQuantity = pqBuyCommand.peek().getQuantity()- cmdNewCommand.getQuantity();
+                nQuantity = pqBuyCommand.peek().getQuantity() - cmdNewCommand.getQuantity();
+                sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 
                 // the quantity is matching
                 if (nQuantity == 0) {
-                    sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), cmdNewCommand.getQuantity(), sDate);
+                    addNewTransation(cmdNewCommand.getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
-                    // delete Buy command??
+
+                    // delete Buy command
+                    pqBuyCommand.remove(pqBuyCommand.peek());
                 }
-                // there is more Stock to BUY
+                //The quantity in the BUY collection is larger
                 else if (nQuantity > 0) {
-                    sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), cmdNewCommand.getQuantity(), sDate);
+                    addNewTransation(pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
-                    // update BUY command??
+                    //Decrease peek quantity by Command quantity
                    pqBuyCommand.peek().setQuantity(nQuantity);
                 }
-                // there is more Stock to sell----> nQuantity < 0
+                //The quantity in the BUY collection is smaller ----> nQuantity < 0
                 else {
-                    sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), pqSellCommand.peek().getQuantity(), sDate);
-                    // update BUY command??
+                    addNewTransation(pqBuyCommand.peek().getPrice(), pqBuyCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
+                    //Decrease Command quantity by peek quantity
                     cmdNewCommand.setQuantity(nQuantity * (-1));
-                    // delete Sell commad??
+
+                    // delete Sell command
+                    pqBuyCommand.remove(pqBuyCommand.peek());
                 }
             }
         }
