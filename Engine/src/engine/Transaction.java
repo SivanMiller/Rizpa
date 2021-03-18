@@ -72,9 +72,9 @@ public class Transaction {
         return "Transaction{" +
                 " sDate='" + sDate + '\'' +
                 ", nQuantity=" + nQuantity +
-                "  , nPrice=" + nPrice +
-              ", nTurnover=" + nTurnover +
-              ", Order=" + Order +
+                ", nPrice=" + nPrice +
+                ", nTurnover=" + nTurnover +
+                ", Order=" + Order +
                 '}';
     }
 }

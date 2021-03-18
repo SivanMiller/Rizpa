@@ -7,7 +7,6 @@ import java.util.Objects;
 
 public abstract class Command {
 
-    //static int sell_order = 1;
     static int order = 1;
     public enum CmdType {
         BUY,
@@ -70,33 +69,41 @@ class SortCommands implements Comparator<Command>
 
     @Override
     public int compare(Command cmd1, Command cmd2) {
+        // if type os BUY the order should be by price descending
         if (cmd1.getType() == Command.CmdType.BUY) {
+            // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {
-                if (cmd1.Order > cmd2.Order) {
+                // cmd2 should be first
+                if (cmd1.Order > cmd2.Order)
                     return 1;
-                } else {
+                // cmd1 should be first
+                else
                     return -1;
-                }
             }
+            // cmd2 should be first
             else if (cmd1.getPrice() <  cmd2.getPrice())
                 return 1;
-            else {
+            // cmd1 should be first
+            else
                 return -1;
-            }
         }
+
+        // if type os SELL the order should be by price ascending
         else if (cmd1.getType() == Command.CmdType.SELL) {
+            // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {
-                if (cmd1.Order > cmd2.Order) {
+                // cmd2 should be first
+                if (cmd1.Order > cmd2.Order)
                     return 1;
-                } else {
+                else
                     return -1;
-                }
             }
+            // cmd2 should be first
             else if (cmd1.getPrice() >  cmd2.getPrice())
                 return 1;
-            else {
+            // cmd1 should be first
+            else
                 return -1;
-            }
         }
         return 0;
 

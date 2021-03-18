@@ -14,15 +14,8 @@ public class LMTCommand extends Command {
         this.nQuantity = nQuantity;
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.Type = Type;
-        //if (this.Type == CmdType.SELL){
-            this.Order = order;
-            order++;
-//        }
-//
-//        else if (this.Type == CmdType.BUY){
-//            this.Order = buy_order;
-//            buy_order++;
-//        }
+        this.Order = order;
+        order++;
     }
 
     @Override
