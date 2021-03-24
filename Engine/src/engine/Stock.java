@@ -6,7 +6,7 @@ public class Stock {
 
     private String sCompanyName;
     private String sSymbol;
-    private int nGate;
+    private int nPrice;
     private ExchangeCollection ecExchange;
 
     public Stock(){
@@ -15,11 +15,18 @@ public class Stock {
         ecExchange = new ExchangeCollection();
     }
 
-    public Stock(String sCompanyName, String sSymbol, int nGate, ExchangeCollection ecExchange) {
+    public Stock(String sCompanyName, String sSymbol, int nPrice, ExchangeCollection ecExchange) {
         this.sCompanyName = sCompanyName;
         this.sSymbol = sSymbol;
-        this.nGate = nGate;
+        this.nPrice = nPrice;
         this.ecExchange = ecExchange;
+    }
+
+    public Stock(String sCompanyName, String sSymbol, int nPrice) {
+        this.sCompanyName = sCompanyName;
+        this.sSymbol = sSymbol;
+        this.nPrice = nPrice;
+        this.ecExchange = new ExchangeCollection();
     }
 
     public String getCompanyName() {
@@ -31,7 +38,7 @@ public class Stock {
     }
 
     public int getGate() {
-        return nGate;
+        return nPrice;
     }
 
     public ExchangeCollection getExchange() {
@@ -47,7 +54,7 @@ public class Stock {
     }
 
     public void setGate(int nGate) {
-        this.nGate = nGate;
+        this.nPrice = nGate;
     }
 
     public void setExchange(ExchangeCollection ecExchange) {
@@ -72,7 +79,7 @@ public class Stock {
         return "Stock{" +
                "Symbol = '" + sSymbol + '\'' +
                ", CompanyName = '" + sCompanyName + '\'' +
-               ", Gate = " + nGate +
+               ", Price = " + nPrice +
                ", Exchange = " + ecExchange +
                '}';
     }

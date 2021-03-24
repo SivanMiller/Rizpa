@@ -1,3 +1,4 @@
+import engine.Engine;
 import engine.LMTCommand;
 import engine.Command;
 import engine.ExchangeCollection;
@@ -32,6 +33,9 @@ public class Main {
 //        Scanner scanner = new Scanner(System.in);
 //        int input= scanner.nextInt();
 
+        Engine en = new Engine();
+
+        en.LoadXML("C:\\Users\\netas\\Downloads\\ex1-small.xml");
         ExchangeCollection ex = new ExchangeCollection();
 
         // 1
