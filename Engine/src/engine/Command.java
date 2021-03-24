@@ -64,12 +64,13 @@ public abstract class Command {
     public abstract String toString();
 
 }
+
 class SortCommands implements Comparator<Command>
 {
 
     @Override
     public int compare(Command cmd1, Command cmd2) {
-        // if type os BUY the order should be by price descending
+        // if type is BUY the order should be by price descending
         if (cmd1.getType() == Command.CmdType.BUY) {
             // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {

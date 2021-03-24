@@ -76,6 +76,7 @@ public class ExchangeCollection {
         // Adding to Transaction set
         setTransaction.add(trNewTransaction);
     }
+
     public void addNewCommand(Command cmdNewCommand){
 
         if (cmdNewCommand.getType() == Command.CmdType.BUY)
@@ -155,7 +156,7 @@ public class ExchangeCollection {
                 // the quantity is matching
                 if (nQuantity == 0) {
                     // add new Transaction
-                    addNewTransation(cmdNewCommand.getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransation(pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
 
                     // delete Buy command
