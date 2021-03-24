@@ -7,7 +7,29 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
+
+    public enum InputType {
+        LOAD,
+        ALL_STOCKS,
+        SINGLE_STOCK,
+        NEW_COMMAND,
+        ALL_COMMANDS,
+        BYE
+    };
+
+    static void menu()
+    {
+       System.out.println("1- Load XML file ");
+        System.out.println("2- Print Stocks ");
+        System.out.println("3- Print Single Stock ");
+        System.out.println("4- Execute trading order ");
+        System.out.println("5- Print the lists of commands to execute");
+        System.out.println("6- EXIT");
+    }
     public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        int input= scanner.nextInt();
 
         ExchangeCollection ex = new ExchangeCollection();
 
@@ -108,10 +130,6 @@ public class Main {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
                 Command.CmdType.SELL);
         ex.addNewCommand(cmd);
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter name: ");
-        String name = scanner.next();
 
 
     }
