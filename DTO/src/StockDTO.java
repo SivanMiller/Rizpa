@@ -3,6 +3,10 @@ import engine.Transaction;
 
 import java.util.Set;
 
+
+
+
+
 public class StockDTO {
 
     private String sCompanyName;
