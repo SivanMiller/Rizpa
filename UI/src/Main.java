@@ -2,10 +2,13 @@ import engine.Engine;
 import engine.LMTCommand;
 import engine.Command;
 import engine.ExchangeCollection;
+import exceptions.StockNegPriceException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
 
@@ -32,10 +35,15 @@ public class Main {
 
 //        Scanner scanner = new Scanner(System.in);
 //        int input= scanner.nextInt();
-
         Engine en = new Engine();
 
-        en.LoadXML("C:\\Users\\netas\\Downloads\\ex1-small.xml");
+        try {
+            en.LoadXML("C:\\Users\\netas\\Downloads\\ex1-small.xml");
+        }
+        catch (StockNegPriceException e)
+        {
+            System.out.println(e.getMessage());
+        }
         ExchangeCollection ex = new ExchangeCollection();
 
         // 1

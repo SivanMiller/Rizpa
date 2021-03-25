@@ -1,6 +1,7 @@
 package engine;
 
 import com.sun.deploy.security.MozillaJSSNONEwithRSASignature;
+import exceptions.StockNegPriceException;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseStock;
 
@@ -11,9 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Engine {
 
@@ -21,13 +20,18 @@ public class Engine {
 
     Map<String,Stock> mpStocks;
 
-    public void LoadXML(String sFileName){
+    public void LoadXML(String sFileName) throws StockNegPriceException {
         try {
             InputStream inputStream = new FileInputStream(new File(sFileName));
             //Getting XML Data
             RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, sFileName);
             //Filling stock collection
-            convertDescriptor(stockDescriptor);
+            try {
+                convertDescriptor(stockDescriptor);
+            }
+            catch (StockNegPriceException e){
+                throw e;
+            }
         } catch (JAXBException | FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -41,15 +45,25 @@ public class Engine {
     }
 
     //Converting JAXB Data to actual data
-    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor)
-    {
+    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException {
         mpStocks = new HashMap<>();
         List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
+        Set<String> setCompanies = new HashSet<>();
+
         for (int i = 0; i < stocks.size(); i++)
         {
-            Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
-            if (mpStocks.get(newStock.getSymbol()) != null) {
-                mpStocks.put(newStock.getSymbol(), newStock);
+            try {
+                Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
+
+                if (mpStocks.get(newStock.getSymbol()) == null
+                        && !setCompanies.contains(newStock.getCompanyName())) {
+                    mpStocks.put(newStock.getSymbol(), newStock);
+                    setCompanies.add(newStock.getCompanyName());
+                }
+            }
+            catch (StockNegPriceException e)
+            {
+                throw e;
             }
         }
     }

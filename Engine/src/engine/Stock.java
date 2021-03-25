@@ -1,5 +1,7 @@
 package engine;
 
+import exceptions.StockNegPriceException;
+
 import java.util.Objects;
 
 public class Stock {
@@ -14,33 +16,26 @@ public class Stock {
         sSymbol = "";
         ecExchange = new ExchangeCollection();
     }
-
-    public Stock(String sCompanyName, String sSymbol, int nPrice, ExchangeCollection ecExchange) {
-      //  if(!isStringUpperCase(sSymbol))
-        //    throw
+//    //put in utilitis??
+//    private static boolean isStringUpperCase(String str){
+//
+//        //convert String to char array
+//        char[] charArray = str.toCharArray();
+//
+//        for(int i=0; i < charArray.length; i++){
+//
+//            //if any character is not in upper case, return false
+//            if( !Character.isUpperCase( charArray[i] ))
+//                return false;
+//        }
+//
+//        return true;
+//    }
+    public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException {
+        if (nPrice < 0)
+            throw new StockNegPriceException();
         this.sCompanyName = sCompanyName;
-        this.sSymbol = sSymbol;
-        this.nPrice = nPrice;
-        this.ecExchange = ecExchange;
-    }
-    //put in utilitis??
-    private static boolean isStringUpperCase(String str){
-
-        //convert String to char array
-        char[] charArray = str.toCharArray();
-
-        for(int i=0; i < charArray.length; i++){
-
-            //if any character is not in upper case, return false
-            if( !Character.isUpperCase( charArray[i] ))
-                return false;
-        }
-
-        return true;
-    }
-    public Stock(String sCompanyName, String sSymbol, int nPrice) {
-        this.sCompanyName = sCompanyName;
-        this.sSymbol = sSymbol;
+        this.sSymbol = sSymbol.toUpperCase();
         this.nPrice = nPrice;
         this.ecExchange = new ExchangeCollection();
     }
