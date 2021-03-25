@@ -1,13 +1,14 @@
 package exceptions;
 
 public class XMLException extends Exception{
-    private final String EXCEPTION_MESSAGE = "Price is negative";
 
-    public XMLException() {
+    private String strMessage;
+    public XMLException(String strMessage) {
+        strMessage = strMessage;
     }
 
     @Override
     public String getMessage() {
-        return EXCEPTION_MESSAGE;
+        return this.strMessage;
     }
 }

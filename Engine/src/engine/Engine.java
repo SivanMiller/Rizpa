@@ -2,9 +2,11 @@ package engine;
 
 import com.sun.deploy.security.MozillaJSSNONEwithRSASignature;
 import exceptions.StockNegPriceException;
+import exceptions.XMLException;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseStock;
 
+import javax.transaction.xa.XAException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -20,20 +22,15 @@ public class Engine {
 
     Map<String,Stock> mpStocks;
 
-    public void LoadXML(String sFileName) throws StockNegPriceException {
+    public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException {
         try {
             InputStream inputStream = new FileInputStream(new File(sFileName));
             //Getting XML Data
             RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, sFileName);
             //Filling stock collection
-            try {
-                convertDescriptor(stockDescriptor);
-            }
-            catch (StockNegPriceException e){
-                throw e;
-            }
-        } catch (JAXBException | FileNotFoundException e) {
-            e.printStackTrace();
+            convertDescriptor(stockDescriptor);
+        } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException e) {
+            throw e;
         }
     }
 
@@ -45,7 +42,7 @@ public class Engine {
     }
 
     //Converting JAXB Data to actual data
-    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException {
+    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException {
         mpStocks = new HashMap<>();
         List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
         Set<String> setCompanies = new HashSet<>();
@@ -55,10 +52,20 @@ public class Engine {
             try {
                 Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
 
-                if (mpStocks.get(newStock.getSymbol()) == null
-                        && !setCompanies.contains(newStock.getCompanyName())) {
-                    mpStocks.put(newStock.getSymbol(), newStock);
-                    setCompanies.add(newStock.getCompanyName());
+                if (mpStocks.get(newStock.getSymbol()) == null) {
+                    if (!setCompanies.contains(newStock.getCompanyName())) {
+                        mpStocks.put(newStock.getSymbol(), newStock);
+                        setCompanies.add(newStock.getCompanyName());
+                    }
+                    else{
+                        throw new XMLException("There are two stocks with the same Company Name in the XML you are trying to load." +
+                                               "Please make sure all stocks are from different companies");
+                    }
+                }
+                else{
+                    throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load." +
+                                           "Please make sure all stocks have different Symbols");
+
                 }
             }
             catch (StockNegPriceException e)
