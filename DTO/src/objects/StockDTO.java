@@ -48,4 +48,15 @@ public class StockDTO {
         return nTransactionSum;
     }
 
+    @Override
+    public String toString() {
+        return "StockDTO{" +
+                "sCompanyName='" + sCompanyName + '\'' +
+                ", sSymbol='" + sSymbol + '\'' +
+                ", nPrice=" + nPrice +
+                ", setTransaction=" + setTransaction + //TODO CHANGE TO TRANSACTION TOSTRING
+                ", nTransactionNum=" + nTransactionNum +
+                ", nTransactionSum=" + nTransactionSum +
+                '}';
+    }
 }

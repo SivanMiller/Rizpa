@@ -4,15 +4,13 @@ import engine.Command;
 import engine.ExchangeCollection;
 import exceptions.StockNegPriceException;
 import exceptions.XMLException;
+import objects.StockDTO;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Main {
 
@@ -47,13 +45,18 @@ public class Main {
     }
     static void PrintStocks()
     {
+        List<StockDTO> list = en.getAllStocks();
 
+        for (StockDTO stock : list) {
+            System.out.println(stock.toString());
+        }
     }
     static void PrintOneStock()
     {
         System.out.println("enter the SYMBOL stock");
         String stockSymbol=scanner.next();
         stockSymbol.toUpperCase(Locale.ROOT);
+        System.out.println(en.getStock(stockSymbol).toString());
 
     }
     static void NewCommand()
@@ -84,14 +87,17 @@ static void PrintAllCommand()
 static void Exe(String input) {
     switch (input) {
         case LOAD:
-
+            Load();
         case ALL_STOCKS:
-
+            PrintStocks();
         case ALL_COMMANDS:
-
+            PrintAllCommand();
         case SINGLE_STOCK:
+            PrintOneStock();
         case NEW_COMMAND:
+            NewCommand();
         case BYE:
+            return;
         default:
             System.out.println("ERROR WRONG INPUT.please enter 1-6");
 
