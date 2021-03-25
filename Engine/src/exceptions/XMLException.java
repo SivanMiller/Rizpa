@@ -4,7 +4,7 @@ public class XMLException extends Exception{
 
     private String strMessage;
     public XMLException(String strMessage) {
-        strMessage = strMessage;
+        this.strMessage = strMessage;
     }
 
     @Override

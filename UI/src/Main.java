@@ -3,7 +3,10 @@ import engine.LMTCommand;
 import engine.Command;
 import engine.ExchangeCollection;
 import exceptions.StockNegPriceException;
+import exceptions.XMLException;
 
+import javax.xml.bind.JAXBException;
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -40,7 +43,7 @@ public class Main {
         try {
             en.LoadXML("C:\\Users\\netas\\Downloads\\ex1-small.xml");
         }
-        catch (StockNegPriceException e)
+        catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException e)
         {
             System.out.println(e.getMessage());
         }
