@@ -42,6 +42,7 @@ public class Main {
 
         try {
             en.LoadXML("C:\\Users\\netas\\Downloads\\ex1-small.xml");
+
         }
         catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException e)
         {
