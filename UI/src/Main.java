@@ -1,15 +1,10 @@
 import engine.Engine;
-import engine.LMTCommand;
-import engine.Command;
-import engine.ExchangeCollection;
 import exceptions.StockNegPriceException;
 import exceptions.XMLException;
 import objects.StockDTO;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
@@ -43,6 +38,18 @@ public class Main {
         System.out.println("2- EXIT");
 
     }
+    // return -1 if the input is under 0 or if the input is not int
+    static int checkInputValue(String input) throws NumberFormatException {
+        try {
+            int res = Integer.parseInt(input);
+            if (res < 0)
+                return -1;
+            else
+                return res;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
     static void PrintStocks()
     {
         List<StockDTO> list = en.getAllStocks();
@@ -61,13 +68,26 @@ public class Main {
     }
     static void NewCommand()
     {
+        System.out.println("enter the command price");
+        String commandPrice=scanner.next();
+        int nPrice= checkInputValue(commandPrice);
+        if(nPrice==-1)
+            System.out.println("ERROR. the command price must be a positive number");
+        System.out.println("enter the command quantity");
+        String commandQuantity=scanner.next();
+        int nQuantity= checkInputValue(commandQuantity);
+        if(nQuantity==-1)
+            System.out.println("ERROR. the command quantity must be a positive number");
+
         System.out.println("enter the command type. 1- for a buy command , 2- for a sell command");
         String commandType=scanner.next();
         boolean flag=false;
         while (!flag)
         switch (commandType) {
-            case BUY_COMMAND:
-                flag=true;
+            case BUY_COMMAND: {
+
+                flag = true;
+            }
             case SELL_COMMAND:
                 flag=true;
                 default: {
