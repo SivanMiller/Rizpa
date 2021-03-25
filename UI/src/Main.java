@@ -15,14 +15,12 @@ import java.util.Set;
 
 public class Main {
 
-    public enum InputType {
-        LOAD,
-        ALL_STOCKS,
-        SINGLE_STOCK,
-        NEW_COMMAND,
-        ALL_COMMANDS,
-        BYE
-    };
+    public static final int LOAD=1;
+    public static final int ALL_STOCKS=2;
+    public static final int SINGLE_STOCK=3;
+    public static final int NEW_COMMAND=4;
+    public static final int ALL_COMMANDS=5;
+    public static final int BYE=6;
 
     static void menu()
     {
@@ -33,15 +31,34 @@ public class Main {
         System.out.println("5- Print the lists of commands to execute");
         System.out.println("6- EXIT");
     }
+    static void Initialmenu()
+    {
+        System.out.println("please enter your choice");
+        System.out.println("1- Load XML file ");
+        System.out.println("2- EXIT");
+
+    }
+
 
     public static void main(String[] args) {
 
-//        Scanner scanner = new Scanner(System.in);
-//        int input= scanner.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        Initialmenu();
+        int input= scanner.nextInt();
+        if(input== BYE)
+        {
+            return;
+        }
         Engine en = new Engine();
-
+        System.out.println("please enter an XML file ");
+        String fileName=scanner.next();
+        while(!fileName.endsWith(".xml"))
+        {
+            System.out.println("the file doesnt end with XML!please enter again an EXL file ");
+            fileName=scanner.next();
+        }
         try {
-            en.LoadXML("C:\\Users\\netas\\Downloads\\ex1-small.xml");
+            en.LoadXML(fileName);
 
         }
         catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException e)
