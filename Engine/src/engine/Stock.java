@@ -16,12 +16,28 @@ public class Stock {
     }
 
     public Stock(String sCompanyName, String sSymbol, int nPrice, ExchangeCollection ecExchange) {
+      //  if(!isStringUpperCase(sSymbol))
+        //    throw
         this.sCompanyName = sCompanyName;
         this.sSymbol = sSymbol;
         this.nPrice = nPrice;
         this.ecExchange = ecExchange;
     }
+    //put in utilitis??
+    private static boolean isStringUpperCase(String str){
 
+        //convert String to char array
+        char[] charArray = str.toCharArray();
+
+        for(int i=0; i < charArray.length; i++){
+
+            //if any character is not in upper case, return false
+            if( !Character.isUpperCase( charArray[i] ))
+                return false;
+        }
+
+        return true;
+    }
     public Stock(String sCompanyName, String sSymbol, int nPrice) {
         this.sCompanyName = sCompanyName;
         this.sSymbol = sSymbol;
