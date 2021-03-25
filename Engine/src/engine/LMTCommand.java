@@ -1,5 +1,7 @@
 package engine;
 
+import objects.ExchangeDTO;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -27,6 +29,10 @@ public class LMTCommand extends Command {
                 ", Type=" + Type +
                 ", Order=" + Order +
                 '}';
+    }
+    public ExchangeDTO convertToDTO()
+    {
+        return new ExchangeDTO(this.nPrice, this.nQuantity, this.sDate, this.nQuantity * this.nQuantity);
     }
 }
 

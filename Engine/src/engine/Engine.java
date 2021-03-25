@@ -1,12 +1,12 @@
 package engine;
 
-import com.sun.deploy.security.MozillaJSSNONEwithRSASignature;
 import exceptions.StockNegPriceException;
 import exceptions.XMLException;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseStock;
+import objects.StockDTO;
 
-import javax.transaction.xa.XAException;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -45,16 +45,20 @@ public class Engine {
     private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException {
         mpStocks = new HashMap<>();
         List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
-        Set<String> setCompanies = new HashSet<>();
+        Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
 
+        // Converting XML Stocks to Engine stocks
         for (int i = 0; i < stocks.size(); i++)
         {
             try {
                 Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
-
+                // if stock with same Symbol already exists
                 if (mpStocks.get(newStock.getSymbol()) == null) {
+                    // if stock with same Company Name already exists
                     if (!setCompanies.contains(newStock.getCompanyName())) {
+                        //Insert stock to stock map
                         mpStocks.put(newStock.getSymbol(), newStock);
+                        //Insert company name to company name set
                         setCompanies.add(newStock.getCompanyName());
                     }
                     else{
@@ -75,5 +79,19 @@ public class Engine {
         }
     }
 
+    public List<StockDTO> getAllStocks()
+    {
+        List<StockDTO> list = new ArrayList<>();
+        for (Stock stock : mpStocks.values()) {
+            list.add(stock.convertToDTO());
+        }
+
+        return list;
+    }
+
+    public StockDTO getStock(String sSymbol)
+    {
+        return this.mpStocks.get(sSymbol).convertToDTO();
+    }
 }
 

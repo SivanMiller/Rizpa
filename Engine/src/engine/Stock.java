@@ -1,8 +1,12 @@
 package engine;
 
 import exceptions.StockNegPriceException;
+import objects.ExchangeDTO;
+import objects.StockDTO;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Stock {
 
@@ -48,7 +52,7 @@ public class Stock {
         return sSymbol;
     }
 
-    public int getGate() {
+    public int getPrice() {
         return nPrice;
     }
 
@@ -64,7 +68,7 @@ public class Stock {
         this.sSymbol = sSymbol;
     }
 
-    public void setGate(int nGate) {
+    public void setPrice(int nGate) {
         this.nPrice = nGate;
     }
 
@@ -93,5 +97,17 @@ public class Stock {
                ", Price = " + nPrice +
                ", Exchange = " + ecExchange +
                '}';
+    }
+
+    public StockDTO convertToDTO()
+    {
+        Set<ExchangeDTO> setTransaction = new HashSet<>();
+
+        for (int i = 0; i < this.ecExchange.getSetTransaction().size(); i++)
+        {
+            setTransaction.add(this.ecExchange.getSetTransaction().get(i).convertToDTO());
+        }
+        return new StockDTO(this.getCompanyName(), this.getSymbol(), this.getPrice(),
+                             setTransaction, setTransaction.size(), 0 ); // TODO: WHAT IS MAHZOR
     }
 }

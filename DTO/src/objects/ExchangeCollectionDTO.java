@@ -1,3 +1,5 @@
+package objects;
+
 import java.util.List;
 
 
@@ -21,7 +23,7 @@ public class ExchangeCollectionDTO {
 
     @Override
     public String toString() {
-        return "ExchangeCollectionDTO{" +
+        return "objects.ExchangeCollectionDTO{" +
                 "BuyCommand=" + lstBuyCommand +
                 ", SellCommand=" + lstSellCommand +
                 ", Transaction=" + lstTransaction +

@@ -9,17 +9,17 @@ public class ExchangeCollection {
 
     private PriorityQueue<Command> pqBuyCommand;
     private PriorityQueue<Command> pqSellCommand;
-    private Set<Transaction> setTransaction;
+    private List<Transaction> setTransaction;
 
 
     public ExchangeCollection() {
         pqBuyCommand = new PriorityQueue<>(new SortCommands());
         pqSellCommand = new PriorityQueue<>(new SortCommands());
-        setTransaction = new HashSet<>();
+        setTransaction = new ArrayList<>();
     }
 
     public ExchangeCollection(PriorityQueue<Command> pqBuyCommand, PriorityQueue<Command> pqSellCommand,
-                              Set<Transaction> setTransaction) {
+                              List<Transaction> setTransaction) {
         this.pqBuyCommand = pqBuyCommand;
         this.pqSellCommand = pqSellCommand;
         this.setTransaction = setTransaction;
@@ -41,11 +41,11 @@ public class ExchangeCollection {
         this.pqSellCommand = pqSellCommand;
     }
 
-    public Set<Transaction> getSetTransaction() {
+    public List<Transaction> getSetTransaction() {
         return setTransaction;
     }
 
-    public void setSetTransaction(Set<Transaction> setTransaction) {
+    public void setSetTransaction(List<Transaction> setTransaction) {
         this.setTransaction = setTransaction;
     }
 
@@ -71,7 +71,7 @@ public class ExchangeCollection {
                 '}';
     }
 
-    public void addNewTransation(int nPrice, int nQuantity, String sDate, int Order) {
+    public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
         Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set
         setTransaction.add(trNewTransaction);
@@ -108,7 +108,7 @@ public class ExchangeCollection {
                 // the quantity is matching
                 if (nQuantity == 0) {
                     // add new Transaction
-                    addNewTransation(pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransaction(pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
                     // delete Sell command
                     pqSellCommand.remove(pqSellCommand.peek());
@@ -117,7 +117,7 @@ public class ExchangeCollection {
                 else if (nQuantity > 0) {
                     //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransaction(pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
                     // update Sell command??
                     pqSellCommand.peek().setQuantity(nQuantity);
@@ -126,7 +126,7 @@ public class ExchangeCollection {
                 else {
                     //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(pqSellCommand.peek().getPrice(), pqSellCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransaction(pqSellCommand.peek().getPrice(), pqSellCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
 
                     // update BUY command??
                     cmdNewCommand.setQuantity(nQuantity * (-1));
@@ -156,7 +156,7 @@ public class ExchangeCollection {
                 // the quantity is matching
                 if (nQuantity == 0) {
                     // add new Transaction
-                    addNewTransation(pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransaction(pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
 
                     // delete Buy command
@@ -166,7 +166,7 @@ public class ExchangeCollection {
                 else if (nQuantity > 0) {
                     //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransaction(pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
                     //Decrease peek quantity by Command quantity
                    pqBuyCommand.peek().setQuantity(nQuantity);
@@ -175,7 +175,7 @@ public class ExchangeCollection {
                 else {
                     //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransation(pqBuyCommand.peek().getPrice(), pqBuyCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
+                    addNewTransaction(pqBuyCommand.peek().getPrice(), pqBuyCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
                     //Decrease Command quantity by peek quantity
                     cmdNewCommand.setQuantity(nQuantity * (-1));
 
