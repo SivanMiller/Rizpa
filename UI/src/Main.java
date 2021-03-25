@@ -10,17 +10,24 @@ import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.Set;
 
 public class Main {
 
-    public static final int LOAD=1;
-    public static final int ALL_STOCKS=2;
-    public static final int SINGLE_STOCK=3;
-    public static final int NEW_COMMAND=4;
-    public static final int ALL_COMMANDS=5;
-    public static final int BYE=6;
+    public static Engine en = new Engine();
+    public static Scanner scanner = new Scanner(System.in);
+
+    public static final String LOAD="1";
+    public static final String ALL_STOCKS="2";
+    public static final String SINGLE_STOCK="3";
+    public static final String NEW_COMMAND="4";
+    public static final String ALL_COMMANDS="5";
+    public static final String BYE="6";
+    public static final String BUY_COMMAND="1";
+    public static final String SELL_COMMAND="6";
+
 
     static void menu()
     {
@@ -38,132 +45,98 @@ public class Main {
         System.out.println("2- EXIT");
 
     }
+    static void PrintStocks()
+    {
+
+    }
+    static void PrintOneStock()
+    {
+        System.out.println("enter the SYMBOL stock");
+        String stockSymbol=scanner.next();
+        stockSymbol.toUpperCase(Locale.ROOT);
+
+    }
+    static void NewCommand()
+    {
+        System.out.println("enter the command type. 1- for a buy command , 2- for a sell command");
+        String commandType=scanner.next();
+        boolean flag=false;
+        while (!flag)
+        switch (commandType) {
+            case BUY_COMMAND:
+                flag=true;
+            case SELL_COMMAND:
+                flag=true;
+                default: {
+                    System.out.println("ERROR wrong input. 1- for a buy command , 2- for a sell command");
+                    commandType=scanner.next();
+                }
+        }
+        System.out.println("enter the SYMBOL stock");
+        String stockSymbol=scanner.next();
+        stockSymbol.toUpperCase(Locale.ROOT);
+
+    }
+static void PrintAllCommand()
+{
+
+}
+static void Exe(String input) {
+    switch (input) {
+        case LOAD:
+
+        case ALL_STOCKS:
+
+        case ALL_COMMANDS:
+
+        case SINGLE_STOCK:
+        case NEW_COMMAND:
+        case BYE:
+        default:
+            System.out.println("ERROR WRONG INPUT.please enter 1-6");
 
 
+    }
+
+}
+public static void Load()
+{
+    System.out.println("please enter an XML file ");
+    String fileName=scanner.next();
+    while(!fileName.endsWith(".xml"))
+    {
+        System.out.println("the file doesnt end with XML!please enter again an EXL file ");
+        fileName=scanner.next();
+    }
+
+    try {
+        en.LoadXML(fileName);
+
+    }
+    catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException e)
+    {
+        System.out.println(e.getMessage());
+    }
+}
     public static void main(String[] args) {
 
-        Scanner scanner = new Scanner(System.in);
         Initialmenu();
-        int input= scanner.nextInt();
+        String input= scanner.next();
         if(input== BYE)
         {
             return;
         }
-        Engine en = new Engine();
-        System.out.println("please enter an XML file ");
-        String fileName=scanner.next();
-        while(!fileName.endsWith(".xml"))
+        Load();
+        menu();
+        input=scanner.next();
+        while (input!= BYE)
         {
-            System.out.println("the file doesnt end with XML!please enter again an EXL file ");
-            fileName=scanner.next();
+            Exe(input);
+            menu();
+            input=scanner.next();
         }
-        try {
-            en.LoadXML(fileName);
 
-        }
-        catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        ExchangeCollection ex = new ExchangeCollection();
 
-        // 1
-        Command cmd = new LMTCommand(100,
-                20,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 2
-        cmd = new LMTCommand(110,
-                10,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 3
-        cmd = new LMTCommand(90,
-                10,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 4
-        cmd = new LMTCommand(90,
-                10,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.BUY);
-        ex.addNewCommand(cmd);
-
-        // 5
-        cmd = new LMTCommand(120,
-                25,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.BUY);
-        ex.addNewCommand(cmd);
-
-        // 6
-        cmd = new LMTCommand(90,
-                30,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.BUY);
-        ex.addNewCommand(cmd);
-
-        // 7
-        cmd = new LMTCommand(80,
-                20,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.BUY);
-        ex.addNewCommand(cmd);
-
-        // 8
-        cmd = new LMTCommand(100,
-                10,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.BUY);
-        ex.addNewCommand(cmd);
-
-        // 9
-        cmd = new LMTCommand(90,
-                5,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.BUY);
-        ex.addNewCommand(cmd);
-
-        // 10
-        cmd = new LMTCommand(90,
-                5,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 11
-        cmd = new LMTCommand(95,
-                25,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 12
-        cmd = new LMTCommand(90,
-                20,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 13
-        cmd = new LMTCommand(90,
-                12,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
-
-        // 14
-        cmd = new LMTCommand(85,
-                13,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()).toString(),
-                Command.CmdType.SELL);
-        ex.addNewCommand(cmd);
 
     }
 }
