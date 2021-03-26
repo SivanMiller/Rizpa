@@ -4,9 +4,7 @@ import exceptions.StockNegPriceException;
 import objects.ExchangeDTO;
 import objects.StockDTO;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class Stock {
 
@@ -35,6 +33,7 @@ public class Stock {
 //
 //        return true;
 //    }
+    //TODO ADD EXCEPTION NEGATIVE QUANTITY
     public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException {
         if (nPrice < 0)
             throw new StockNegPriceException();
@@ -101,13 +100,14 @@ public class Stock {
 
     public StockDTO convertToDTO()
     {
-        Set<ExchangeDTO> setTransaction = new HashSet<>();
+        List<ExchangeDTO> setTransaction = new ArrayList<>();
 
-        for (int i = 0; i < this.ecExchange.getSetTransaction().size(); i++)
+        for (int i = 0; i < this.ecExchange.getTransactions().size(); i++)
         {
-            setTransaction.add(this.ecExchange.getSetTransaction().get(i).convertToDTO());
+            setTransaction.add(this.ecExchange.getTransactions().get(i).convertToDTO());
         }
         return new StockDTO(this.getCompanyName(), this.getSymbol(), this.getPrice(),
-                             setTransaction, setTransaction.size(), 0 ); // TODO: WHAT IS MAHZOR
+                             this.ecExchange.convertToDTO(),
+                             this.ecExchange.convertToDTO().getTransaction().size(), 0 ); // TODO: WHAT IS MAHZOR
     }
 }

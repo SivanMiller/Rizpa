@@ -48,6 +48,8 @@ public abstract class Command {
         this.Type = type;
     }
 
+    public abstract ExchangeDTO convertToDTO();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

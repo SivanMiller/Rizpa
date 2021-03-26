@@ -90,9 +90,21 @@ public class Engine {
     }
 
     //TODO HANDLE NO SUCH STOCK
-    public StockDTO getStock(String sSymbol)
+    public StockDTO getStock(String sSymbol) throws Exception {
+        if (this.mpStocks.containsKey(sSymbol)) {
+            return this.mpStocks.get(sSymbol).convertToDTO();
+        }
+        else
+        {
+            throw new Exception("No such Stock");
+        }
+    }
+
+    //TODO: THROW EXCEPTIONS: NO SUCH STOCK, PRICE, TYPE, QUANTITY...
+    //TODO: CONVERT TO ACTUAL TYPES AND ADD COMMAND TO STOCK
+    public void AddCommand(String sSymbol, String sType, String sPrice, String sQuantity)
     {
-        return this.mpStocks.get(sSymbol).convertToDTO();
+
     }
 }
 

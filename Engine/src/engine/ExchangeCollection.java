@@ -1,28 +1,31 @@
 package engine;
 
+import objects.ExchangeCollectionDTO;
+import objects.ExchangeDTO;
+import objects.StockDTO;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import engine.Command;
 
 public class ExchangeCollection {
 
     private PriorityQueue<Command> pqBuyCommand;
     private PriorityQueue<Command> pqSellCommand;
-    private List<Transaction> setTransaction;
+    private List<Transaction> lstTransaction;
 
 
     public ExchangeCollection() {
         pqBuyCommand = new PriorityQueue<>(new SortCommands());
         pqSellCommand = new PriorityQueue<>(new SortCommands());
-        setTransaction = new ArrayList<>();
+        lstTransaction = new ArrayList<>();
     }
 
     public ExchangeCollection(PriorityQueue<Command> pqBuyCommand, PriorityQueue<Command> pqSellCommand,
-                              List<Transaction> setTransaction) {
+                              List<Transaction> lstTransaction) {
         this.pqBuyCommand = pqBuyCommand;
         this.pqSellCommand = pqSellCommand;
-        this.setTransaction = setTransaction;
+        this.lstTransaction = lstTransaction;
     }
 
     public PriorityQueue<Command> getPqBuyCommand() {
@@ -41,12 +44,12 @@ public class ExchangeCollection {
         this.pqSellCommand = pqSellCommand;
     }
 
-    public List<Transaction> getSetTransaction() {
-        return setTransaction;
+    public List<Transaction> getTransactions() {
+        return lstTransaction;
     }
 
-    public void setSetTransaction(List<Transaction> setTransaction) {
-        this.setTransaction = setTransaction;
+    public void setTransactions(List<Transaction> lstTransaction) {
+        this.lstTransaction = lstTransaction;
     }
 
     @Override
@@ -54,27 +57,45 @@ public class ExchangeCollection {
         if (this == o) return true;
         if (!(o instanceof ExchangeCollection)) return false;
         ExchangeCollection that = (ExchangeCollection) o;
-        return Objects.equals(getPqBuyCommand(), that.getPqBuyCommand()) && Objects.equals(getPqSellCommand(), that.getPqSellCommand()) && Objects.equals(getSetTransaction(), that.getSetTransaction());
+        return Objects.equals(getPqBuyCommand(), that.getPqBuyCommand()) && Objects.equals(getPqSellCommand(), that.getPqSellCommand()) && Objects.equals(getTransactions(), that.getTransactions());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPqBuyCommand(), getPqSellCommand(), getSetTransaction());
+        return Objects.hash(getPqBuyCommand(), getPqSellCommand(), getTransactions());
     }
 
     @Override
     public String toString() {
-        return "ExchangeCollection{" +
-                "pqBuyCommand=" + pqBuyCommand +
-                ", pqSellCommand=" + pqSellCommand +
-                ", setTransaction=" + setTransaction +
-                '}';
+
+        String str;
+        PriorityQueue<Command> temp;
+
+        str = "Buy Commands: " + '\n';
+        temp = this.pqBuyCommand;
+        for (int i = 0; i < this.pqBuyCommand.size(); i++)
+        {
+            str += this.pqBuyCommand.poll().toString() + '\n';
+        }
+
+        str = "Sell Commands: " + '\n';
+        temp = this.pqSellCommand;
+        for (int i = 0; i < this.pqSellCommand.size(); i++)
+        {
+            str += this.pqSellCommand.poll().toString() + '\n';
+        }
+
+        for (Transaction tran : lstTransaction) {
+            str += tran.toString() + '\n';
+        }
+
+        return str;
     }
 
     public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
         Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set
-        setTransaction.add(trNewTransaction);
+        lstTransaction.add(trNewTransaction);
     }
 
     public void addNewCommand(Command cmdNewCommand){
@@ -184,5 +205,32 @@ public class ExchangeCollection {
                 }
             }
         }
+    }
+    public ExchangeCollectionDTO convertToDTO()
+    {
+        List<ExchangeDTO> lstBuyCommand = new ArrayList<>();
+        List<ExchangeDTO> lstSellCommand = new ArrayList<>();
+        List<ExchangeDTO> lstTransaction = new ArrayList<>();
+
+        PriorityQueue<Command> temp;
+
+        temp = this.pqBuyCommand;
+        for (int i = 0; i < this.pqBuyCommand.size(); i++)
+        {
+            lstBuyCommand.add(this.pqBuyCommand.poll().convertToDTO());
+        }
+        temp = this.pqSellCommand;
+        for (int i = 0; i < this.pqSellCommand.size(); i++)
+        {
+            lstSellCommand.add(this.pqSellCommand.poll().convertToDTO());
+        }
+
+        for (Transaction tran : this.lstTransaction)
+        {
+            lstTransaction.add(tran.convertToDTO());
+        }
+
+        return new ExchangeCollectionDTO(lstBuyCommand, lstSellCommand, lstTransaction);
+
     }
 }
