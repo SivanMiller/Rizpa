@@ -35,20 +35,30 @@ public class ExchangeCollectionDTO {
 
     @Override
     public String toString() {
-        String str;
+        String str = "";
 
-        str = "Buy Commands: " + '\n';
-        for (ExchangeDTO buy : lstBuyCommand) {
-            str += buy.toString() + '\n';
+        //Print Buy Commands if there are any
+        if (!lstBuyCommand.isEmpty()) {
+            str += "Buy Commands: " + '\n';
+            for (ExchangeDTO buy : lstBuyCommand) {
+                str += '\t' + buy.toString() + '\n';
+            }
         }
 
-        str = "Sell Commands: " + '\n';
-        for (ExchangeDTO sell : lstSellCommand) {
-            str += sell.toString() + '\n';
+        //Print Sell Commands if there are any
+        if (!lstSellCommand.isEmpty()) {
+            str += "Sell Commands: " + '\n';
+            for (ExchangeDTO sell : lstSellCommand) {
+                str += '\t' + sell.toString() + '\n';
+            }
         }
 
-        for (ExchangeDTO tran : lstTransaction) {
-            str += tran.toString() + '\n';
+        //Print Transactions if there are any
+        if (!lstTransaction.isEmpty()) {
+            str += "Transactions: " + '\n';
+            for (ExchangeDTO tran : lstTransaction) {
+                str +=  '\t' + tran.toString() + '\n';
+            }
         }
 
         return str;

@@ -20,6 +20,7 @@ public class StockDTO {
         this.sCompanyName = sCompanyName;
         this.sSymbol = sSymbol;
         this.nPrice = nPrice;
+        this.excExchange = excExchange;
         this.nTransactionNum = nTransactionNum;
         this.nTransactionSum = nTransactionSum;
     }
@@ -51,13 +52,12 @@ public class StockDTO {
 
     @Override
     public String toString() {
-        return "StockDTO{" +
-                "CompanyName='" + sCompanyName + '\'' +
-                ", Symbol='" + sSymbol + '\'' +
-                ", Price=" + nPrice +
-                ", Exchange Collection =" + excExchange.toString() + //TODO CHECK NOT EMPTY
-                ", TransactionNum=" + nTransactionNum +
-                ", TransactionSum=" + nTransactionSum +
-                '}';
+        return "Stock:" + '\n' +
+                "CompanyName = '" + sCompanyName + '\'' + '\n' +
+                "Symbol='" + sSymbol + '\'' + '\n' +
+                "Price=" + nPrice + '\n' +
+                excExchange.toString() +
+                "TransactionNum=" + nTransactionNum + '\n' +
+                "TransactionSum=" + nTransactionSum + '\n';
     }
 }

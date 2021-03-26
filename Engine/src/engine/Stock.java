@@ -1,6 +1,7 @@
 package engine;
 
 import exceptions.StockNegPriceException;
+import exceptions.StockNegQuantityException;
 import objects.ExchangeDTO;
 import objects.StockDTO;
 
@@ -18,22 +19,7 @@ public class Stock {
         sSymbol = "";
         ecExchange = new ExchangeCollection();
     }
-//    //put in utilitis??
-//    private static boolean isStringUpperCase(String str){
-//
-//        //convert String to char array
-//        char[] charArray = str.toCharArray();
-//
-//        for(int i=0; i < charArray.length; i++){
-//
-//            //if any character is not in upper case, return false
-//            if( !Character.isUpperCase( charArray[i] ))
-//                return false;
-//        }
-//
-//        return true;
-//    }
-    //TODO ADD EXCEPTION NEGATIVE QUANTITY
+
     public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException {
         if (nPrice < 0)
             throw new StockNegPriceException();
@@ -98,14 +84,19 @@ public class Stock {
                '}';
     }
 
+    public void addNewCommand(Command.CmdType nType, int nPrice, int nQuantity) throws StockNegQuantityException, StockNegPriceException {
+        Command newCommand = null;
+        try {
+            newCommand = new LMTCommand(nPrice, nQuantity, nType);
+        }
+        catch (StockNegPriceException | StockNegQuantityException e) {
+            throw e;
+        }
+        this.ecExchange.addNewCommand(newCommand);
+    }
+
     public StockDTO convertToDTO()
     {
-        List<ExchangeDTO> setTransaction = new ArrayList<>();
-
-        for (int i = 0; i < this.ecExchange.getTransactions().size(); i++)
-        {
-            setTransaction.add(this.ecExchange.getTransactions().get(i).convertToDTO());
-        }
         return new StockDTO(this.getCompanyName(), this.getSymbol(), this.getPrice(),
                              this.ecExchange.convertToDTO(),
                              this.ecExchange.convertToDTO().getTransaction().size(), 0 ); // TODO: WHAT IS MAHZOR

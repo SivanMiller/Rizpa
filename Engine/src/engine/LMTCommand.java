@@ -1,5 +1,7 @@
 package engine;
 
+import exceptions.StockNegPriceException;
+import exceptions.StockNegQuantityException;
 import objects.ExchangeDTO;
 
 import java.time.LocalDateTime;
@@ -11,7 +13,11 @@ public class LMTCommand extends Command {
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public LMTCommand(int nPrice, int nQuantity, String sDate, CmdType Type) {
+    public LMTCommand(int nPrice, int nQuantity, CmdType Type) throws StockNegPriceException, StockNegQuantityException {
+        if (nPrice < 0)
+            throw new StockNegPriceException();
+        if (nQuantity < 0)
+            throw new StockNegQuantityException();
         this.nPrice = nPrice;
         this.nQuantity = nQuantity;
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());

@@ -37,7 +37,6 @@ public class ExchangeDTO {
         return "Price=" + nPrice +
                 ", Quantity=" + nQuantity +
                 ", Date='" + sDate + '\'' +
-                ", Turnover=" + nTurnover +
-                '}';
+                ", Turnover=" + nTurnover;
     }
 }

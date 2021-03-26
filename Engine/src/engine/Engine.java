@@ -1,6 +1,8 @@
 package engine;
 
+import exceptions.NoSuchStockException;
 import exceptions.StockNegPriceException;
+import exceptions.StockNegQuantityException;
 import exceptions.XMLException;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseStock;
@@ -89,22 +91,42 @@ public class Engine {
         return list;
     }
 
-    //TODO HANDLE NO SUCH STOCK
-    public StockDTO getStock(String sSymbol) throws Exception {
-        if (this.mpStocks.containsKey(sSymbol)) {
-            return this.mpStocks.get(sSymbol).convertToDTO();
-        }
-        else
-        {
-            throw new Exception("No such Stock");
-        }
+    public StockDTO getStock(String sSymbol) throws NoSuchStockException {
+        Stock stock = this.mpStocks.get(sSymbol);
+
+        //Check if such stock exists in stock map
+        if (stock == null)
+            throw new NoSuchStockException();
+
+        return stock.convertToDTO();
     }
 
-    //TODO: THROW EXCEPTIONS: NO SUCH STOCK, PRICE, TYPE, QUANTITY...
-    //TODO: CONVERT TO ACTUAL TYPES AND ADD COMMAND TO STOCK
-    public void AddCommand(String sSymbol, String sType, String sPrice, String sQuantity)
-    {
+    public void addCommand(String sSymbol, int nType, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, StockNegPriceException {
+        Stock stock = this.mpStocks.get(sSymbol);
 
+        //Check if such stock exists in stock map
+        if (stock == null)
+        {
+            throw new NoSuchStockException();
+        }
+        else {
+            //TODO: think of something smarter
+            Command.CmdType type = Command.CmdType.BUY;
+            if (nType == 1) {
+                type = Command.CmdType.BUY;
+            }
+            else if (nType == 2){
+                type = Command.CmdType.SELL;
+            }
+
+
+            try {
+                stock.addNewCommand(type, nPrice, nQuantity);
+            }
+            catch (StockNegQuantityException | StockNegPriceException e) {
+                throw e;
+            }
+        }
     }
 }
 
