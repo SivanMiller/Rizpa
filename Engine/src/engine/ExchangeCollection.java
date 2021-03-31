@@ -195,18 +195,16 @@ public class ExchangeCollection {
         List<ExchangeDTO> lstSellCommand = new ArrayList<>();
         List<ExchangeDTO> lstTransaction = new ArrayList<>();
 
-        PriorityQueue<Command> temp;
-
-        temp = this.pqBuyCommand;
+        PriorityQueue<Command> temp = new PriorityQueue<>(this.pqBuyCommand);
         for (int i = 0; i < this.pqBuyCommand.size(); i++)
         {
-            lstBuyCommand.add(this.pqBuyCommand.poll().convertToDTO());
+            lstBuyCommand.add(temp.poll().convertToDTO());
         }
 
-        temp = this.pqSellCommand;
+        temp = new PriorityQueue<>(this.pqSellCommand);
         for (int i = 0; i < this.pqSellCommand.size(); i++)
         {
-            lstSellCommand.add(this.pqSellCommand.poll().convertToDTO());
+            lstSellCommand.add(temp.poll().convertToDTO());
         }
 
         for (Transaction tran : this.lstTransaction)

@@ -1,9 +1,6 @@
 package engine;
 
-import exceptions.NoSuchStockException;
-import exceptions.StockNegPriceException;
-import exceptions.StockNegQuantityException;
-import exceptions.XMLException;
+import exceptions.*;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseStock;
 import objects.StockDTO;
@@ -101,7 +98,7 @@ public class Engine {
         return stock.convertToDTO();
     }
 
-    public void addCommand(String sSymbol, int nType, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, StockNegPriceException {
+    public void addCommand(String sSymbol, String sCmdType, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, StockNegPriceException, NoSuchCmdTypeException {
         Stock stock = this.mpStocks.get(sSymbol);
 
         //Check if such stock exists in stock map
@@ -110,23 +107,31 @@ public class Engine {
             throw new NoSuchStockException();
         }
         else {
-            //TODO: think of something smarter
-            Command.CmdType type = Command.CmdType.BUY;
-            if (nType == 1) {
-                type = Command.CmdType.BUY;
-            }
-            else if (nType == 2){
-                type = Command.CmdType.SELL;
-            }
-
-
             try {
+                Command.CmdType type = converStringtToCmdType(sCmdType);
                 stock.addNewCommand(type, nPrice, nQuantity);
-            }
-            catch (StockNegQuantityException | StockNegPriceException e) {
+            } catch (StockNegQuantityException | StockNegPriceException | NoSuchCmdTypeException e) {
                 throw e;
             }
         }
+    }
+
+    public Command.CmdType converStringtToCmdType(String sCommandType) throws NoSuchCmdTypeException {
+        int nType = Integer.parseInt(sCommandType) - 1;
+
+        if (nType == Command.CmdType.BUY.ordinal()) {
+            return Command.CmdType.BUY;
+        } else if (nType == Command.CmdType.SELL.ordinal()) {
+            return Command.CmdType.SELL;
+        } else {
+            throw new NoSuchCmdTypeException();
+        }
+    }
+
+    public boolean doesStockExists(String sSymbol)
+    {
+        //Check if such stock exists in stock map
+        return (this.mpStocks.containsKey(sSymbol));
     }
 }
 

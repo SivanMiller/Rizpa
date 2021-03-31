@@ -1,11 +1,5 @@
 package objects;
 
-import engine.Stock;
-import engine.Transaction;
-
-import java.util.List;
-import java.util.Set;
-
 public class StockDTO {
 
     private String sCompanyName;
@@ -59,5 +53,35 @@ public class StockDTO {
                 excExchange.toString() +
                 "TransactionNum=" + nTransactionNum + '\n' +
                 "TransactionSum=" + nTransactionSum + '\n';
+    }
+
+    public String PrintAllCommands()
+    {
+        String str = "Stock:" + '\n' +
+                "CompanyName = '" + sCompanyName + '\'' + '\n' +
+                "Symbol='" + sSymbol + '\'' + '\n';
+
+        str += "Buy Commands: " + '\n';
+        //Print Buy Commands if there are any
+        if (!excExchange.getBuyCommand().isEmpty()) {
+            for (ExchangeDTO buy : excExchange.getBuyCommand()) {
+                str += '\t' + buy.toString() + '\n';
+            }
+        }
+        else{
+            str += '\t' + "There are no unfinished BUY Commands" + '\n';
+        }
+        str += "Sell Commands: " + '\n';
+        //Print Sell Commands if there are any
+        if (!excExchange.getSellCommand().isEmpty()) {
+            for (ExchangeDTO sell : excExchange.getSellCommand()) {
+                str += '\t' + sell.toString() + '\n';
+            }
+        }
+        else{
+            str += '\t' + "There are no unfinished SELL Commands" + '\n';
+        }
+
+        return str;
     }
 }

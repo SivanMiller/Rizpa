@@ -39,7 +39,7 @@ public class LMTCommand extends Command {
     @Override
     public ExchangeDTO convertToDTO()
     {
-        return new ExchangeDTO(this.nPrice, this.nQuantity, this.sDate, this.nQuantity * this.nQuantity);
+        return new ExchangeDTO(this.nPrice, this.nQuantity, this.sDate, this.nPrice * this.nQuantity);
     }
 }
 
