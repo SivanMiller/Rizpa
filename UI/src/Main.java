@@ -80,6 +80,7 @@ public class Main {
 
     }
 
+    //TODO: ADD MESSAGE OF SUCCESSFUL COMMAND
     private static void NewCommand() {
 
         System.out.println("Enter the stock SYMBOL");
@@ -142,11 +143,11 @@ public class Main {
             case ALL_STOCKS:
                 PrintStocks();
                 break;
-            case ALL_COMMANDS:
-                PrintAllCommand();
-                break;
             case SINGLE_STOCK:
                 PrintOneStock();
+                break;
+            case ALL_COMMANDS:
+                PrintAllCommand();
                 break;
             case NEW_COMMAND:
                 NewCommand();

@@ -33,25 +33,26 @@ public class ExchangeCollectionDTO {
         return lstTransaction;
     }
 
+    //TODO: IF TRANSACTION LIST IS EMPTY, PRINT MESSAGE EMPTY LIST
     @Override
     public String toString() {
         String str = "";
 
-        //Print Buy Commands if there are any
-        if (!lstBuyCommand.isEmpty()) {
-            str += "Buy Commands: " + '\n';
-            for (ExchangeDTO buy : lstBuyCommand) {
-                str += '\t' + buy.toString() + '\n';
-            }
-        }
-
-        //Print Sell Commands if there are any
-        if (!lstSellCommand.isEmpty()) {
-            str += "Sell Commands: " + '\n';
-            for (ExchangeDTO sell : lstSellCommand) {
-                str += '\t' + sell.toString() + '\n';
-            }
-        }
+//        //Print Buy Commands if there are any
+//        if (!lstBuyCommand.isEmpty()) {
+//            str += "Buy Commands: " + '\n';
+//            for (ExchangeDTO buy : lstBuyCommand) {
+//                str += '\t' + buy.toString() + '\n';
+//            }
+//        }
+//
+//        //Print Sell Commands if there are any
+//        if (!lstSellCommand.isEmpty()) {
+//            str += "Sell Commands: " + '\n';
+//            for (ExchangeDTO sell : lstSellCommand) {
+//                str += '\t' + sell.toString() + '\n';
+//            }
+//        }
 
         //Print Transactions if there are any
         if (!lstTransaction.isEmpty()) {

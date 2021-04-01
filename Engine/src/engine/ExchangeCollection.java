@@ -66,7 +66,7 @@ public class ExchangeCollection {
         return Objects.hash(getPqBuyCommand(), getPqSellCommand(), getTransactions());
     }
 
-
+    //TODO: CHANGE PRICE ACCORDING TO RECENT TRANSACTION PRICE, CHECK WHAT ORDER TO INSERT
     public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
         Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set

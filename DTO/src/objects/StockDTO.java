@@ -82,6 +82,14 @@ public class StockDTO {
             str += '\t' + "There are no unfinished SELL Commands" + '\n';
         }
 
+        //Print Transactions if there are any
+        if (!excExchange.getTransaction().isEmpty()) {
+            str += "Transactions: " + '\n';
+            for (ExchangeDTO tran : excExchange.getTransaction()) {
+                str +=  '\t' + tran.toString() + '\n';
+            }
+        }
+
         return str;
     }
 }
