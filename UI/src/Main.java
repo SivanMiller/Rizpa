@@ -19,8 +19,12 @@ public class Main {
     private static final String NEW_COMMAND     = "4";
     private static final String ALL_COMMANDS    = "5";
     private static final String BYE             = "6";
+
     private static final String BUY_COMMAND     = "1";
     private static final String SELL_COMMAND    = "2";
+
+    private static final String LMT_COMMAND     = "1";
+    private static final String MKT_COMMAND    = "2";
 
 
     private static void menu()
@@ -73,13 +77,13 @@ public class Main {
         String stockSymbol=scanner.next();
         stockSymbol = stockSymbol.toUpperCase(Locale.ROOT);
         try {
-            System.out.println(engine.getStock(stockSymbol).toString()+engine.getStock(stockSymbol).PrintTransaction());
+            System.out.println(engine.getStock(stockSymbol).toString() +
+                               engine.getStock(stockSymbol).PrintTransaction());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
-
 
     private static void NewCommand() {
 
@@ -92,12 +96,24 @@ public class Main {
             return;
         }
 
-        System.out.println("Enter the command price");
-        String commandPrice = scanner.next();
-        int nPrice = checkInputValue(commandPrice);
-        if (nPrice == -1) {
-            System.out.println("ERROR. The command price must be a positive number");
+        System.out.println("Enter the command Type." + '\n' +
+                "1 - for a LMT command" + '\n' +
+                "2 - for a MKT command");
+        String sCmdType = scanner.next();
+        if(!sCmdType.equals(MKT_COMMAND)  && !sCmdType.equals(LMT_COMMAND)) {
+            System.out.println("ERROR command Type. Please try again");
             return;
+        }
+        int nPrice = 0;
+        if(!sCmdType.equals(MKT_COMMAND))
+        {
+            System.out.println("Enter the command price");
+            String commandPrice = scanner.next();
+            nPrice = checkInputValue(commandPrice);
+            if (nPrice == -1) {
+                System.out.println("ERROR. The command price must be a positive number");
+                return;
+            }
         }
 
         System.out.println("Enter the command quantity");
@@ -108,20 +124,20 @@ public class Main {
             return;
         }
 
-        System.out.println("Enter the command type." + '\n' +
+        System.out.println("Enter the command direction." + '\n' +
                             "1 - for a buy command" + '\n' +
                             "2 - for a sell command");
-        String commandType = scanner.next();
-        if(!commandType.equals(BUY_COMMAND)  && !commandType.equals(SELL_COMMAND)) {
-            System.out.println("ERROR command type. Please try again");
+        String sCmdDirection = scanner.next();
+        if(!sCmdDirection.equals(BUY_COMMAND)  && !sCmdDirection.equals(SELL_COMMAND)) {
+            System.out.println("ERROR command direction. Please try again");
             return;
         }
 
         try {
-            engine.addCommand(stockSymbol, commandType, nPrice, nQuantity);
+            engine.addCommand(stockSymbol, sCmdType ,sCmdDirection, nPrice, nQuantity);
             System.out.println("New command added successfully!");
         }
-        catch (NoSuchStockException | StockNegPriceException | StockNegQuantityException | NoSuchCmdTypeException e) {
+        catch (NoSuchStockException | StockNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
             System.out.println(e.getMessage());
         }
     }

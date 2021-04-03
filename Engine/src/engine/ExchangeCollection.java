@@ -1,8 +1,8 @@
 package engine;
 
+import objects.CommandDTO;
 import objects.ExchangeCollectionDTO;
-import objects.ExchangeDTO;
-import objects.StockDTO;
+import objects.TransactionDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,20 +13,13 @@ public class ExchangeCollection {
     private PriorityQueue<Command> pqBuyCommand;
     private PriorityQueue<Command> pqSellCommand;
     private List<Transaction> lstTransaction;
+    private int nLastPrice;
 
-
-    public ExchangeCollection() {
-        pqBuyCommand = new PriorityQueue<>(new SortCommands());
-        pqSellCommand = new PriorityQueue<>(new SortCommands());
-        lstTransaction = new ArrayList<>();
-    }
-
-    public ExchangeCollection(PriorityQueue<Command> pqBuyCommand,
-                              PriorityQueue<Command> pqSellCommand,
-                              List<Transaction> lstTransaction) {
-        this.pqBuyCommand = pqBuyCommand;
-        this.pqSellCommand = pqSellCommand;
-        this.lstTransaction = lstTransaction;
+    public ExchangeCollection(int nLastPrice) {
+       this.pqBuyCommand = new PriorityQueue<>(new SortCommands());
+       this.pqSellCommand = new PriorityQueue<>(new SortCommands());
+       this.lstTransaction = new ArrayList<>();
+       this.nLastPrice = nLastPrice;
     }
 
     public PriorityQueue<Command> getPqBuyCommand() {
@@ -53,39 +46,32 @@ public class ExchangeCollection {
         this.lstTransaction = lstTransaction;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ExchangeCollection)) return false;
-        ExchangeCollection that = (ExchangeCollection) o;
-        return Objects.equals(getPqBuyCommand(), that.getPqBuyCommand()) && Objects.equals(getPqSellCommand(), that.getPqSellCommand()) && Objects.equals(getTransactions(), that.getTransactions());
-    }
+    public void setLastPrice(int nLastPrice) { this.nLastPrice = nLastPrice;  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPqBuyCommand(), getPqSellCommand(), getTransactions());
-    }
+    public int getLastPrice() { return nLastPrice;  }
+
 
     //TODO: CHECK WHAT ORDER TO INSERT
     public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
         Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set
         lstTransaction.add(trNewTransaction);
+        this.nLastPrice = nPrice;
     }
 
-    public int LsatTransactionPrice()
+    public int LastTransactionPrice()
     {
-        return lstTransaction.get(lstTransaction.size()-1).getPrice();
+        return nLastPrice;
     }
 
     public void addNewCommand(Command cmdNewCommand){
 
         //Check command type
-        if (cmdNewCommand.getType() == Command.CmdType.BUY)
+        if (cmdNewCommand.getCmdDirection() == Command.CmdDirection.BUY)
         {
             addBuyCommand(cmdNewCommand);
         }
-        else if (cmdNewCommand.getType() == Command.CmdType.SELL)
+        else if (cmdNewCommand.getCmdDirection() == Command.CmdDirection.SELL)
         {
             addSellCommand(cmdNewCommand);
         }
@@ -97,14 +83,16 @@ public class ExchangeCollection {
         String sDate;
         while (cmdNewCommand.getQuantity() > 0) {
             //if the cheapest sell Command is more expensive than my max price, then there is no deal!
-            if (this.pqSellCommand.isEmpty() || this.pqSellCommand.peek().getPrice() > cmdNewCommand.getPrice()) {
-                try {
-                    this.pqBuyCommand.add(cmdNewCommand);
-                }
-                catch(ClassCastException | NullPointerException | IllegalStateException | IllegalArgumentException e)
+            if (this.pqSellCommand.isEmpty() || (this.pqSellCommand.peek().getPrice() > cmdNewCommand.getPrice() && cmdNewCommand.getPrice() != 0)) {
+
+                //MKT Command
+                if (cmdNewCommand.getPrice() == 0)
                 {
-                    e.getMessage();
+                    cmdNewCommand.setPrice(LastTransactionPrice());
                 }
+
+                this.pqBuyCommand.add(cmdNewCommand);
+
                 break;
             }
             //there is a compatibility of prices! lets BUY!
@@ -132,7 +120,6 @@ public class ExchangeCollection {
                 }
                 // there is more Stock to BUY----> nQuantity < 0
                 else {
-                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
                     addNewTransaction(this.pqSellCommand.peek().getPrice(), this.pqSellCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
 
@@ -153,6 +140,13 @@ public class ExchangeCollection {
         while (cmdNewCommand.getQuantity() > 0) {
             //All the others are cheaper, then there is no deal!
             if (this.pqBuyCommand.isEmpty() || this.pqBuyCommand.peek().getPrice() < cmdNewCommand.getPrice()) {
+
+                //MKT Command
+                if (cmdNewCommand.getPrice() == 0)
+                {
+                    cmdNewCommand.setPrice(this.LastTransactionPrice());
+                }
+
                 this.pqSellCommand.add(cmdNewCommand);
                 break;
             }
@@ -172,7 +166,6 @@ public class ExchangeCollection {
                 }
                 //The quantity in the BUY collection is larger
                 else if (nQuantity > 0) {
-                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
                     addNewTransaction(this.pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
                     cmdNewCommand.setQuantity(0);
@@ -181,13 +174,12 @@ public class ExchangeCollection {
                 }
                 //The quantity in the BUY collection is smaller ----> nQuantity < 0
                 else {
-                    //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
                     addNewTransaction(this.pqBuyCommand.peek().getPrice(), this.pqBuyCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
                     //Decrease Command quantity by peek quantity
                     cmdNewCommand.setQuantity(nQuantity * (-1));
 
-                    // delete Sell command
+                    // delete Buy command
                     this.pqBuyCommand.remove(this.pqBuyCommand.peek());
                 }
             }
@@ -196,9 +188,9 @@ public class ExchangeCollection {
 
     public ExchangeCollectionDTO convertToDTO()
     {
-        List<ExchangeDTO> lstBuyCommand = new ArrayList<>();
-        List<ExchangeDTO> lstSellCommand = new ArrayList<>();
-        List<ExchangeDTO> lstTransaction = new ArrayList<>();
+        List<CommandDTO> lstBuyCommand = new ArrayList<>();
+        List<CommandDTO> lstSellCommand = new ArrayList<>();
+        List<TransactionDTO> lstTransaction = new ArrayList<>();
 
         PriorityQueue<Command> temp = new PriorityQueue<>(this.pqBuyCommand);
         for (int i = 0; i < this.pqBuyCommand.size(); i++)
@@ -222,11 +214,25 @@ public class ExchangeCollection {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExchangeCollection)) return false;
+        ExchangeCollection that = (ExchangeCollection) o;
+        return nLastPrice == that.nLastPrice && Objects.equals(getPqBuyCommand(), that.getPqBuyCommand()) && Objects.equals(getPqSellCommand(), that.getPqSellCommand()) && Objects.equals(lstTransaction, that.lstTransaction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPqBuyCommand(), getPqSellCommand(), lstTransaction, nLastPrice);
+    }
+
+    @Override
     public String toString() {
         return "ExchangeCollection{" +
                 "pqBuyCommand=" + pqBuyCommand +
                 ", pqSellCommand=" + pqSellCommand +
                 ", lstTransaction=" + lstTransaction +
+                ", nLastPrice=" + nLastPrice +
                 '}';
     }
 }

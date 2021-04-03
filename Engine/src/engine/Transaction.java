@@ -1,7 +1,6 @@
 package engine;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-import objects.ExchangeDTO;
+import objects.TransactionDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -79,8 +78,8 @@ public class Transaction {
                 '}';
     }
 
-    public ExchangeDTO convertToDTO()
+    public TransactionDTO convertToDTO()
     {
-        return new ExchangeDTO(this.nPrice, this.nQuantity, this.sDate, this.nTurnover);
+        return new TransactionDTO(this.nPrice, this.nQuantity, this.sDate, this.nTurnover);
     }
 }

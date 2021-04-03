@@ -2,14 +2,14 @@ package objects;
 
 
 // Uniform class for Transaction DTO and Command DTO
-public class ExchangeDTO {
+public class TransactionDTO {
 
     private int nPrice;
     private int nQuantity;
     private String sDate;
     private int nTurnover;
 
-    public ExchangeDTO(int nPrice, int nQuantity, String sDate, int nTurnover) {
+    public TransactionDTO(int nPrice, int nQuantity, String sDate, int nTurnover) {
         this.nPrice = nPrice;
         this.nQuantity = nQuantity;
         this.sDate = sDate;
@@ -34,9 +34,9 @@ public class ExchangeDTO {
 
     @Override
     public String toString() {
-        return "Price=" + nPrice +
-                ", Quantity=" + nQuantity +
-                ", Date='" + sDate + '\'' +
-                ", Turnover=" + nTurnover;
+        return "Price = " + nPrice +
+                ", Quantity = " + nQuantity +
+                ", Date = '" + sDate + '\'' +
+                ", Turnover = " + nTurnover;
     }
 }

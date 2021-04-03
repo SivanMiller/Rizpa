@@ -102,7 +102,7 @@ public class Engine {
         return stock.convertToDTO();
     }
 
-    public void addCommand(String sSymbol, String sCmdType, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, StockNegPriceException, NoSuchCmdTypeException {
+    public void addCommand(String sSymbol, String sType ,String sCmdDirection, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, StockNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
         Stock stock = this.mpStocks.get(sSymbol);
 
         //Check if such stock exists in stock map
@@ -112,23 +112,24 @@ public class Engine {
         }
         else {
             try {
-                Command.CmdType type = converStringtToCmdType(sCmdType);
-                stock.addNewCommand(type, nPrice, nQuantity);
-            } catch (StockNegQuantityException | StockNegPriceException | NoSuchCmdTypeException e) {
+                Command.CmdDirection Direction = converStringToCmdDirection(sCmdDirection);
+                int nType = Integer.parseInt(sType);
+                stock.addNewCommand(nType, Direction, nPrice, nQuantity);
+            } catch (StockNegQuantityException | StockNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
                 throw e;
             }
         }
     }
 
-    public Command.CmdType converStringtToCmdType(String sCommandType) throws NoSuchCmdTypeException {
-        int nType = Integer.parseInt(sCommandType) - 1;
+    public Command.CmdDirection converStringToCmdDirection(String sCmdDirection) throws NoSuchCmdDirectionException {
+        int nDirection = Integer.parseInt(sCmdDirection) - 1;
 
-        if (nType == Command.CmdType.BUY.ordinal()) {
-            return Command.CmdType.BUY;
-        } else if (nType == Command.CmdType.SELL.ordinal()) {
-            return Command.CmdType.SELL;
+        if (nDirection == Command.CmdDirection.BUY.ordinal()) {
+            return Command.CmdDirection.BUY;
+        } else if (nDirection == Command.CmdDirection.SELL.ordinal()) {
+            return Command.CmdDirection.SELL;
         } else {
-            throw new NoSuchCmdTypeException();
+            throw new NoSuchCmdDirectionException();
         }
     }
 

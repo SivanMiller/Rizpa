@@ -1,7 +1,6 @@
 package engine;
 
-import com.sun.org.apache.bcel.internal.generic.RET;
-import objects.ExchangeDTO;
+import objects.CommandDTO;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -9,7 +8,7 @@ import java.util.Objects;
 public abstract class Command {
 
     static int order = 1;
-    public enum CmdType {
+    public enum CmdDirection {
         BUY,
         SELL
     };
@@ -17,7 +16,7 @@ public abstract class Command {
     protected int nPrice;
     protected int nQuantity;
     protected String sDate;
-    protected CmdType Type;
+    protected CmdDirection cmdDirection;
     protected int Order;
 
     public int getPrice() {
@@ -42,25 +41,25 @@ public abstract class Command {
         this.sDate = sDate;
     }
 
-    public CmdType getType() { return this.Type;  }
+    public CmdDirection getCmdDirection() { return this.cmdDirection;  }
 
-    public void setType(CmdType type) {
-        this.Type = type;
+    public void setCmdDirection(CmdDirection cmdDirection) {
+        this.cmdDirection = cmdDirection;
     }
 
-    public abstract ExchangeDTO convertToDTO();
+    public abstract CommandDTO convertToDTO();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Command)) return false;
         Command command = (Command) o;
-        return nPrice == command.nPrice && nQuantity == command.nQuantity && Type == command.Type && sDate.equals(command.sDate);
+        return nPrice == command.nPrice && nQuantity == command.nQuantity && cmdDirection == command.cmdDirection && sDate.equals(command.sDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nPrice, nQuantity, sDate, Type);
+        return Objects.hash(nPrice, nQuantity, sDate, cmdDirection);
     }
 
     @Override
@@ -74,7 +73,7 @@ class SortCommands implements Comparator<Command>
     @Override
     public int compare(Command cmd1, Command cmd2) {
         // if type is BUY the order should be by price descending
-        if (cmd1.getType() == Command.CmdType.BUY) {
+        if (cmd1.getCmdDirection() == Command.CmdDirection.BUY) {
             // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {
                 // cmd2 should be first
@@ -93,7 +92,7 @@ class SortCommands implements Comparator<Command>
         }
 
         // if type os SELL the order should be by price ascending
-        else if (cmd1.getType() == Command.CmdType.SELL) {
+        else if (cmd1.getCmdDirection() == Command.CmdDirection.SELL) {
             // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {
                 // cmd2 should be first
