@@ -20,7 +20,7 @@ public class Engine {
 
     Map<String,Stock> mpStocks;
 
-    // TODO: SAVE LAST XML FILE IN TEMP, CHECK UPPER CASE
+    // TODO:  CHECK UPPER CASE
     public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException {
         try {
             InputStream inputStream = new FileInputStream(new File(sFileName));
@@ -40,9 +40,10 @@ public class Engine {
         return (RizpaStockExchangeDescriptor) u.unmarshal(in);
     }
 
-    //TODO: CHECK WHAT HAPPENS IF FILE NOT GOOD
+
     //Converting JAXB Data to actual data
     private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException {
+        Map<String,Stock> tempMapStocks=this.mpStocks;
         mpStocks = new HashMap<>();
         List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
@@ -62,17 +63,20 @@ public class Engine {
                         setCompanies.add(newStock.getCompanyName());
                     }
                     else {
+                        mpStocks=tempMapStocks;
                         throw new XMLException("There are two stocks with the same Company Name in the XML you are trying to load." +
                                 "Please make sure all stocks are from different companies");
                     }
                 }
                 else {
+                    mpStocks=tempMapStocks;
                     throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load." +
                             "Please make sure all stocks have different Symbols");
                 }
             }
             catch (StockNegPriceException e)
             {
+                mpStocks=tempMapStocks;
                 throw e;
             }
         }

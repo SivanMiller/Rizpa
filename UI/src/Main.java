@@ -73,14 +73,14 @@ public class Main {
         String stockSymbol=scanner.next();
         stockSymbol = stockSymbol.toUpperCase(Locale.ROOT);
         try {
-            System.out.println(engine.getStock(stockSymbol).toString());
+            System.out.println(engine.getStock(stockSymbol).toString()+engine.getStock(stockSymbol).PrintTransaction());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
 
-    //TODO: ADD MESSAGE OF SUCCESSFUL COMMAND
+
     private static void NewCommand() {
 
         System.out.println("Enter the stock SYMBOL");
@@ -119,6 +119,7 @@ public class Main {
 
         try {
             engine.addCommand(stockSymbol, commandType, nPrice, nQuantity);
+            System.out.println("New command added successfully!");
         }
         catch (NoSuchStockException | StockNegPriceException | StockNegQuantityException | NoSuchCmdTypeException e) {
             System.out.println(e.getMessage());

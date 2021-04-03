@@ -44,52 +44,36 @@ public class StockDTO {
         return excExchange;
     }
 
+
     @Override
     public String toString() {
         return "Stock:" + '\n' +
                 "CompanyName = '" + sCompanyName + '\'' + '\n' +
                 "Symbol='" + sSymbol + '\'' + '\n' +
                 "Price=" + nPrice + '\n' +
-                excExchange.toString() +
                 "TransactionNum=" + nTransactionNum + '\n' +
                 "TransactionSum=" + nTransactionSum + '\n';
     }
 
     public String PrintAllCommands()
     {
-        String str = "Stock:" + '\n' +
-                "CompanyName = '" + sCompanyName + '\'' + '\n' +
-                "Symbol='" + sSymbol + '\'' + '\n';
 
-        str += "Buy Commands: " + '\n';
-        //Print Buy Commands if there are any
-        if (!excExchange.getBuyCommand().isEmpty()) {
-            for (ExchangeDTO buy : excExchange.getBuyCommand()) {
-                str += '\t' + buy.toString() + '\n';
-            }
-        }
-        else{
-            str += '\t' + "There are no unfinished BUY Commands" + '\n';
-        }
-        str += "Sell Commands: " + '\n';
-        //Print Sell Commands if there are any
-        if (!excExchange.getSellCommand().isEmpty()) {
-            for (ExchangeDTO sell : excExchange.getSellCommand()) {
-                str += '\t' + sell.toString() + '\n';
-            }
-        }
-        else{
-            str += '\t' + "There are no unfinished SELL Commands" + '\n';
-        }
+        return this.toString()+excExchange.toString();
+    }
 
+    public String PrintTransaction()
+    {
+        String str="";
         //Print Transactions if there are any
         if (!excExchange.getTransaction().isEmpty()) {
             str += "Transactions: " + '\n';
             for (ExchangeDTO tran : excExchange.getTransaction()) {
-                str +=  '\t' + tran.toString() + '\n';
+                str += '\t' + tran.toString() + '\n';
             }
         }
-
+        else{
+            str +='\t' + "There are no transactions " + '\n';
+        }
         return str;
     }
 }

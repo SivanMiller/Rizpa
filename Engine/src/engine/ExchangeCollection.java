@@ -66,11 +66,16 @@ public class ExchangeCollection {
         return Objects.hash(getPqBuyCommand(), getPqSellCommand(), getTransactions());
     }
 
-    //TODO: CHANGE PRICE ACCORDING TO RECENT TRANSACTION PRICE, CHECK WHAT ORDER TO INSERT
+    //TODO: CHECK WHAT ORDER TO INSERT
     public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
         Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set
         lstTransaction.add(trNewTransaction);
+    }
+
+    public int LsatTransactionPrice()
+    {
+        return lstTransaction.get(lstTransaction.size()-1).getPrice();
     }
 
     public void addNewCommand(Command cmdNewCommand){

@@ -24,6 +24,7 @@ public class Stock {
         if (nPrice < 0)
             throw new StockNegPriceException();
         this.sCompanyName = sCompanyName;
+
         this.sSymbol = sSymbol.toUpperCase();
         this.nPrice = nPrice;
         this.ecExchange = new ExchangeCollection();
@@ -93,6 +94,9 @@ public class Stock {
             throw e;
         }
         this.ecExchange.addNewCommand(newCommand);
+        if(!this.ecExchange.getTransactions().isEmpty())
+        this.nPrice=this.ecExchange.LsatTransactionPrice();
+
     }
 
     public StockDTO convertToDTO()
