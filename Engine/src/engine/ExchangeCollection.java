@@ -14,6 +14,7 @@ public class ExchangeCollection {
     private PriorityQueue<Command> pqSellCommand;
     private List<Transaction> lstTransaction;
     private int nLastPrice;
+    private int nTurnover;
 
     public ExchangeCollection(int nLastPrice) {
        this.pqBuyCommand = new PriorityQueue<>(new SortCommands());
@@ -50,13 +51,17 @@ public class ExchangeCollection {
 
     public int getLastPrice() { return nLastPrice;  }
 
+    public int getTurnover() {
+        return nTurnover;
+    }
 
-    //TODO: CHECK WHAT ORDER TO INSERT
     public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
         Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
         // Adding to Transaction set
         lstTransaction.add(trNewTransaction);
         this.nLastPrice = nPrice;
+        // Sum of all transactions turnover
+        this.nTurnover += nPrice * nQuantity;
     }
 
     public int LastTransactionPrice()
@@ -204,9 +209,9 @@ public class ExchangeCollection {
             lstSellCommand.add(temp.poll().convertToDTO());
         }
 
-        for (Transaction tran : this.lstTransaction)
+        for (int i = this.lstTransaction.size() - 1; i >= 0 ; i--)
         {
-            lstTransaction.add(tran.convertToDTO());
+            lstTransaction.add(this.lstTransaction.get(i).convertToDTO());
         }
 
         return new ExchangeCollectionDTO(lstBuyCommand, lstSellCommand, lstTransaction);

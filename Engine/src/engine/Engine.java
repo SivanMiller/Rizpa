@@ -14,21 +14,20 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
-public class Engine {
+public class Engine implements RizpaMethods {
 
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "generated";
 
     Map<String,Stock> mpStocks;
 
-    // TODO:  CHECK UPPER CASE
-    public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException {
+    public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
             InputStream inputStream = new FileInputStream(new File(sFileName));
             //Getting XML Data
             RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, sFileName);
             //Filling stock collection
             convertDescriptor(stockDescriptor);
-        } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException e) {
+        } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
             throw e;
         }
     }
@@ -42,7 +41,7 @@ public class Engine {
 
 
     //Converting JAXB Data to actual data
-    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException {
+    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
         Map<String,Stock> tempMapStocks=this.mpStocks;
         mpStocks = new HashMap<>();
         List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
@@ -74,7 +73,7 @@ public class Engine {
                             "Please make sure all stocks have different Symbols");
                 }
             }
-            catch (StockNegPriceException e)
+            catch (StockNegPriceException | StockSymbolLowercaseException e)
             {
                 mpStocks=tempMapStocks;
                 throw e;

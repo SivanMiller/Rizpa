@@ -6,17 +6,17 @@ public class StockDTO {
     private String sSymbol;
     private int nPrice;
     private ExchangeCollectionDTO excExchange;
-    private int nTransactionNum;
-    private int nTransactionSum;
+    private int nTransactionNum; // Transactions Number
+    private int nTurnover; // Transactions sum of turnovers
 
     public StockDTO(String sCompanyName, String sSymbol, int nPrice,
-                    ExchangeCollectionDTO excExchange, int nTransactionNum, int nTransactionSum) {
+                    ExchangeCollectionDTO excExchange, int nTransactionNum, int nTurnover) {
         this.sCompanyName = sCompanyName;
         this.sSymbol = sSymbol;
         this.nPrice = nPrice;
         this.excExchange = excExchange;
         this.nTransactionNum = nTransactionNum;
-        this.nTransactionSum = nTransactionSum;
+        this.nTurnover = nTurnover;
     }
 
     public String getCompanyName() {
@@ -36,7 +36,7 @@ public class StockDTO {
     }
 
     public int getTransactionSum() {
-        return nTransactionSum;
+        return nTurnover;
     }
 
 
@@ -52,7 +52,7 @@ public class StockDTO {
                 "Symbol='" + sSymbol + '\'' + '\n' +
                 "Price=" + nPrice + '\n' +
                 "TransactionNum=" + nTransactionNum + '\n' +
-                "TransactionSum=" + nTransactionSum + '\n';
+                "TransactionSum=" + nTurnover + '\n';
     }
 
     public String PrintAllCommands()
