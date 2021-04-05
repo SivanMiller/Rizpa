@@ -63,11 +63,10 @@ public class StockDTO {
 
     public String PrintTransaction()
     {
-        String str="";
+        String str = "Transactions: " + '\n';
         //Print Transactions if there are any
         if (!excExchange.getTransaction().isEmpty()) {
-            str += "Transactions: " + '\n';
-            for (ExchangeDTO tran : excExchange.getTransaction()) {
+            for (TransactionDTO tran : excExchange.getTransaction()) {
                 str += '\t' + tran.toString() + '\n';
             }
         }

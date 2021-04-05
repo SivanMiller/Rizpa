@@ -2,23 +2,21 @@ package engine;
 
 import exceptions.StockNegPriceException;
 import exceptions.StockNegQuantityException;
-import objects.LMTCommandDTO;
+import objects.MKTCommandDTO;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LMTCommand extends Command {
+public class MKTCommand extends Command {
 
-    public LMTCommand() {
+    public MKTCommand() {
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public LMTCommand(int nPrice, int nQuantity, CmdDirection Direction) throws StockNegPriceException, StockNegQuantityException {
-        if (nPrice < 0)
-            throw new StockNegPriceException();
+    public MKTCommand(int nQuantity, CmdDirection Direction) throws StockNegPriceException, StockNegQuantityException {
         if (nQuantity < 0)
             throw new StockNegQuantityException();
-        this.nPrice = nPrice;
+        this.nPrice = 0;
         this.nQuantity = nQuantity;
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.cmdDirection = Direction;
@@ -28,7 +26,7 @@ public class LMTCommand extends Command {
 
     @Override
     public String toString() {
-        return "LMT Command" +
+        return "MKT Command" +
                 "nPrice =" + nPrice +
                 ", nQuantity =" + nQuantity +
                 ", sDate ='" + sDate + '\'' +
@@ -36,9 +34,9 @@ public class LMTCommand extends Command {
                 ", Order =" + Order;
     }
     @Override
-    public LMTCommandDTO convertToDTO()
+    public MKTCommandDTO convertToDTO()
     {
-        return new LMTCommandDTO(this.nPrice, this.nQuantity, this.sDate, this.nPrice * this.nQuantity);
+        return new MKTCommandDTO(this.nPrice, this.nQuantity, this.sDate, this.nPrice * this.nQuantity);
     }
 }
 

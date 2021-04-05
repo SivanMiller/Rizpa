@@ -1,24 +1,23 @@
 package engine;
 
+import exceptions.NoSuchCmdTypeException;
 import exceptions.StockNegPriceException;
 import exceptions.StockNegQuantityException;
-import objects.ExchangeDTO;
 import objects.StockDTO;
 
 import java.util.*;
 
 public class Stock {
 
+    public enum CmdType
+    {
+        LMT,
+        MKT
+    }
     private String sCompanyName;
     private String sSymbol;
     private int nPrice;
     private ExchangeCollection ecExchange;
-
-    public Stock(){
-        sCompanyName = "";
-        sSymbol = "";
-        ecExchange = new ExchangeCollection();
-    }
 
     public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException {
         if (nPrice < 0)
@@ -27,7 +26,7 @@ public class Stock {
 
         this.sSymbol = sSymbol.toUpperCase();
         this.nPrice = nPrice;
-        this.ecExchange = new ExchangeCollection();
+        this.ecExchange = new ExchangeCollection(nPrice);
     }
 
     public String getCompanyName() {
@@ -85,17 +84,30 @@ public class Stock {
                '}';
     }
 
-    public void addNewCommand(Command.CmdType nType, int nPrice, int nQuantity) throws StockNegQuantityException, StockNegPriceException {
+    public void addNewCommand(int nType, Command.CmdDirection Direction, int nPrice, int nQuantity) throws StockNegQuantityException, StockNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
-            newCommand = new LMTCommand(nPrice, nQuantity, nType);
+            nType--;
+            if (nType == CmdType.LMT.ordinal())
+            {
+                newCommand = new LMTCommand(nPrice, nQuantity, Direction);
+            }
+            else if (nType == CmdType.MKT.ordinal())
+            {
+                newCommand = new MKTCommand(nQuantity, Direction);
+            }
+            else
+            {
+                throw new NoSuchCmdTypeException();
+            }
+
+            this.ecExchange.addNewCommand(newCommand);
+            if(!this.ecExchange.getTransactions().isEmpty())
+                this.nPrice = this.ecExchange.LastTransactionPrice();
         }
         catch (StockNegPriceException | StockNegQuantityException e) {
             throw e;
         }
-        this.ecExchange.addNewCommand(newCommand);
-        if(!this.ecExchange.getTransactions().isEmpty())
-        this.nPrice=this.ecExchange.LsatTransactionPrice();
 
     }
 

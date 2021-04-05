@@ -1,48 +1,42 @@
 package objects;
 
-import com.sun.deploy.security.SelectableSecurityManager;
-import engine.Command;
-import engine.Transaction;
-
 import java.util.List;
-import java.util.PriorityQueue;
 
 
 public class ExchangeCollectionDTO {
 
-    private List<ExchangeDTO> lstBuyCommand;
-    private List<ExchangeDTO> lstSellCommand;
-    private List<ExchangeDTO> lstTransaction;
+    private List<CommandDTO> lstBuyCommand;
+    private List<CommandDTO> lstSellCommand;
+    private List<TransactionDTO> lstTransaction;
 
-    public ExchangeCollectionDTO(List<ExchangeDTO> lstBuyCommand,
-                                 List<ExchangeDTO> lstSellCommand,
-                                 List<ExchangeDTO> lstTransaction) {
+    public ExchangeCollectionDTO(List<CommandDTO> lstBuyCommand,
+                                 List<CommandDTO> lstSellCommand,
+                                 List<TransactionDTO> lstTransaction) {
         this.lstBuyCommand = lstBuyCommand;
         this.lstSellCommand = lstSellCommand;
         this.lstTransaction = lstTransaction;
     }
 
-    public List<ExchangeDTO> getBuyCommand() {
+    public List<CommandDTO> getBuyCommand() {
         return lstBuyCommand;
     }
 
-    public List<ExchangeDTO> getSellCommand() {
+    public List<CommandDTO> getSellCommand() {
         return lstSellCommand;
     }
 
-    public List<ExchangeDTO> getTransaction() {
+    public List<TransactionDTO> getTransaction() {
         return lstTransaction;
     }
-
 
     @Override
     public String toString() {
         String str = "";
 
+        str += "Buy Commands: " + '\n';
         //Print Buy Commands if there are any
         if (!lstBuyCommand.isEmpty()) {
-            str += "Buy Commands: " + '\n';
-            for (ExchangeDTO buy : lstBuyCommand) {
+            for (CommandDTO buy : lstBuyCommand) {
                 str += '\t' + buy.toString() + '\n';
             }
         }
@@ -50,10 +44,10 @@ public class ExchangeCollectionDTO {
             str += '\t' + "There are no unfinished BUY Commands" + '\n';
         }
 
+        str += "Sell Commands: " + '\n';
         //Print Sell Commands if there are any
         if (!lstSellCommand.isEmpty()) {
-            str += "Sell Commands: " + '\n';
-            for (ExchangeDTO sell : lstSellCommand) {
+            for (CommandDTO sell : lstSellCommand) {
                 str += '\t' + sell.toString() + '\n';
             }
         }
@@ -62,17 +56,15 @@ public class ExchangeCollectionDTO {
         }
 
 
+        str += "Transactions: " + '\n';
         //Print Transactions if there are any
         if (!lstTransaction.isEmpty()) {
-            str += "Transactions: " + '\n';
-            for (ExchangeDTO tran : lstTransaction) {
+            for (TransactionDTO tran : lstTransaction) {
                 str += '\t' + tran.toString() + '\n';
             }
         }
         else{
-            str += '\t' +"There are no transactions" + '\n';
-
-
+            str += '\t' + "There are no transactions" + '\n';
         }
         return str;
     }
