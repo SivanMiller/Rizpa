@@ -7,8 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Main {
-
-    private static Engine engine = new Engine();
+    private static RizpaMethods engine = new Engine();
     private static Scanner scanner = new Scanner(System.in);
     private static boolean isLoadSucc = false;
 
@@ -181,9 +180,9 @@ public class Main {
     public static void Load() {
         System.out.println("Please enter an XML file ");
         String fileName = scanner.next();
-        while (!fileName.endsWith(".xml")) {
-            System.out.println("The file doesn't end with XML!please enter again an XML file ");
-            fileName = scanner.next();
+        if(!fileName.endsWith(".xml")) {
+            System.out.println("The file doesn't end with XML!");
+            return;
         }
 
         try {
@@ -191,20 +190,24 @@ public class Main {
             isLoadSucc = true;
             System.out.println("File loaded successfully! Let's get started!");
 
-        } catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException e) {
+        } catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException | StockSymbolLowercaseException e) {
             System.out.println(e.getMessage());
+            System.out.println("File not loaded");
+
             if (isLoadSucc == true)
             {
-                System.out.println("The system will continue with the last version." + '\n');
+                System.out.println("The system will continue with the last version.");
             }
         }
     }
 
     public static void main(String[] args) {
-
-        InitialMenu();
-        String input = scanner.next();
+        String input;
         while (isLoadSucc == false) {
+
+            InitialMenu();
+            input = scanner.next();
+
             switch (input) {
                 case LOAD: {
                     Load();
@@ -216,15 +219,13 @@ public class Main {
                 }
                 default: {
                     System.out.println("Wrong action.");
-                    InitialMenu();
-                    input = scanner.next();
                     break;
                 }
             }
         }
 
         menu();
-        input=scanner.next();
+        input = scanner.next();
         while (!input.equals(BYE)) {
             Exe(input);
             menu();

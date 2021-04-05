@@ -3,6 +3,7 @@ package engine;
 import exceptions.NoSuchCmdTypeException;
 import exceptions.StockNegPriceException;
 import exceptions.StockNegQuantityException;
+import exceptions.StockSymbolLowercaseException;
 import objects.StockDTO;
 
 import java.util.*;
@@ -19,12 +20,19 @@ public class Stock {
     private int nPrice;
     private ExchangeCollection ecExchange;
 
-    public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException {
+    public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException, StockSymbolLowercaseException {
         if (nPrice < 0)
             throw new StockNegPriceException();
         this.sCompanyName = sCompanyName;
 
-        this.sSymbol = sSymbol.toUpperCase();
+        if (Utilities.checkUpperCase(sSymbol))
+        {
+            this.sSymbol = sSymbol.toUpperCase();
+        }
+        else
+        {
+            throw new StockSymbolLowercaseException();
+        }
         this.nPrice = nPrice;
         this.ecExchange = new ExchangeCollection(nPrice);
     }
@@ -102,8 +110,8 @@ public class Stock {
             }
 
             this.ecExchange.addNewCommand(newCommand);
-            if(!this.ecExchange.getTransactions().isEmpty())
-                this.nPrice = this.ecExchange.LastTransactionPrice();
+            //Update stock price
+            this.nPrice = this.ecExchange.LastTransactionPrice();
         }
         catch (StockNegPriceException | StockNegQuantityException e) {
             throw e;
@@ -115,6 +123,6 @@ public class Stock {
     {
         return new StockDTO(this.getCompanyName(), this.getSymbol(), this.getPrice(),
                              this.ecExchange.convertToDTO(),
-                             this.ecExchange.convertToDTO().getTransaction().size(), 0 ); // TODO: WHAT IS MAHZOR
+                             this.ecExchange.convertToDTO().getTransaction().size(), ecExchange.getTurnover() );
     }
 }
