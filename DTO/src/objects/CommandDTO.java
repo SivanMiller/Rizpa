@@ -1,7 +1,5 @@
 package objects;
 
-
-// Uniform class for Transaction DTO and Command DTO
 public abstract class CommandDTO {
 
     protected int nPrice;

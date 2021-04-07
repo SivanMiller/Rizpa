@@ -111,7 +111,7 @@ public class Engine implements RizpaMethods {
         }
         else {
             try {
-                Command.CmdDirection Direction = converStringToCmdDirection(sCmdDirection);
+                Command.CmdDirection Direction = convertStringToCmdDirection(sCmdDirection);
                 int nType = Integer.parseInt(sType);
                 stock.addNewCommand(nType, Direction, nPrice, nQuantity);
             } catch (StockNegQuantityException | StockNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
@@ -120,8 +120,9 @@ public class Engine implements RizpaMethods {
         }
     }
 
-    public Command.CmdDirection converStringToCmdDirection(String sCmdDirection) throws NoSuchCmdDirectionException {
-        int nDirection = Integer.parseInt(sCmdDirection) - 1;
+    public Command.CmdDirection convertStringToCmdDirection(String sCmdDirection) throws NoSuchCmdDirectionException {
+        //Turn the cmd direction to int
+        int nDirection = Integer.parseInt(sCmdDirection) - 1; // the values of the enum start from 0
 
         if (nDirection == Command.CmdDirection.BUY.ordinal()) {
             return Command.CmdDirection.BUY;

@@ -31,9 +31,9 @@ public class ExchangeCollectionDTO {
         this.lstBuyCommand = lstBuyCommand;
         this.lstSellCommand = lstSellCommand;
         this.lstTransaction = lstTransaction;
-        this.nSumBuyCommand=nSumBuyCommand;
-        this.nSumSellCommand=nSumSellCommand;
-        this.nSumTransaction=nSumTransaction;
+        this.nSumBuyCommand = nSumBuyCommand;
+        this.nSumSellCommand = nSumSellCommand;
+        this.nSumTransaction = nSumTransaction;
     }
 
     public List<CommandDTO> getBuyCommand() {

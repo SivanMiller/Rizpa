@@ -95,7 +95,9 @@ public class Stock {
     public void addNewCommand(int nType, Command.CmdDirection Direction, int nPrice, int nQuantity) throws StockNegQuantityException, StockNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
+            // the values of the enum start from 0
             nType--;
+
             if (nType == CmdType.LMT.ordinal())
             {
                 newCommand = new LMTCommand(nPrice, nQuantity, Direction);

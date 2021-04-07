@@ -49,10 +49,10 @@ public class StockDTO {
     public String toString() {
         return "Stock:" + '\n' +
                 "CompanyName = '" + sCompanyName + '\'' + '\n' +
-                "Symbol='" + sSymbol + '\'' + '\n' +
-                "Price=" + nPrice + '\n' +
-                "TransactionNum=" + nTransactionNum + '\n' +
-                "TransactionSum=" + nTurnover + '\n';
+                "Symbol = '" + sSymbol + '\'' + '\n' +
+                "Price = " + nPrice + '\n' +
+                "Transactions Number = " + nTransactionNum + '\n' +
+                "Transactions Turnover Sum = " + nTurnover + '\n';
     }
 
     public String PrintAllCommands()
