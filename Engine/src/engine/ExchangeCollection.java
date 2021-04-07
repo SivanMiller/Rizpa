@@ -196,25 +196,31 @@ public class ExchangeCollection {
         List<CommandDTO> lstBuyCommand = new ArrayList<>();
         List<CommandDTO> lstSellCommand = new ArrayList<>();
         List<TransactionDTO> lstTransaction = new ArrayList<>();
+        int nTempSumBuyCommand=0;
+        int nTempSumSellCommand=0;
+        int nTempSumTransaction=0;
 
         PriorityQueue<Command> temp = new PriorityQueue<>(this.pqBuyCommand);
         for (int i = 0; i < this.pqBuyCommand.size(); i++)
         {
+            nTempSumBuyCommand+=temp.peek().getPrice()*temp.peek().getQuantity();
             lstBuyCommand.add(temp.poll().convertToDTO());
         }
 
         temp = new PriorityQueue<>(this.pqSellCommand);
         for (int i = 0; i < this.pqSellCommand.size(); i++)
         {
+            nTempSumSellCommand+=temp.peek().getPrice()*temp.peek().getQuantity();
             lstSellCommand.add(temp.poll().convertToDTO());
         }
 
         for (int i = this.lstTransaction.size() - 1; i >= 0 ; i--)
         {
+            nTempSumTransaction+=this.lstTransaction.get(i).getTurnover();
             lstTransaction.add(this.lstTransaction.get(i).convertToDTO());
         }
 
-        return new ExchangeCollectionDTO(lstBuyCommand, lstSellCommand, lstTransaction);
+        return new ExchangeCollectionDTO(lstBuyCommand, lstSellCommand, lstTransaction,nTempSumBuyCommand,nTempSumSellCommand,nTempSumTransaction);
 
     }
 
