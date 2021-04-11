@@ -1,7 +1,6 @@
 package objects;
 
 public class StockDTO {
-
     private String sCompanyName;
     private String sSymbol;
     private int nPrice;

@@ -13,7 +13,7 @@ public class MKTCommand extends Command {
         this.sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public MKTCommand(int nQuantity, CmdDirection Direction) throws StockNegPriceException, StockNegQuantityException {
+    public MKTCommand(int nQuantity, CmdDirection Direction) throws StockNegQuantityException {
         if (nQuantity < 0)
             throw new StockNegQuantityException();
         this.nPrice = 0;

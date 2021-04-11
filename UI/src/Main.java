@@ -136,7 +136,7 @@ public class Main {
             engine.addCommand(stockSymbol, sCmdType ,sCmdDirection, nPrice, nQuantity);
             System.out.println("New command added successfully!");
         }
-        catch (NoSuchStockException | StockNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
+        catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -180,8 +180,11 @@ public class Main {
     public static void Load() {
         System.out.println("Please enter an XML file ");
         String fileName = scanner.next();
+        fileName += scanner.nextLine();
         if(!fileName.endsWith(".xml")) {
             System.out.println("The file doesn't end with XML!");
+            if(isLoadSucc)
+                System.out.println("The system will continue with the last version.");
             return;
         }
 
@@ -218,7 +221,7 @@ public class Main {
                     return;
                 }
                 default: {
-                    System.out.println("Wrong action.");
+                    System.out.println("Wrong action. Please enter 1-2");
                     break;
                 }
             }

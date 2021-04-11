@@ -2,6 +2,7 @@ package objects;
 
 public abstract class CommandDTO {
 
+
     protected int nPrice;
     protected int nQuantity;
     protected String sDate;

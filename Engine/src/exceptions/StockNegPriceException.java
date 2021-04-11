@@ -2,14 +2,17 @@ package exceptions;
 
 public class StockNegPriceException extends Exception{
 
-    private final String EXCEPTION_MESSAGE = "Price is negative";
+    private String sSymbol;
+    //private String EXCEPTION_MESSAGE = "Stock " + this.sSymbol + " Price is negative";
 
-    public StockNegPriceException() {
+
+    public StockNegPriceException(String sSymbol) {
+        this.sSymbol = sSymbol;
     }
 
     @Override
     public String getMessage() {
-        return EXCEPTION_MESSAGE;
+        return "Error. Stock " + this.sSymbol + " Price is negative";
     }
 
 }

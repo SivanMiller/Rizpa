@@ -1,9 +1,6 @@
 package engine;
 
-import exceptions.NoSuchCmdTypeException;
-import exceptions.StockNegPriceException;
-import exceptions.StockNegQuantityException;
-import exceptions.StockSymbolLowercaseException;
+import exceptions.*;
 import objects.StockDTO;
 
 import java.util.*;
@@ -22,7 +19,7 @@ public class Stock {
 
     public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException, StockSymbolLowercaseException {
         if (nPrice < 0)
-            throw new StockNegPriceException();
+            throw new StockNegPriceException(sSymbol);
         this.sCompanyName = sCompanyName;
 
         if (Utilities.checkUpperCase(sSymbol))
@@ -92,7 +89,7 @@ public class Stock {
                '}';
     }
 
-    public void addNewCommand(int nType, Command.CmdDirection Direction, int nPrice, int nQuantity) throws StockNegQuantityException, StockNegPriceException, NoSuchCmdTypeException {
+    public void addNewCommand(int nType, Command.CmdDirection Direction, int nPrice, int nQuantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
             // the values of the enum start from 0
@@ -115,7 +112,7 @@ public class Stock {
             //Update stock price
             this.nPrice = this.ecExchange.LastTransactionPrice();
         }
-        catch (StockNegPriceException | StockNegQuantityException e) {
+        catch (CommandNegPriceException | StockNegQuantityException e) {
             throw e;
         }
 

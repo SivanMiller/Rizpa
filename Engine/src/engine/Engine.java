@@ -18,7 +18,7 @@ public class Engine implements RizpaMethods {
 
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "generated";
 
-    Map<String,Stock> mpStocks;
+    private Map<String,Stock> mpStocks;
 
     public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
@@ -101,7 +101,7 @@ public class Engine implements RizpaMethods {
         return stock.convertToDTO();
     }
 
-    public void addCommand(String sSymbol, String sType ,String sCmdDirection, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, StockNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
+    public void addCommand(String sSymbol, String sType ,String sCmdDirection, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
         Stock stock = this.mpStocks.get(sSymbol);
 
         //Check if such stock exists in stock map
@@ -114,7 +114,7 @@ public class Engine implements RizpaMethods {
                 Command.CmdDirection Direction = convertStringToCmdDirection(sCmdDirection);
                 int nType = Integer.parseInt(sType);
                 stock.addNewCommand(nType, Direction, nPrice, nQuantity);
-            } catch (StockNegQuantityException | StockNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
+            } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
                 throw e;
             }
         }
