@@ -1,6 +1,7 @@
 package engine;
 
 import exceptions.*;
+import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
 import javax.xml.bind.JAXBException;
@@ -9,10 +10,10 @@ import java.util.List;
 
 public interface RizpaMethods {
 
-    public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException;
+    public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException;
     public List<StockDTO> getAllStocks();
-    public StockDTO getStock(String sSymbol) throws NoSuchStockException;
-    public void addCommand(String sSymbol, String sType ,String sCmdDirection, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException;
-    public boolean doesStockExists(String sSymbol);
+    public StockDTO getStock(String Symbol) throws NoSuchStockException;
+    public NewCmdOutcomeDTO addCommand(String Symbol, String Type , String CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException;
+    public boolean doesStockExists(String Symbol);
 
 }

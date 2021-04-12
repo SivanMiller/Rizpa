@@ -3,25 +3,25 @@ package objects;
 public abstract class CommandDTO {
 
 
-    protected int nPrice;
-    protected int nQuantity;
-    protected String sDate;
-    protected int nTurnover;
+    protected int Price;
+    protected int Quantity;
+    protected String Date;
+    protected int Turnover;
 
     public String getDate() {
-        return sDate;
+        return Date;
     }
 
     public int getPrice() {
-        return nPrice;
+        return Price;
     }
 
     public int getQuantity() {
-        return nQuantity;
+        return Quantity;
     }
 
     public int getTurnover() {
-        return nTurnover;
+        return Turnover;
     }
 
     @Override

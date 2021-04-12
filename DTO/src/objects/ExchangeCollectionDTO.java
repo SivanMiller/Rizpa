@@ -5,47 +5,34 @@ import java.util.List;
 
 public class ExchangeCollectionDTO {
 
-    private List<CommandDTO> lstBuyCommand;
-    private List<CommandDTO> lstSellCommand;
-    private List<TransactionDTO> lstTransaction;
-    private int nSumBuyCommand;
-    private int nSumSellCommand;
-    private int nSumTransaction;
+    private List<CommandDTO> BuyCommand;
+    private List<CommandDTO> SellCommand;
+    private List<TransactionDTO> Transaction;
+    private int SumBuyCommand;
+    private int SumSellCommand;
+    private int SumTransaction;
 
-    public void setSumBuyCommand(int nSumBuyCommand) {
-        this.nSumBuyCommand = nSumBuyCommand;
-    }
-
-    public void setSumSellCommand(int nSumSellCommand) {
-        this.nSumSellCommand = nSumSellCommand;
-    }
-
-    public void setSumTransaction(int nSumTransaction) {
-        this.nSumTransaction = nSumTransaction;
-    }
-
-
-    public ExchangeCollectionDTO(List<CommandDTO> lstBuyCommand,List<CommandDTO> lstSellCommand,
-                                 List<TransactionDTO> lstTransaction,int nSumBuyCommand,int nSumSellCommand,
-                                       int nSumTransaction) {
-        this.lstBuyCommand = lstBuyCommand;
-        this.lstSellCommand = lstSellCommand;
-        this.lstTransaction = lstTransaction;
-        this.nSumBuyCommand = nSumBuyCommand;
-        this.nSumSellCommand = nSumSellCommand;
-        this.nSumTransaction = nSumTransaction;
+    public ExchangeCollectionDTO(List<CommandDTO> BuyCommand, List<CommandDTO> SellCommand,
+                                 List<TransactionDTO> Transaction, int SumBuyCommand, int SumSellCommand,
+                                 int SumTransaction) {
+        this.BuyCommand = BuyCommand;
+        this.SellCommand = SellCommand;
+        this.Transaction = Transaction;
+        this.SumBuyCommand = SumBuyCommand;
+        this.SumSellCommand = SumSellCommand;
+        this.SumTransaction = SumTransaction;
     }
 
     public List<CommandDTO> getBuyCommand() {
-        return lstBuyCommand;
+        return BuyCommand;
     }
 
     public List<CommandDTO> getSellCommand() {
-        return lstSellCommand;
+        return SellCommand;
     }
 
     public List<TransactionDTO> getTransaction() {
-        return lstTransaction;
+        return Transaction;
     }
 
     @Override
@@ -54,11 +41,11 @@ public class ExchangeCollectionDTO {
 
         str += "Buy Commands: " + '\n';
         //Print Buy Commands if there are any
-        if (!lstBuyCommand.isEmpty()) {
-            for (CommandDTO buy : lstBuyCommand) {
+        if (!BuyCommand.isEmpty()) {
+            for (CommandDTO buy : BuyCommand) {
                 str += '\t' + buy.toString() + '\n';
             }
-            str += "Sum turnover of Buy Command:" +'\t' + nSumBuyCommand + '\n';
+            str += "Buy Commands' turnover SUM:" +'\t' + SumBuyCommand + '\n';
 
         }
         else{
@@ -67,28 +54,28 @@ public class ExchangeCollectionDTO {
 
         str += "Sell Commands: " + '\n';
         //Print Sell Commands if there are any
-        if (!lstSellCommand.isEmpty()) {
-            for (CommandDTO sell : lstSellCommand) {
+        if (!SellCommand.isEmpty()) {
+            for (CommandDTO sell : SellCommand) {
                 str += '\t' + sell.toString() + '\n';
             }
-            str += "Sum turnover of Sell Command:" +'\t' + nSumSellCommand + '\n';
+            str += "Sell Commands' turnover SUM:" +'\t' + SumSellCommand + '\n';
 
         }
-        else{
+        else {
             str += '\t' + "There are no unfinished SELL Commands" + '\n';
         }
 
 
         str += "Transactions: " + '\n';
         //Print Transactions if there are any
-        if (!lstTransaction.isEmpty()) {
-            for (TransactionDTO tran : lstTransaction) {
+        if (!Transaction.isEmpty()) {
+            for (TransactionDTO tran : Transaction) {
                 str += '\t' + tran.toString() + '\n';
             }
-            str += "Sum turnover of Transaction:" +'\t'+ nSumTransaction  + '\n';
+            str += "Transactions' turnover SUM:" +'\t'+ SumTransaction + '\n';
 
         }
-        else{
+        else {
             str += '\t' + "There are no transactions" + '\n';
         }
         return str;

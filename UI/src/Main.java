@@ -1,5 +1,6 @@
 import engine.*;
 import exceptions.*;
+import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
 import javax.xml.bind.JAXBException;
@@ -26,8 +27,7 @@ public class Main {
     private static final String MKT_COMMAND    = "2";
 
 
-    private static void menu()
-    {
+    private static void menu() {
         System.out.println("**********************************************************");
         System.out.println("1 - Load XML file ");
         System.out.println("2 - Print Stocks ");
@@ -38,8 +38,7 @@ public class Main {
         System.out.println("**********************************************************");
     }
 
-    private static void InitialMenu()
-    {
+    private static void initialMenu() {
         System.out.println("**********************************************************");
         System.out.println("Please enter your choice");
         System.out.println("1 - Load XML file ");
@@ -61,19 +60,17 @@ public class Main {
         }
     }
 
-    private static void PrintStocks()
-    {
-        List<StockDTO> list = engine.getAllStocks();
+    private static void printStocks() {
+        List<StockDTO> stocks = engine.getAllStocks();
 
-        for (StockDTO stock : list) {
+        for (StockDTO stock : stocks) {
             System.out.println(stock.toString());
         }
     }
 
-    private static void PrintOneStock()
-    {
+    private static void printOneStock() {
         System.out.println("Enter the stock SYMBOL");
-        String stockSymbol=scanner.next();
+        String stockSymbol  =scanner.next();
         stockSymbol = stockSymbol.toUpperCase(Locale.ROOT);
         try {
             System.out.println(engine.getStock(stockSymbol).toString() +
@@ -81,35 +78,41 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
-    private static void NewCommand() {
+    private static void newCommand() {
 
         System.out.println("Enter the stock SYMBOL");
         String stockSymbol = scanner.next();
         stockSymbol = stockSymbol.toUpperCase(Locale.ROOT);
-        if (!engine.doesStockExists(stockSymbol))
-        {
+        if (!engine.doesStockExists(stockSymbol)) {
             System.out.println("ERROR. Stock doesn't exist. Please try again.");
+            return;
+        }
+
+        System.out.println("Enter the command direction." + '\n' +
+                "1 - for a buy command" + '\n' +
+                "2 - for a sell command");
+        String CmdDirection = scanner.next();
+        if (!CmdDirection.equals(BUY_COMMAND)  && !CmdDirection.equals(SELL_COMMAND)) {
+            System.out.println("Invalid command direction. Please try again");
             return;
         }
 
         System.out.println("Enter the command Type." + '\n' +
                 "1 - for a LMT command" + '\n' +
                 "2 - for a MKT command");
-        String sCmdType = scanner.next();
-        if(!sCmdType.equals(MKT_COMMAND)  && !sCmdType.equals(LMT_COMMAND)) {
-            System.out.println("ERROR command Type. Please try again");
+        String CmdType = scanner.next();
+        if (!CmdType.equals(MKT_COMMAND)  && !CmdType.equals(LMT_COMMAND)) {
+            System.out.println("Invalid command Type. Please try again");
             return;
         }
-        int nPrice = 0;
-        if(!sCmdType.equals(MKT_COMMAND))
-        {
+        int Price = 0;
+        if (!CmdType.equals(MKT_COMMAND)) {
             System.out.println("Enter the command price");
             String commandPrice = scanner.next();
-            nPrice = checkInputValue(commandPrice);
-            if (nPrice == -1) {
+            Price = checkInputValue(commandPrice);
+            if (Price == -1) {
                 System.out.println("ERROR. The command price must be a positive number");
                 return;
             }
@@ -117,56 +120,46 @@ public class Main {
 
         System.out.println("Enter the command quantity");
         String commandQuantity = scanner.next();
-        int nQuantity = checkInputValue(commandQuantity);
-        if (nQuantity == -1) {
+        int Quantity = checkInputValue(commandQuantity);
+        if (Quantity == -1) {
             System.out.println("ERROR. The command quantity must be a positive number");
             return;
         }
 
-        System.out.println("Enter the command direction." + '\n' +
-                            "1 - for a buy command" + '\n' +
-                            "2 - for a sell command");
-        String sCmdDirection = scanner.next();
-        if(!sCmdDirection.equals(BUY_COMMAND)  && !sCmdDirection.equals(SELL_COMMAND)) {
-            System.out.println("ERROR command direction. Please try again");
-            return;
-        }
-
         try {
-            engine.addCommand(stockSymbol, sCmdType ,sCmdDirection, nPrice, nQuantity);
-            System.out.println("New command added successfully!");
+            NewCmdOutcomeDTO newCommand = engine.addCommand(stockSymbol, CmdType ,CmdDirection, Price, Quantity);
+            System.out.println(newCommand.toString());
         }
         catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private static void PrintAllCommand() {
+    private static void printAllCommands() {
 
-        List<StockDTO> list = engine.getAllStocks();
+        List<StockDTO> stocks = engine.getAllStocks();
 
-        for (StockDTO stock : list) {
+        for (StockDTO stock : stocks) {
             System.out.println(stock.PrintAllCommands());
         }
-
     }
 
-    private static void Exe(String input) {
+    private static void exeAction(String input) {
         switch (input) {
             case LOAD:
-                Load();
+                loadFile();
                 break;
             case ALL_STOCKS:
-                PrintStocks();
+                printStocks();
                 break;
             case SINGLE_STOCK:
-                PrintOneStock();
-                break;
-            case ALL_COMMANDS:
-                PrintAllCommand();
+                printOneStock();
                 break;
             case NEW_COMMAND:
-                NewCommand();
+                newCommand();
+                break;
+            case ALL_COMMANDS:
+                printAllCommands();
                 break;
             case BYE:
                 System.out.println("Thank you for using Rizpa! See you later!");
@@ -177,7 +170,7 @@ public class Main {
         }
     }
 
-    public static void Load() {
+    public static void loadFile() {
         System.out.println("Please enter an XML file ");
         String fileName = scanner.next();
         fileName += scanner.nextLine();
@@ -189,7 +182,7 @@ public class Main {
         }
 
         try {
-            engine.LoadXML(fileName);
+            engine.loadXML(fileName);
             isLoadSucc = true;
             System.out.println("File loaded successfully! Let's get started!");
 
@@ -197,8 +190,7 @@ public class Main {
             System.out.println(e.getMessage());
             System.out.println("File not loaded");
 
-            if (isLoadSucc == true)
-            {
+            if (isLoadSucc == true) {
                 System.out.println("The system will continue with the last version.");
             }
         }
@@ -206,14 +198,16 @@ public class Main {
 
     public static void main(String[] args) {
         String input;
+
+        // Initial menu, will continue until a file will be loaded or BYE as chosen
         while (isLoadSucc == false) {
 
-            InitialMenu();
+            initialMenu();
             input = scanner.next();
 
             switch (input) {
                 case LOAD: {
-                    Load();
+                    loadFile();
                     break;
                 }
                 case INIT_BYE: {
@@ -227,10 +221,11 @@ public class Main {
             }
         }
 
+        //Primary menu, will continue until BYE was chosen
         menu();
         input = scanner.next();
         while (!input.equals(BYE)) {
-            Exe(input);
+            exeAction(input);
             menu();
             input = scanner.next();
         }

@@ -4,39 +4,39 @@ package objects;
 // Uniform class for Transaction DTO and Command DTO
 public class TransactionDTO {
 
-    private int nPrice;
-    private int nQuantity;
-    private String sDate;
-    private int nTurnover;
+    private int Price;
+    private int Quantity;
+    private String Date;
+    private int Turnover;
 
-    public TransactionDTO(int nPrice, int nQuantity, String sDate, int nTurnover) {
-        this.nPrice = nPrice;
-        this.nQuantity = nQuantity;
-        this.sDate = sDate;
-        this.nTurnover = nTurnover;
+    public TransactionDTO(int Price, int Quantity, String Date, int Turnover) {
+        this.Price = Price;
+        this.Quantity = Quantity;
+        this.Date = Date;
+        this.Turnover = Turnover;
     }
 
     public String getDate() {
-        return sDate;
+        return Date;
     }
 
     public int getPrice() {
-        return nPrice;
+        return Price;
     }
 
     public int getQuantity() {
-        return nQuantity;
+        return Quantity;
     }
 
     public int getTurnover() {
-        return nTurnover;
+        return Turnover;
     }
 
     @Override
     public String toString() {
-        return "Price = " + nPrice +
-                ", Quantity = " + nQuantity +
-                ", Date = '" + sDate + '\'' +
-                ", Turnover = " + nTurnover;
+        return "Price = " + Price +
+                ", Quantity = " + Quantity +
+                ", Date = '" + Date + '\'' +
+                ", Turnover = " + Turnover;
     }
 }

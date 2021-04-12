@@ -3,6 +3,7 @@ package engine;
 import exceptions.*;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseStock;
+import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
 import javax.xml.bind.JAXBContext;
@@ -18,13 +19,13 @@ public class Engine implements RizpaMethods {
 
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "generated";
 
-    private Map<String,Stock> mpStocks;
+    private Map<String,Stock> Stocks;
 
-    public void LoadXML(String sFileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
+    public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
-            InputStream inputStream = new FileInputStream(new File(sFileName));
+            InputStream inputStream = new FileInputStream(new File(FileName));
             //Getting XML Data
-            RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, sFileName);
+            RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, FileName);
             //Filling stock collection
             convertDescriptor(stockDescriptor);
         } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
@@ -33,7 +34,7 @@ public class Engine implements RizpaMethods {
     }
 
     //Converting XML Data with JAXB
-    private static RizpaStockExchangeDescriptor deserializeFrom(InputStream in, String sFileName) throws JAXBException {
+    private static RizpaStockExchangeDescriptor deserializeFrom(InputStream in, String FileName) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
         return (RizpaStockExchangeDescriptor) u.unmarshal(in);
@@ -42,8 +43,8 @@ public class Engine implements RizpaMethods {
 
     //Converting JAXB Data to actual data
     private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
-        Map<String,Stock> tempMapStocks=this.mpStocks;
-        mpStocks = new HashMap<>();
+        Map<String,Stock> tempMapStocks=this.Stocks;
+        Stocks = new HashMap<>();
         List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
 
@@ -53,46 +54,44 @@ public class Engine implements RizpaMethods {
             try {
                 Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
                 // if stock with same Symbol already exists
-                if (mpStocks.get(newStock.getSymbol()) == null) {
+                if (Stocks.get(newStock.getSymbol()) == null) {
                     // if stock with same Company Name already exists
                     if (!setCompanies.contains(newStock.getCompanyName())) {
                         //Insert stock to stock map
-                        mpStocks.put(newStock.getSymbol(), newStock);
+                        Stocks.put(newStock.getSymbol(), newStock);
                         //Insert company name to company name set
                         setCompanies.add(newStock.getCompanyName());
                     }
                     else {
-                        mpStocks=tempMapStocks;
+                        Stocks = tempMapStocks;
                         throw new XMLException("There are two stocks with the same Company Name in the XML you are trying to load." +
                                 "Please make sure all stocks are from different companies");
                     }
                 }
                 else {
-                    mpStocks=tempMapStocks;
+                    Stocks =tempMapStocks;
                     throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load." +
                             "Please make sure all stocks have different Symbols");
                 }
             }
-            catch (StockNegPriceException | StockSymbolLowercaseException e)
-            {
-                mpStocks=tempMapStocks;
+            catch (StockNegPriceException | StockSymbolLowercaseException e) {
+                Stocks = tempMapStocks;
                 throw e;
             }
         }
     }
 
-    public List<StockDTO> getAllStocks()
-    {
+    public List<StockDTO> getAllStocks()  {
         List<StockDTO> list = new ArrayList<>();
-        for (Stock stock : mpStocks.values()) {
+        for (Stock stock : Stocks.values()) {
             list.add(stock.convertToDTO());
         }
 
         return list;
     }
 
-    public StockDTO getStock(String sSymbol) throws NoSuchStockException {
-        Stock stock = this.mpStocks.get(sSymbol);
+    public StockDTO getStock(String Symbol) throws NoSuchStockException {
+        Stock stock = this.Stocks.get(Symbol);
 
         //Check if such stock exists in stock map
         if (stock == null)
@@ -101,28 +100,27 @@ public class Engine implements RizpaMethods {
         return stock.convertToDTO();
     }
 
-    public void addCommand(String sSymbol, String sType ,String sCmdDirection, int nPrice, int nQuantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
-        Stock stock = this.mpStocks.get(sSymbol);
+    public NewCmdOutcomeDTO addCommand(String Symbol, String Type , String CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
+        Stock stock = this.Stocks.get(Symbol);
 
         //Check if such stock exists in stock map
-        if (stock == null)
-        {
+        if (stock == null) {
             throw new NoSuchStockException();
         }
         else {
             try {
-                Command.CmdDirection Direction = convertStringToCmdDirection(sCmdDirection);
-                int nType = Integer.parseInt(sType);
-                stock.addNewCommand(nType, Direction, nPrice, nQuantity);
+                Command.CmdDirection Direction = convertStringToCmdDirection(CmdDirection);
+                int nType = Integer.parseInt(Type);
+                return stock.addNewCommand(nType, Direction, Price, Quantity);
             } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
                 throw e;
             }
         }
     }
 
-    public Command.CmdDirection convertStringToCmdDirection(String sCmdDirection) throws NoSuchCmdDirectionException {
+    public Command.CmdDirection convertStringToCmdDirection(String CmdDirection) throws NoSuchCmdDirectionException {
         //Turn the cmd direction to int
-        int nDirection = Integer.parseInt(sCmdDirection) - 1; // the values of the enum start from 0
+        int nDirection = Integer.parseInt(CmdDirection) - 1; // the values of the enum start from 0
 
         if (nDirection == Command.CmdDirection.BUY.ordinal()) {
             return Command.CmdDirection.BUY;
@@ -133,10 +131,9 @@ public class Engine implements RizpaMethods {
         }
     }
 
-    public boolean doesStockExists(String sSymbol)
-    {
+    public boolean doesStockExists(String Symbol) {
         //Check if such stock exists in stock map
-        return (this.mpStocks.containsKey(sSymbol));
+        return (this.Stocks.containsKey(Symbol));
     }
 }
 

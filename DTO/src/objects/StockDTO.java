@@ -1,75 +1,73 @@
 package objects;
 
 public class StockDTO {
-    private String sCompanyName;
-    private String sSymbol;
-    private int nPrice;
-    private ExchangeCollectionDTO excExchange;
-    private int nTransactionNum; // Transactions Number
-    private int nTurnover; // Transactions sum of turnovers
+    private String CompanyName;
+    private String Symbol;
+    private int Price;
+    private ExchangeCollectionDTO ExchangeCollection;
+    private int TransactionNum; // Transactions Number
+    private int Turnover; // Transactions sum of turnovers
 
-    public StockDTO(String sCompanyName, String sSymbol, int nPrice,
-                    ExchangeCollectionDTO excExchange, int nTransactionNum, int nTurnover) {
-        this.sCompanyName = sCompanyName;
-        this.sSymbol = sSymbol;
-        this.nPrice = nPrice;
-        this.excExchange = excExchange;
-        this.nTransactionNum = nTransactionNum;
-        this.nTurnover = nTurnover;
+    public StockDTO(String CompanyName, String Symbol, int Price,
+                    ExchangeCollectionDTO ExchangeCollection, int TransactionNum, int Turnover) {
+        this.CompanyName = CompanyName;
+        this.Symbol = Symbol;
+        this.Price = Price;
+        this.ExchangeCollection = ExchangeCollection;
+        this.TransactionNum = TransactionNum;
+        this.Turnover = Turnover;
     }
 
     public String getCompanyName() {
-        return sCompanyName;
+        return CompanyName;
     }
 
     public String getSymbol() {
-        return sSymbol;
+        return Symbol;
     }
 
     public int getGate() {
-        return nPrice;
+        return Price;
     }
 
     public int getTransactionNum() {
-        return nTransactionNum;
+        return TransactionNum;
     }
 
     public int getTransactionSum() {
-        return nTurnover;
+        return Turnover;
     }
 
-
-    public ExchangeCollectionDTO getExcExchange() {
-        return excExchange;
+    public ExchangeCollectionDTO getExchangeCollection() {
+        return ExchangeCollection;
     }
 
 
     @Override
     public String toString() {
         return "Stock:" + '\n' +
-                "CompanyName = '" + sCompanyName + '\'' + '\n' +
-                "Symbol = '" + sSymbol + '\'' + '\n' +
-                "Price = " + nPrice + '\n' +
-                "Transactions Number = " + nTransactionNum + '\n' +
-                "Transactions Turnover Sum = " + nTurnover + '\n';
+                "CompanyName = '" + CompanyName + '\'' + '\n' +
+                "Symbol = '" + Symbol + '\'' + '\n' +
+                "Price = " + Price + '\n' +
+                "Transactions Number = " + TransactionNum + '\n' +
+                "Transactions Turnover SUM = " + Turnover + '\n';
     }
 
     public String PrintAllCommands()
     {
 
-        return this.toString()+excExchange.toString();
+        return this.toString()+ ExchangeCollection.toString();
     }
 
-    public String PrintTransaction()
-    {
+    public String PrintTransaction() {
         String str = "Transactions: " + '\n';
         //Print Transactions if there are any
-        if (!excExchange.getTransaction().isEmpty()) {
-            for (TransactionDTO tran : excExchange.getTransaction()) {
+        if (!ExchangeCollection.getTransaction().isEmpty()) {
+            for (TransactionDTO tran : ExchangeCollection.getTransaction()) {
                 str += '\t' + tran.toString() + '\n';
             }
         }
-        else{
+        else {
             str +='\t' + "There are no transactions " + '\n';
         }
         return str;

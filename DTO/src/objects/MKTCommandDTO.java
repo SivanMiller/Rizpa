@@ -4,19 +4,19 @@ package objects;
 // Uniform class for Transaction DTO and Command DTO
 public class MKTCommandDTO extends CommandDTO{
 
-    public MKTCommandDTO(int nPrice, int nQuantity, String sDate, int nTurnover) {
-        this.nPrice = nPrice;
-        this.nQuantity = nQuantity;
-        this.sDate = sDate;
-        this.nTurnover = nTurnover;
+    public MKTCommandDTO(int Price, int Quantity, String Date, int Turnover) {
+        this.Price = Price;
+        this.Quantity = Quantity;
+        this.Date = Date;
+        this.Turnover = Turnover;
     }
 
     @Override
     public String toString() {
-        return "Price = " + nPrice +
-                ", Quantity = " + nQuantity +
-                ", Date = '" + sDate + '\'' +
-                ", Turnover = " + nTurnover+
+        return "Price = " + Price +
+                ", Quantity = " + Quantity +
+                ", Date = '" + Date + '\'' +
+                ", Turnover = " + Turnover +
                 ", Type = MKT";
     }
 }

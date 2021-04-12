@@ -7,45 +7,41 @@ import java.util.Objects;
 
 public abstract class Command {
 
-    static int order = 1;
+    protected static int ORDER_COUNTER = 1;
     public enum CmdDirection {
         BUY,
         SELL
     };
 
-    protected int nPrice;
-    protected int nQuantity;
-    protected String sDate;
-    protected CmdDirection cmdDirection;
+    protected int Price;
+    protected int Quantity;
+    protected String Date;
+    protected CmdDirection Direction;
     protected int Order;
 
-    public int getPrice() {
-        return nPrice;
-    }
+    public int getPrice() {  return Price;    }
 
     public void setPrice(int nPrice) {
-        this.nPrice = nPrice;
+        this.Price = nPrice;
     }
 
-    public int getQuantity() {  return nQuantity;   }
+    public int getQuantity() {  return Quantity;   }
 
     public void setQuantity(int nQuantity) {
-        this.nQuantity = nQuantity;
+        this.Quantity = nQuantity;
     }
 
     public String getDate() {
-        return sDate;
+        return Date;
     }
 
     public void setDate(String sDate) {
-        this.sDate = sDate;
+        this.Date = sDate;
     }
 
-    public CmdDirection getCmdDirection() { return this.cmdDirection;  }
+    public CmdDirection getDirection() { return this.Direction;  }
 
-    public void setCmdDirection(CmdDirection cmdDirection) {
-        this.cmdDirection = cmdDirection;
-    }
+    public void setDirection(CmdDirection direction) {  this.Direction = direction; }
 
     public abstract CommandDTO convertToDTO();
 
@@ -54,12 +50,12 @@ public abstract class Command {
         if (this == o) return true;
         if (!(o instanceof Command)) return false;
         Command command = (Command) o;
-        return nPrice == command.nPrice && nQuantity == command.nQuantity && cmdDirection == command.cmdDirection && sDate.equals(command.sDate);
+        return Price == command.Price && Quantity == command.Quantity && Direction == command.Direction && Date.equals(command.Date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nPrice, nQuantity, sDate, cmdDirection);
+        return Objects.hash(Price, Quantity, Date, Direction);
     }
 
     @Override
@@ -67,13 +63,12 @@ public abstract class Command {
 
 }
 
-class SortCommands implements Comparator<Command>
-{
+class SortCommands implements Comparator<Command> {
 
     @Override
     public int compare(Command cmd1, Command cmd2) {
         // if type is BUY the order should be by price descending
-        if (cmd1.getCmdDirection() == Command.CmdDirection.BUY) {
+        if (cmd1.getDirection() == Command.CmdDirection.BUY) {
             // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {
                 // cmd2 should be first
@@ -92,7 +87,7 @@ class SortCommands implements Comparator<Command>
         }
 
         // if type os SELL the order should be by price ascending
-        else if (cmd1.getCmdDirection() == Command.CmdDirection.SELL) {
+        else if (cmd1.getDirection() == Command.CmdDirection.SELL) {
             // if same price check order
             if (cmd1.getPrice() ==  cmd2.getPrice()) {
                 // cmd2 should be first

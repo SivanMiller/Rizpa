@@ -1,69 +1,67 @@
 package engine;
 
 import exceptions.*;
+import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
 import java.util.*;
 
 public class Stock {
 
-    public enum CmdType
-    {
+    public enum CmdType {
         LMT,
         MKT
     }
-    private String sCompanyName;
-    private String sSymbol;
-    private int nPrice;
-    private ExchangeCollection ecExchange;
+    private String CompanyName;
+    private String Symbol;
+    private int Price;
+    private ExchangeCollection ExchangeCollection;
 
-    public Stock(String sCompanyName, String sSymbol, int nPrice) throws StockNegPriceException, StockSymbolLowercaseException {
-        if (nPrice < 0)
-            throw new StockNegPriceException(sSymbol);
-        this.sCompanyName = sCompanyName;
+    public Stock(String CompanyName, String Symbol, int Price) throws StockNegPriceException, StockSymbolLowercaseException {
+        if (Price < 0)
+            throw new StockNegPriceException(Symbol);
+        this.CompanyName = CompanyName;
 
-        if (Utilities.checkUpperCase(sSymbol))
-        {
-            this.sSymbol = sSymbol.toUpperCase();
+        if (Utilities.checkUpperCase(Symbol)) {
+            this.Symbol = Symbol.toUpperCase();
         }
-        else
-        {
+        else {
             throw new StockSymbolLowercaseException();
         }
-        this.nPrice = nPrice;
-        this.ecExchange = new ExchangeCollection(nPrice);
+        this.Price = Price;
+        this.ExchangeCollection = new ExchangeCollection(Price);
     }
 
     public String getCompanyName() {
-        return sCompanyName;
+        return CompanyName;
     }
 
     public String getSymbol() {
-        return sSymbol;
+        return Symbol;
     }
 
     public int getPrice() {
-        return nPrice;
+        return Price;
     }
 
-    public ExchangeCollection getExchange() {
-        return ecExchange;
+    public ExchangeCollection getExchangeCollection() {
+        return ExchangeCollection;
     }
 
-    public void setCompanyName(String sCompanyName) {
-        this.sCompanyName = sCompanyName;
+    public void setCompanyName(String CompanyName) {
+        this.CompanyName = CompanyName;
     }
 
-    public void setSymbol(String sSymbol) {
-        this.sSymbol = sSymbol;
+    public void setSymbol(String Symbol) {
+        this.Symbol = Symbol;
     }
 
-    public void setPrice(int nGate) {
-        this.nPrice = nGate;
+    public void setPrice(int Price) {
+        this.Price = Price;
     }
 
-    public void setExchange(ExchangeCollection ecExchange) {
-        this.ecExchange = ecExchange;
+    public void setExchangeCollection(ExchangeCollection ExchangeCollection) {
+        this.ExchangeCollection = ExchangeCollection;
     }
 
     @Override
@@ -71,46 +69,43 @@ public class Stock {
         if (this == obj) return true;
         if (!(obj instanceof Stock)) return false;
         Stock stock = (Stock) obj;
-        return sCompanyName.equals(stock.sCompanyName) && sSymbol.equals(stock.sSymbol);
+        return CompanyName.equals(stock.CompanyName) && Symbol.equals(stock.Symbol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sCompanyName, sSymbol);
+        return Objects.hash(CompanyName, Symbol);
     }
 
     @Override
     public String toString() {
         return "Stock{" +
-               "Symbol = '" + sSymbol + '\'' +
-               ", CompanyName = '" + sCompanyName + '\'' +
-               ", Price = " + nPrice +
-               ", Exchange = " + ecExchange +
+               "Symbol = '" + Symbol + '\'' +
+               ", CompanyName = '" + CompanyName + '\'' +
+               ", Price = " + Price +
+               ", Exchange = " + ExchangeCollection +
                '}';
     }
 
-    public void addNewCommand(int nType, Command.CmdDirection Direction, int nPrice, int nQuantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addNewCommand(int Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
             // the values of the enum start from 0
-            nType--;
+            Type--;
 
-            if (nType == CmdType.LMT.ordinal())
-            {
-                newCommand = new LMTCommand(nPrice, nQuantity, Direction);
+            if (Type == CmdType.LMT.ordinal()) {
+                newCommand = new LMTCommand(Price, Quantity, Direction);
             }
-            else if (nType == CmdType.MKT.ordinal())
-            {
-                newCommand = new MKTCommand(nQuantity, Direction);
+            else if (Type == CmdType.MKT.ordinal()) {
+                newCommand = new MKTCommand(Quantity, Direction);
             }
-            else
-            {
+            else {
                 throw new NoSuchCmdTypeException();
             }
 
-            this.ecExchange.addNewCommand(newCommand);
             //Update stock price
-            this.nPrice = this.ecExchange.LastTransactionPrice();
+            this.Price = this.ExchangeCollection.getLastTransactionPrice();
+            return this.ExchangeCollection.addNewCommand(newCommand);
         }
         catch (CommandNegPriceException | StockNegQuantityException e) {
             throw e;
@@ -118,10 +113,9 @@ public class Stock {
 
     }
 
-    public StockDTO convertToDTO()
-    {
+    public StockDTO convertToDTO() {
         return new StockDTO(this.getCompanyName(), this.getSymbol(), this.getPrice(),
-                             this.ecExchange.convertToDTO(),
-                             this.ecExchange.convertToDTO().getTransaction().size(), ecExchange.getTurnover() );
+                             this.ExchangeCollection.convertToDTO(),
+                             this.ExchangeCollection.convertToDTO().getTransaction().size(), ExchangeCollection.getTurnover() );
     }
 }

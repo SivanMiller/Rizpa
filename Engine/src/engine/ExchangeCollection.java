@@ -2,6 +2,7 @@ package engine;
 
 import objects.CommandDTO;
 import objects.ExchangeCollectionDTO;
+import objects.NewCmdOutcomeDTO;
 import objects.TransactionDTO;
 
 import java.time.LocalDateTime;
@@ -10,189 +11,197 @@ import java.util.*;
 
 public class ExchangeCollection {
 
-    private PriorityQueue<Command> pqBuyCommand;
-    private PriorityQueue<Command> pqSellCommand;
-    private List<Transaction> lstTransaction;
-    private int nLastPrice;
-    private int nTurnover;
+    private PriorityQueue<Command> BuyCommand;
+    private PriorityQueue<Command> SellCommand;
+    private List<Transaction> Transaction;
+    private int LastPrice;
+    private int Turnover;
 
-    public ExchangeCollection(int nLastPrice) {
-       this.pqBuyCommand = new PriorityQueue<>(new SortCommands());
-       this.pqSellCommand = new PriorityQueue<>(new SortCommands());
-       this.lstTransaction = new ArrayList<>();
-       this.nLastPrice = nLastPrice;
+    public ExchangeCollection(int LastPrice) {
+       this.BuyCommand = new PriorityQueue<>(new SortCommands());
+       this.SellCommand = new PriorityQueue<>(new SortCommands());
+       this.Transaction = new ArrayList<>();
+       this.LastPrice = LastPrice;
     }
 
-    public PriorityQueue<Command> getPqBuyCommand() {
-        return pqBuyCommand;
+    public PriorityQueue<Command> getBuyCommand() {
+        return BuyCommand;
     }
 
-    public void setPqBuyCommand(PriorityQueue<Command> pqBuyCommand) {
-        this.pqBuyCommand = pqBuyCommand;
+    public void setBuyCommand(PriorityQueue<Command> buyCommand) {
+        this.BuyCommand = buyCommand;
     }
 
-    public PriorityQueue<Command> getPqSellCommand() {
-        return pqSellCommand;
+    public PriorityQueue<Command> getSellCommand() {
+        return SellCommand;
     }
 
-    public void setPqSellCommand(PriorityQueue<Command> pqSellCommand) {
-        this.pqSellCommand = pqSellCommand;
+    public void setSellCommand(PriorityQueue<Command> sellCommand) {
+        this.SellCommand = sellCommand;
     }
 
     public List<Transaction> getTransactions() {
-        return lstTransaction;
+        return Transaction;
     }
 
     public void setTransactions(List<Transaction> lstTransaction) {
-        this.lstTransaction = lstTransaction;
+        this.Transaction = lstTransaction;
     }
 
-    public void setLastPrice(int nLastPrice) { this.nLastPrice = nLastPrice;  }
+    public void setLastPrice(int LastPrice) { this.LastPrice = LastPrice;  }
 
-    public int getLastPrice() { return nLastPrice;  }
+    public int getLastPrice() { return LastPrice;  }
 
-    public int getTurnover() {
-        return nTurnover;
-    }
+    public int getTurnover() {  return Turnover; }
 
-    public void addNewTransaction(int nPrice, int nQuantity, String sDate, int Order) {
-        Transaction trNewTransaction = new Transaction(nPrice, nQuantity, sDate, nPrice * nQuantity, Order);
+    public int getLastTransactionPrice() { return LastPrice; }
+
+    public void addNewTransaction(Transaction newTransaction) {
+        //Transaction trNewTransaction = new Transaction(Price, Quantity, Date, Price * Quantity, Order);
         // Adding to Transaction set
-        lstTransaction.add(trNewTransaction);
-        this.nLastPrice = nPrice;
+        Transaction.add(newTransaction);
+        this.LastPrice = newTransaction.getPrice();
         // Sum of all transactions turnover
-        this.nTurnover += nPrice * nQuantity;
+        this.Turnover += newTransaction.getPrice() * newTransaction.getQuantity();
     }
 
-    public int LastTransactionPrice()
-    {
-        return nLastPrice;
-    }
-
-    public void addNewCommand(Command cmdNewCommand){
-
+    public NewCmdOutcomeDTO addNewCommand(Command NewCommand) {
         //Check command type
-        if (cmdNewCommand.getCmdDirection() == Command.CmdDirection.BUY)
-        {
-            addBuyCommand(cmdNewCommand);
+        if (NewCommand.getDirection() == Command.CmdDirection.BUY) {
+           return addBuyCommand(NewCommand);
         }
-        else if (cmdNewCommand.getCmdDirection() == Command.CmdDirection.SELL)
-        {
-            addSellCommand(cmdNewCommand);
+        else {
+           return addSellCommand(NewCommand);
         }
-
     }
 
-    private void addBuyCommand(Command cmdNewCommand) {
+    private NewCmdOutcomeDTO addBuyCommand(Command NewCommand) {
+        NewCmdOutcomeDTO outcome = new NewCmdOutcomeDTO();
         int nQuantity;
-        String sDate;
-        while (cmdNewCommand.getQuantity() > 0) {
+        String Date;
+        while (NewCommand.getQuantity() > 0) {
             //if the cheapest sell Command is more expensive than my max price, then there is no deal!
-            if (this.pqSellCommand.isEmpty() || (this.pqSellCommand.peek().getPrice() > cmdNewCommand.getPrice() && cmdNewCommand.getPrice() != 0)) {
-
+            if (this.SellCommand.isEmpty() ||
+                     (this.SellCommand.peek().getPrice() > NewCommand.getPrice() &&
+                      NewCommand.getPrice() != 0)) {
                 //MKT Command
-                if (cmdNewCommand.getPrice() == 0)
-                {
-                    cmdNewCommand.setPrice(LastTransactionPrice());
+                if (NewCommand.getPrice() == 0) {
+                    NewCommand.setPrice(getLastTransactionPrice());
                 }
 
-                this.pqBuyCommand.add(cmdNewCommand);
+                this.BuyCommand.add(NewCommand);
+                outcome.addCommand(NewCommand.convertToDTO());
 
                 break;
             }
             //there is a compatibility of prices! lets BUY!
             else {
-                nQuantity = this.pqSellCommand.peek().getQuantity() - cmdNewCommand.getQuantity();
+                nQuantity = this.SellCommand.peek().getQuantity() - NewCommand.getQuantity();
 
-                sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+                Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 
                 // the quantity is matching
                 if (nQuantity == 0) {
                     // add new Transaction
-                    addNewTransaction(this.pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
-                    cmdNewCommand.setQuantity(0);
+                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), NewCommand.getQuantity(), Date, NewCommand.Order);
+                    addNewTransaction(NewTransaction);
+                    outcome.addTransaction(NewTransaction.convertToDTO());
+                    NewCommand.setQuantity(0);
                     // delete Sell command
-                    this.pqSellCommand.remove(this.pqSellCommand.peek());
+                    this.SellCommand.remove(this.SellCommand.peek());
                 }
                 // there is more Stock to sell
                 else if (nQuantity > 0) {
                     //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    addNewTransaction(this.pqSellCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
-                    cmdNewCommand.setQuantity(0);
-                    // update Sell command??
-                    this.pqSellCommand.peek().setQuantity(nQuantity);
+                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), NewCommand.getQuantity(), Date, NewCommand.Order);
+                    addNewTransaction(NewTransaction);
+                    outcome.addTransaction(NewTransaction.convertToDTO());
+                    NewCommand.setQuantity(0);
+                    // update Sell command
+                    this.SellCommand.peek().setQuantity(nQuantity);
                 }
                 // there is more Stock to BUY----> nQuantity < 0
                 else {
                     // add new Transaction
-                    addNewTransaction(this.pqSellCommand.peek().getPrice(), this.pqSellCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
-
+                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), this.SellCommand.peek().getQuantity(), Date, NewCommand.Order);
+                    addNewTransaction(NewTransaction);
+                    outcome.addTransaction(NewTransaction.convertToDTO());
                     // update BUY command??
-                    cmdNewCommand.setQuantity(nQuantity * (-1));
+                    NewCommand.setQuantity(nQuantity * (-1));
 
                     // delete Sell command
-                    this.pqSellCommand.remove(this.pqSellCommand.peek());
+                    this.SellCommand.remove(this.SellCommand.peek());
                 }
             }
         }
+        return outcome;
     }
 
-    private void addSellCommand(Command cmdNewCommand) {
+    private NewCmdOutcomeDTO addSellCommand(Command NewCommand) {
+        NewCmdOutcomeDTO outcome = new NewCmdOutcomeDTO();
         int nQuantity;
         String sDate;
         //There are still more stock to sell
-        while (cmdNewCommand.getQuantity() > 0) {
+        while (NewCommand.getQuantity() > 0) {
             //All the others are cheaper, then there is no deal!
-            if (this.pqBuyCommand.isEmpty() || this.pqBuyCommand.peek().getPrice() < cmdNewCommand.getPrice()) {
-
+            if (this.BuyCommand.isEmpty() ||
+                    this.BuyCommand.peek().getPrice() < NewCommand.getPrice()) {
                 //MKT Command
-                if (cmdNewCommand.getPrice() == 0)
-                {
-                    cmdNewCommand.setPrice(this.LastTransactionPrice());
+                if (NewCommand.getPrice() == 0) {
+                    NewCommand.setPrice(this.getLastTransactionPrice());
                 }
 
-                this.pqSellCommand.add(cmdNewCommand);
+                this.SellCommand.add(NewCommand);
+                outcome.addCommand(NewCommand.convertToDTO());
                 break;
             }
             //there is a compatibility of prices! lets SELL!
             else {
-                nQuantity = this.pqBuyCommand.peek().getQuantity() - cmdNewCommand.getQuantity();
+                nQuantity = this.BuyCommand.peek().getQuantity() - NewCommand.getQuantity();
                 sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
 
                 // the quantity is matching
                 if (nQuantity == 0) {
                     // add new Transaction
-                    addNewTransaction(this.pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
-                    cmdNewCommand.setQuantity(0);
+
+                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), NewCommand.getQuantity(), sDate, NewCommand.Order);
+                    addNewTransaction(NewTransaction);
+                    outcome.addTransaction(NewTransaction.convertToDTO());
+                    NewCommand.setQuantity(0);
 
                     // delete Buy command
-                    this.pqBuyCommand.remove(this.pqBuyCommand.peek());
+                    this.BuyCommand.remove(this.BuyCommand.peek());
                 }
                 //The quantity in the BUY collection is larger
                 else if (nQuantity > 0) {
                     // add new Transaction
-                    addNewTransaction(this.pqBuyCommand.peek().getPrice(), cmdNewCommand.getQuantity(), sDate, cmdNewCommand.Order);
-                    cmdNewCommand.setQuantity(0);
+                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), NewCommand.getQuantity(), sDate, NewCommand.Order);
+                    addNewTransaction(NewTransaction);
+                    outcome.addTransaction(NewTransaction.convertToDTO());
+                    NewCommand.setQuantity(0);
                     //Decrease peek quantity by Command quantity
-                    this.pqBuyCommand.peek().setQuantity(nQuantity);
+                    this.BuyCommand.peek().setQuantity(nQuantity);
                 }
                 //The quantity in the BUY collection is smaller ----> nQuantity < 0
                 else {
                     // add new Transaction
-                    addNewTransaction(this.pqBuyCommand.peek().getPrice(), this.pqBuyCommand.peek().getQuantity(), sDate, cmdNewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), this.BuyCommand.peek().getQuantity(), sDate, NewCommand.Order);
+                    addNewTransaction(NewTransaction);
+                    outcome.addTransaction(NewTransaction.convertToDTO());
+
                     //Decrease Command quantity by peek quantity
-                    cmdNewCommand.setQuantity(nQuantity * (-1));
+                    NewCommand.setQuantity(nQuantity * (-1));
 
                     // delete Buy command
-                    this.pqBuyCommand.remove(this.pqBuyCommand.peek());
+                    this.BuyCommand.remove(this.BuyCommand.peek());
                 }
             }
         }
+        return outcome;
     }
 
-    public ExchangeCollectionDTO convertToDTO()
-    {
+    public ExchangeCollectionDTO convertToDTO() {
         List<CommandDTO> lstBuyCommand = new ArrayList<>();
         List<CommandDTO> lstSellCommand = new ArrayList<>();
         List<TransactionDTO> lstTransaction = new ArrayList<>();
@@ -200,24 +209,21 @@ public class ExchangeCollection {
         int nTempSumSellCommand = 0;
         int nTempSumTransaction = 0;
 
-        PriorityQueue<Command> temp = new PriorityQueue<>(this.pqBuyCommand);
-        for (int i = 0; i < this.pqBuyCommand.size(); i++)
-        {
+        PriorityQueue<Command> temp = new PriorityQueue<>(this.BuyCommand);
+        for (int i = 0; i < this.BuyCommand.size(); i++) {
             nTempSumBuyCommand += temp.peek().getPrice() * temp.peek().getQuantity();
             lstBuyCommand.add(temp.poll().convertToDTO());
         }
 
-        temp = new PriorityQueue<>(this.pqSellCommand);
-        for (int i = 0; i < this.pqSellCommand.size(); i++)
-        {
+        temp = new PriorityQueue<>(this.SellCommand);
+        for (int i = 0; i < this.SellCommand.size(); i++) {
             nTempSumSellCommand += temp.peek().getPrice() * temp.peek().getQuantity();
             lstSellCommand.add(temp.poll().convertToDTO());
         }
 
-        for (int i = this.lstTransaction.size() - 1; i >= 0 ; i--)
-        {
-            nTempSumTransaction += this.lstTransaction.get(i).getTurnover();
-            lstTransaction.add(this.lstTransaction.get(i).convertToDTO());
+        for (int i = this.Transaction.size() - 1; i >= 0 ; i--) {
+            nTempSumTransaction += this.Transaction.get(i).getTurnover();
+            lstTransaction.add(this.Transaction.get(i).convertToDTO());
         }
 
         return new ExchangeCollectionDTO(lstBuyCommand, lstSellCommand, lstTransaction,nTempSumBuyCommand,nTempSumSellCommand,nTempSumTransaction);
@@ -229,21 +235,21 @@ public class ExchangeCollection {
         if (this == o) return true;
         if (!(o instanceof ExchangeCollection)) return false;
         ExchangeCollection that = (ExchangeCollection) o;
-        return nLastPrice == that.nLastPrice && Objects.equals(getPqBuyCommand(), that.getPqBuyCommand()) && Objects.equals(getPqSellCommand(), that.getPqSellCommand()) && Objects.equals(lstTransaction, that.lstTransaction);
+        return LastPrice == that.LastPrice && Objects.equals(getBuyCommand(), that.getBuyCommand()) && Objects.equals(getSellCommand(), that.getSellCommand()) && Objects.equals(Transaction, that.Transaction);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPqBuyCommand(), getPqSellCommand(), lstTransaction, nLastPrice);
+        return Objects.hash(getBuyCommand(), getSellCommand(), Transaction, LastPrice);
     }
 
     @Override
     public String toString() {
         return "ExchangeCollection{" +
-                "pqBuyCommand=" + pqBuyCommand +
-                ", pqSellCommand=" + pqSellCommand +
-                ", lstTransaction=" + lstTransaction +
-                ", nLastPrice=" + nLastPrice +
+                "pqBuyCommand=" + BuyCommand +
+                ", pqSellCommand=" + SellCommand +
+                ", lstTransaction=" + Transaction +
+                ", nLastPrice=" + LastPrice +
                 '}';
     }
 }
