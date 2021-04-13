@@ -1,4 +1,4 @@
-package exceptions;
+package exception;
 
 public class NoSuchCmdTypeException extends Exception{
     private final String EXCEPTION_MESSAGE = "No such Command Type. Please try again";

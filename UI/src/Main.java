@@ -1,5 +1,5 @@
 import engine.*;
-import exceptions.*;
+import exception.*;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 

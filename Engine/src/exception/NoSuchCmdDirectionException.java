@@ -1,4 +1,4 @@
-package exceptions;
+package exception;
 
 public class NoSuchCmdDirectionException extends Exception{
     private final String EXCEPTION_MESSAGE = "No such Command Direction. Please try again";

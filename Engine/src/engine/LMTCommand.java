@@ -1,7 +1,7 @@
 package engine;
 
-import exceptions.CommandNegPriceException;
-import exceptions.StockNegQuantityException;
+import exception.CommandNegPriceException;
+import exception.StockNegQuantityException;
 import objects.LMTCommandDTO;
 
 import java.time.LocalDateTime;
