@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane cacheShape="false" centerShape="false" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="59.0" prefWidth="600.0" scaleShape="false" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+<ScrollPane fitToWidth="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="60.0" minViewportWidth="600.0" minWidth="-Infinity" pannable="true" pickOnBounds="false" prefHeight="60.0" prefViewportHeight="60.0" prefViewportWidth="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
    <content>
-      <BorderPane prefHeight="56.0" prefWidth="597.0" scaleShape="false">
+      <BorderPane prefHeight="72.0" prefWidth="612.0" scaleShape="false">
          <center>
             <Label alignment="CENTER" prefHeight="70.0" prefWidth="219.0" text="Rizpa" BorderPane.alignment="CENTER">
                <font>
@@ -26,4 +26,7 @@
          </left>
       </BorderPane>
    </content>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </ScrollPane>
