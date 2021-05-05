@@ -2,24 +2,31 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="400.0" minWidth="-Infinity" prefHeight="400.0" prefViewportHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="209.0" prefWidth="600.0">
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="450.0">
          <children>
-            <Label layoutX="48.0" layoutY="42.0" prefHeight="36.0" prefWidth="85.0" text="Label" />
-            <Label layoutX="48.0" layoutY="78.0" prefHeight="36.0" prefWidth="85.0" text="Label" />
-            <TableView layoutX="233.0" layoutY="34.0" prefHeight="175.0" prefWidth="341.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
+            <SplitPane dividerPositions="0.5" layoutX="120.0" layoutY="51.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <items>
+                <AnchorPane maxHeight="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="65.0" prefWidth="613.0">
+                     <children>
+                        <Label layoutX="73.0" layoutY="22.0" text="name" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="22.0" />
+                        <Label layoutX="406.0" layoutY="22.0" text="details" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="22.0" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="336.0" prefWidth="500.0">
+                     <children>
+                        <TextField layoutX="36.0" layoutY="38.0" prefHeight="111.0" prefWidth="393.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="38.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
          </children>
-      </Pane>
+      </AnchorPane>
    </content>
 </ScrollPane>

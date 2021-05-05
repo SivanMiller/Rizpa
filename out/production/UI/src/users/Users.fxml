@@ -6,9 +6,9 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="300.0" minViewportWidth="100.0" minWidth="-Infinity" prefHeight="400.0" prefViewportHeight="300.0" prefViewportWidth="100.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minViewportHeight="300.0" minViewportWidth="100.0" minWidth="-Infinity" prefHeight="330.0" prefViewportHeight="300.0" prefViewportWidth="100.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <content>
-      <Accordion>
+      <Accordion prefHeight="314.0" prefWidth="148.0">
         <panes>
           <TitledPane animated="false" prefHeight="46.0" prefWidth="227.0" text="Admin">
             <content>
