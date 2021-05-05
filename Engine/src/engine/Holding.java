@@ -6,6 +6,11 @@ public class Holding {
     private int Quantity;
     private Stock Stock;
 
+    public Holding(int quantity, engine.Stock stock) {
+        Quantity = quantity;
+        Stock = stock;
+    }
+
     public int getQuantity() {
         return Quantity;
     }

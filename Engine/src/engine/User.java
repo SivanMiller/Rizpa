@@ -8,8 +8,9 @@ public class User {
     private String Name;
     private List<Holding> Holdings;
 
-    public User() {
-        Holdings = new ArrayList<>();
+    public User(String name, List<Holding> holdings) {
+        Name = name;
+        Holdings = holdings;
     }
 
 

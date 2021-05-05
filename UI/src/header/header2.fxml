@@ -10,12 +10,12 @@
    <content>
       <VBox alignment="TOP_CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" minWidth="250.0" prefHeight="71.0" prefWidth="626.0">
          <children>
-            <Label style="-fx-background-color: red;" text="Rizpa">
+            <Label text="Rizpa">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="changeColorButton" mnemonicParsing="false" onAction="#changeColorButtonActionListener" text="load FXML file" />
+            <Button fx:id="changeColorButton" mnemonicParsing="false" text="load FXML file" />
          </children>
       </VBox>
    </content>
