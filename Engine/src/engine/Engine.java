@@ -1,5 +1,4 @@
 package engine;
-
 import exception.*;
 import generated.*;
 import objects.NewCmdOutcomeDTO;
@@ -41,9 +40,9 @@ public class Engine implements RizpaMethods {
     }
 
     //Converting JAXB Data to actual data
-    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
-        List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
-        List<RseUser> users = stockDescriptor.getRseUsers().getRseUser();
+    private void convertDescriptor(RizpaStockExchangeDescriptor rizpaDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
+        List<RseStock> stocks = rizpaDescriptor.getRseStocks().getRseStock();
+        List<RseUser> users = rizpaDescriptor.getRseUsers().getRseUser();
 
         this.convertXMLStocks(stocks);
         this.convertXMLUsers(users);
@@ -113,8 +112,6 @@ public class Engine implements RizpaMethods {
                 Users.put(newUser.getName(), newUser);
             } else {
                 Users = tempMapUsers;
-                throw new XMLException("There are two users with the same Name in the XML you are trying to load. " +
-                        "Please make sure all users have different Names");
             }
         }
     }
