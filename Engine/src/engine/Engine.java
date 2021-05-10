@@ -1,8 +1,6 @@
 package engine;
-
 import exception.*;
-import generated.RizpaStockExchangeDescriptor;
-import generated.RseStock;
+import generated.*;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
@@ -19,7 +17,8 @@ public class Engine implements RizpaMethods {
 
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "generated";
 
-    private Map<String,Stock> Stocks;
+    private Map<String, Stock> Stocks;
+    private Map<String, User> Users;
 
     public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
@@ -40,17 +39,23 @@ public class Engine implements RizpaMethods {
         return (RizpaStockExchangeDescriptor) u.unmarshal(in);
     }
 
-
     //Converting JAXB Data to actual data
-    private void convertDescriptor(RizpaStockExchangeDescriptor stockDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
-        Map<String,Stock> tempMapStocks=this.Stocks;
+    private void convertDescriptor(RizpaStockExchangeDescriptor rizpaDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
+        List<RseStock> stocks = rizpaDescriptor.getRseStocks().getRseStock();
+        List<RseUser> users = rizpaDescriptor.getRseUsers().getRseUser();
+
+        this.convertXMLStocks(stocks);
+        this.convertXMLUsers(users);
+
+    }
+
+    private void convertXMLStocks(List<RseStock> stocks) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
+        Map<String, Stock> tempMapStocks = this.Stocks;
         Stocks = new HashMap<>();
-        List<RseStock> stocks = stockDescriptor.getRseStocks().getRseStock();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
 
         // Converting XML Stocks to Engine stocks
-        for (int i = 0; i < stocks.size(); i++)
-        {
+        for (int i = 0; i < stocks.size(); i++) {
             try {
                 Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
                 // if stock with same Symbol already exists
@@ -61,22 +66,52 @@ public class Engine implements RizpaMethods {
                         Stocks.put(newStock.getSymbol(), newStock);
                         //Insert company name to company name set
                         setCompanies.add(newStock.getCompanyName());
-                    }
-                    else {
+                    } else {
                         Stocks = tempMapStocks;
                         throw new XMLException("There are two stocks with the same Company Name in the XML you are trying to load." +
                                 "Please make sure all stocks are from different companies");
                     }
-                }
-                else {
-                    Stocks =tempMapStocks;
+                } else {
+                    Stocks = tempMapStocks;
                     throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load." +
                             "Please make sure all stocks have different Symbols");
                 }
-            }
-            catch (StockNegPriceException | StockSymbolLowercaseException e) {
+            } catch (StockNegPriceException | StockSymbolLowercaseException e) {
                 Stocks = tempMapStocks;
                 throw e;
+            }
+        }
+    }
+
+    private void convertXMLUsers(List<RseUser> users) throws XMLException {
+        Map<String, User> tempMapUsers = this.Users;
+        Users = new HashMap<>();
+
+        // Converting XML Stocks to Engine stocks
+        for (int i = 0; i < users.size(); i++) {
+
+            List<Holding> userHoldings = new ArrayList<>();
+            List<RseItem> items = users.get(i).getRseHoldings().getRseItem();
+
+            for (RseItem item : items)
+            {
+                if (Stocks.containsKey(item.getSymbol().toUpperCase())) {
+                    Holding holding = new Holding(item.getQuantity(), Stocks.get(item.getSymbol().toUpperCase()));
+                    userHoldings.add(holding);
+                } else {
+                    throw new XMLException("You are trying to load a user with a holding of stock '" +
+                            item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks" );
+                }
+            }
+
+            User newUser = new User(users.get(i).getName(), userHoldings);
+
+            // if user with same Name already exists
+            if (Users.get(newUser.getName()) == null) {
+                //Insert user to user map
+                Users.put(newUser.getName(), newUser);
+            } else {
+                Users = tempMapUsers;
             }
         }
     }
