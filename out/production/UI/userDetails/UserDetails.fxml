@@ -63,10 +63,10 @@
       </TextField>
       <TableView fx:id="stockDetails" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="4">
         <columns>
-            <TableColumn prefWidth="119.0" text="Company" />
-          <TableColumn prefWidth="56.0" text="Symbol" />
-          <TableColumn prefWidth="77.33334350585938" text="Quantity" />
-            <TableColumn prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="companyName" prefWidth="119.0" text="Company" />
+          <TableColumn fx:id="stockSymbol" prefWidth="56.0" text="Symbol" />
+          <TableColumn fx:id="stockQuantity" prefWidth="77.33334350585938" text="Quantity" />
+            <TableColumn fx:id="stockPrice" prefWidth="75.0" text="Price" />
         </columns>
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
