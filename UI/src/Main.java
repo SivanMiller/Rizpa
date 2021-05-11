@@ -243,6 +243,8 @@
 
 
 
+import app.AppController;
+import engine.Engine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -253,7 +255,7 @@ import java.net.URL;
 
 public class Main extends Application {
 
-    public final static String HEADER_fXML_RESOURCE = "/app/app3.fxml";
+    public final static String HEADER_fXML_RESOURCE = "/app/app.fxml";
 
     public static void main(String[] args) {
         Thread.currentThread().setName("main");
@@ -267,6 +269,13 @@ public class Main extends Application {
         fxmlLoader.setLocation(url);
         Parent root = fxmlLoader.load(url.openStream());
 
+        //Wire controller
+        AppController appController = fxmlLoader.getController();
+        Engine engine = new Engine();
+        appController.setEngine(engine);
+        appController.setPrimaryStage(primaryStage);
+
+        primaryStage.setTitle("RSE");
         Scene scene = new Scene(root, 1000, 600);
         primaryStage.setScene(scene);
         primaryStage.show();

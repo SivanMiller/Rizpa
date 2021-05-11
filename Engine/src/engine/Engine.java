@@ -1,4 +1,5 @@
 package engine;
+import app.AppController;
 import exception.*;
 import generated.*;
 import objects.NewCmdOutcomeDTO;
@@ -19,6 +20,10 @@ public class Engine implements RizpaMethods {
 
     private Map<String, Stock> Stocks;
     private Map<String, User> Users;
+
+    public Map<String, User> getUsers() {
+        return Users;
+    }
 
     public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {

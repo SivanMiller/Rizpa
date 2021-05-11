@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<Tab text="Untitled Tab" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Tab text="Untitled Tab" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userTab.UserTabController">
    <content>
       <ScrollPane>
         <content>
@@ -14,9 +14,9 @@
                <children>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <fx:include source="../userDetails/UserDetails2.fxml" />
+                        <fx:include fx:id="userDetails" source="../userDetails/userDetails.fxml" />
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <fx:include source="../addCommand/addCommand.fxml" />
+                        <fx:include fx:id="addCommand" source="../addCommand/addCommand.fxml" />
                      </children>
                   </HBox>
                </children>
