@@ -14,7 +14,14 @@ public class UserTabController {
     @FXML private AddCommandController addCommandController;
     private AppController mainController;
 
-    public void setMainController(AppController mainController) {
+
+    @FXML
+    private void initialize() {
+
+    userDetailsController.setMainController(this);
+    }
+
+        public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
 
@@ -31,5 +38,10 @@ public class UserTabController {
         userDetailsController.setStockSum("0");
         userDetailsController.setStocksTable(user.getHoldings());
 
+    }
+
+    public void toggleAddCommand()
+    {
+        addCommandController.togggleDisplay();
     }
 }
