@@ -276,7 +276,7 @@ public class Main extends Application {
         appController.setPrimaryStage(primaryStage);
 
         primaryStage.setTitle("RSE");
-        Scene scene = new Scene(root, 1000, 600);
+        Scene scene = new Scene(root, 1100, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

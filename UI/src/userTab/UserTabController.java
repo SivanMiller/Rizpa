@@ -18,6 +18,7 @@ public class UserTabController {
     @FXML private UserDetailsController userDetailsController;
     @FXML private AddCommandController addCommandController;
     private AppController mainController;
+    private String userName;
 
     @FXML
     private void initialize() {
@@ -25,12 +26,16 @@ public class UserTabController {
         addCommandController.setMainController(this);
     }
 
-        public void setMainController(AppController mainController) {
+    public void setMainController(AppController mainController) {
         this.mainController = mainController;
     }
 
     public void setUserDetailsController(UserDetailsController userDetailsController) {
         this.userDetailsController = userDetailsController;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public void setAddCommandController(AddCommandController addCommandController) {
@@ -39,6 +44,7 @@ public class UserTabController {
 
     public void addUserTab(User user){
         userDetailsController.setUserName(user.getName());
+        userName = user.getName();
         userDetailsController.setStockSum("0");
         userDetailsController.setStocksTable(user.getHoldings());
 
@@ -59,6 +65,6 @@ public class UserTabController {
 
     public void addCommand(String Symbol, String Type , String CmdDirection, String  Price, String Quantity)
     {
-        mainController.addCommand(Symbol,Type,CmdDirection,Price,Quantity);
+        mainController.addCommand(Symbol, Type, CmdDirection, Price, Quantity);
     }
 }

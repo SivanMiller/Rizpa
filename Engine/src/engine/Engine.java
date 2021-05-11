@@ -174,6 +174,7 @@ public class Engine implements RizpaMethods {
         }
     }
 
+
     public boolean doesStockExists(String Symbol) {
         //Check if such stock exists in stock map
         return (this.Stocks.containsKey(Symbol));

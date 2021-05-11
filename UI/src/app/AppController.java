@@ -2,14 +2,11 @@ package app;
 
 import engine.Engine;
 import engine.Holding;
-import engine.Stock;
 import engine.User;
 import exception.*;
 import header.HeaderController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -34,8 +31,11 @@ public class AppController {
     @FXML private TabPane usersTabPane;
     @FXML private GridPane header;
 
+    private List<UserTabController> tabControllersList;
     private Engine engine;
     private Stage primaryStage;
+
+
 
     @FXML
     public void initialize() {
@@ -43,6 +43,7 @@ public class AppController {
             headerController.setMainController(this);
             messagesController.setMainController(this);
         }
+        tabControllersList = new ArrayList<>();
     }
 
     public void setEngine(Engine engine) {
@@ -76,6 +77,12 @@ public class AppController {
         }
     }
 
+    private void refreshTabs(){
+        for (UserTabController controller : tabControllersList){
+            controller.addUserTab(engine.getUsers().get(controller.getUserName()));
+        }
+    }
+
     private void createUserTabs() {
         usersTabPane.getTabs().clear();
         for(User user : engine.getUsers().values())
@@ -87,6 +94,7 @@ public class AppController {
                 Tab userTab = loader.load();
 
                 UserTabController userTabController = loader.getController();
+                tabControllersList.add(userTabController);
                 userTabController.setMainController(this);
                 userTab.setText(user.getName());
                 userTabController.addUserTab(user);
@@ -126,11 +134,37 @@ public class AppController {
 
         try {
             messagesController.clearMessages();
-            engine.addCommand(Symbol, Type, CmdDirection, 0, 0);
+            int quantity = convertStringToInt(Quantity);
+            int price = convertStringToInt(Price);
+            String type = "0";
+            if (Type == "LMT"){
+                type = "1";
+            }
+            else if(Type == "MKT"){
+                type = "2";
+            }
+            engine.addCommand(Symbol, type, CmdDirection, price, quantity);
+            refreshTabs();
+            messagesController.addMessage("Command added successfully!");
         }
         catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
             messagesController.addMessage(e.getMessage());
 
+        } catch (Exception e) {
+            messagesController.addMessage(e.getMessage());
+        }
+    }
+
+    public int convertStringToInt(String str) throws Exception {
+        try {
+            int res = Integer.parseInt(str);
+            //If input is negative
+            if (res <= 0)
+                throw new Exception("Please enter only positive numbers");
+            else
+                return res;
+        } catch (NumberFormatException e) {
+            throw new Exception("Please enter only numbers");
         }
     }
 }
