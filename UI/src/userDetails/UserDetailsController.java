@@ -1,5 +1,6 @@
 package userDetails;
 
+import app.AppController;
 import engine.Holding;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
@@ -11,6 +12,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import userTab.UserTabController;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserDetailsController implements Initializable {
+    private UserTabController mainController;
     @FXML private TextField userName;
     @FXML private TextField stockSum;
     @FXML private TableView<Sivan> stockDetails;
@@ -27,6 +30,10 @@ public class UserDetailsController implements Initializable {
     @FXML private TableColumn<Sivan, Integer> stockPrice;
 
     private ObservableList<Sivan> data;
+
+    public void setMainController(UserTabController mainController) {
+        this.mainController = mainController;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,7 +73,7 @@ public class UserDetailsController implements Initializable {
 
     @FXML
     private void onActionAddCommand() {
-
+        mainController.toggleAddCommand();
     }
 }
 
