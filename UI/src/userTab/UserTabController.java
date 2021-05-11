@@ -2,10 +2,15 @@ package userTab;
 
 import addCommand.AddCommandController;
 import app.AppController;
+import engine.Holding;
+import engine.Stock;
 import engine.User;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import userDetails.UserDetailsController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserTabController {
     @FXML private GridPane userDetails;
@@ -14,11 +19,10 @@ public class UserTabController {
     @FXML private AddCommandController addCommandController;
     private AppController mainController;
 
-
     @FXML
     private void initialize() {
-
-    userDetailsController.setMainController(this);
+        userDetailsController.setMainController(this);
+        addCommandController.setMainController(this);
     }
 
         public void setMainController(AppController mainController) {
@@ -44,4 +48,13 @@ public class UserTabController {
     {
         addCommandController.togggleDisplay();
     }
+
+    public List<String> getAllStocks() {
+        return mainController.getAllStocks();
+    }
+
+    public List<String> getUserStocks(){
+        return mainController.getUserStocks(userDetailsController.getUserNameString());
+    }
+
 }

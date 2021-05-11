@@ -14,9 +14,7 @@ public class MessagesController {
         this.mainController = mainController;
     }
 
-    public void clearMessages(){
-        messageList.getItems().clear();
-    }
+    public void clearMessages(){ messageList.getItems().clear(); }
 
     public void addMessage(String message){
         messageList.getItems().add(message);

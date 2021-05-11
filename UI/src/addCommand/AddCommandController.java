@@ -2,10 +2,15 @@ package addCommand;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import userDetails.StockDetails;
+import userTab.UserTabController;
 
 public class AddCommandController {
+    private UserTabController mainController;
     @FXML private ComboBox<String> StockSymbol;
     @FXML private ComboBox<String> CommandType;
     @FXML private RadioButton BuyButton;
@@ -19,6 +24,10 @@ public class AddCommandController {
     private SimpleBooleanProperty sellBuyProperty;
     private SimpleBooleanProperty commandValuesProperty;
     private SimpleBooleanProperty addCommandProperty;
+
+    public void setMainController(UserTabController mainController) {
+        this.mainController = mainController;
+    }
 
     public AddCommandController() {
         this.sellBuyProperty = new SimpleBooleanProperty(false);
@@ -47,7 +56,16 @@ public class AddCommandController {
     @FXML
     private void onActionBuyORSell()
     {
-        commandValuesProperty.set(!commandValuesProperty.get());
+        ObservableList<String> data;
+        commandValuesProperty.set(true);
+        if (BuyButton.isSelected()){
+            data = FXCollections.observableArrayList(mainController.getAllStocks());
+            StockSymbol.setItems(data);
+        }
+        if (sellButton.isSelected()) {
+            data = FXCollections.observableArrayList(mainController.getUserStocks());
+            StockSymbol.setItems(data);
+        }
     }
     @FXML
     private void onActionCommandValues()
