@@ -62,12 +62,18 @@ public class AppController {
 
     public void loadXML(String filePath){
         try {
+            messagesController.clearMessages();
             engine.loadXML(filePath);
             this.createUserTabs();
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
                  JAXBException | StockSymbolLowercaseException e) {
-            e.printStackTrace(); //TODO: MESSAGES
+            messagesController.addMessage(e.getMessage());
+            messagesController.addMessage("The system will continue with the last version.");
         }
+    }
+
+    private void clearUserTabs() {
+
     }
 
     private void createUserTabs() {
@@ -86,8 +92,7 @@ public class AppController {
                 usersTabPane.getTabs().add(userTab);
 
             } catch (IOException e) {
-                e.printStackTrace(); // TODO Messages
-
+                messagesController.addMessage(e.getMessage());
             }
         }
 

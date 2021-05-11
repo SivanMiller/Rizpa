@@ -78,7 +78,7 @@ public class Engine implements RizpaMethods {
                     }
                 } else {
                     Stocks = tempMapStocks;
-                    throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load." +
+                    throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load. " +
                             "Please make sure all stocks have different Symbols");
                 }
             } catch (StockNegPriceException | StockSymbolLowercaseException e) {
@@ -104,6 +104,7 @@ public class Engine implements RizpaMethods {
                     Holding holding = new Holding(item.getQuantity(), Stocks.get(item.getSymbol().toUpperCase()));
                     userHoldings.add(holding);
                 } else {
+                    Users = tempMapUsers;
                     throw new XMLException("You are trying to load a user with a holding of stock '" +
                             item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks" );
                 }
@@ -117,6 +118,8 @@ public class Engine implements RizpaMethods {
                 Users.put(newUser.getName(), newUser);
             } else {
                 Users = tempMapUsers;
+                throw new XMLException("There are two users with the same Name in the XML you are trying to load. " +
+                        "Please make sure all users have different Names");
             }
         }
     }
