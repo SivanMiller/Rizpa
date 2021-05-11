@@ -57,4 +57,8 @@ public class UserTabController {
         return mainController.getUserStocks(userDetailsController.getUserNameString());
     }
 
+    public void addCommand(String Symbol, String Type , String CmdDirection, String  Price, String Quantity)
+    {
+        mainController.addCommand(Symbol,Type,CmdDirection,Price,Quantity);
+    }
 }

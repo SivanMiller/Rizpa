@@ -20,10 +20,14 @@ public class AddCommandController {
     @FXML private Label stockSymbolLabel;
     @FXML private Label commandTypeLabel;
     @FXML private Label quantityCommandLabel;
+    @FXML private Label priceLabel;
+    @FXML private TextField price;
+
 
     private SimpleBooleanProperty sellBuyProperty;
     private SimpleBooleanProperty commandValuesProperty;
     private SimpleBooleanProperty addCommandProperty;
+    private SimpleBooleanProperty LMTProperty;
 
     public void setMainController(UserTabController mainController) {
         this.mainController = mainController;
@@ -33,6 +37,7 @@ public class AddCommandController {
         this.sellBuyProperty = new SimpleBooleanProperty(false);
         this.commandValuesProperty = new SimpleBooleanProperty(false);
         this.addCommandProperty = new SimpleBooleanProperty(false);
+        this.LMTProperty = new SimpleBooleanProperty(false);
     }
 
     @FXML
@@ -46,6 +51,13 @@ public class AddCommandController {
         stockSymbolLabel.disableProperty().bind(commandValuesProperty.not());
         quantityCommandLabel.disableProperty().bind(commandValuesProperty.not());
         commandTypeLabel.disableProperty().bind(commandValuesProperty.not());
+        price.visibleProperty().bind(LMTProperty);
+        priceLabel.visibleProperty().bind(LMTProperty);
+
+        // initialize command type chooser
+        CommandType.getItems().add("LMT");
+        CommandType.getItems().add("MKT");
+
     }
 
     public void togggleDisplay()
@@ -70,7 +82,32 @@ public class AddCommandController {
     @FXML
     private void onActionCommandValues()
     {
-        addCommandProperty.set(!!addCommandProperty.get());
+        if(CommandType.getValue()!=null && CommandType.getValue()=="LMT")
+        {
+            LMTProperty.set(true);
+        }
+        else
+        {
+         LMTProperty.set(false);
+        }
+        if(StockSymbol.getValue()!=null && CommandType.getValue()!=null && !(QuantityCommand.getText().trim().isEmpty())
+                                                                && ((LMTProperty.get() && !price.getText().trim().isEmpty()) || !LMTProperty.get()) )
+
+           addCommandProperty.set(true);
+
+    }
+    @FXML
+    private void onActionCommand()
+    {
+
+        String CmdDirection="";
+        if (BuyButton.isSelected()){
+            CmdDirection="1";
+        }
+        else
+            CmdDirection="2";
+        mainController.addCommand(StockSymbol.getValue(),CommandType.getValue(),CmdDirection,"0",QuantityCommand.getText());
     }
 
 }
+

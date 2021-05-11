@@ -4,9 +4,7 @@ import engine.Engine;
 import engine.Holding;
 import engine.Stock;
 import engine.User;
-import exception.StockNegPriceException;
-import exception.StockSymbolLowercaseException;
-import exception.XMLException;
+import exception.*;
 import header.HeaderController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -122,5 +120,17 @@ public class AppController {
         }
 
         return stocks;
+    }
+
+    public void addCommand(String Symbol, String Type , String CmdDirection, String Price, String Quantity) {
+
+        try {
+            messagesController.clearMessages();
+            engine.addCommand(Symbol, Type, CmdDirection, 0, 0);
+        }
+        catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
+            messagesController.addMessage(e.getMessage());
+
+        }
     }
 }
