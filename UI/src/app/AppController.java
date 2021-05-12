@@ -130,7 +130,7 @@ public class AppController {
         return stocks;
     }
 
-    public void addCommand(String Symbol, String Type , String CmdDirection, String Price, String Quantity) {
+    public void addCommand(String userName, String Symbol, String Type , String CmdDirection, String Price, String Quantity) {
 
         try {
             messagesController.clearMessages();
@@ -143,7 +143,7 @@ public class AppController {
             else if(Type == "MKT"){
                 type = "2";
             }
-            engine.addCommand(Symbol, type, CmdDirection, price, quantity);
+            engine.addCommand(userName, Symbol, type, CmdDirection, price, quantity);
             refreshTabs();
             messagesController.addMessage("Command added successfully!");
         }

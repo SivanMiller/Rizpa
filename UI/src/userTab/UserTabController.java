@@ -65,6 +65,6 @@ public class UserTabController {
 
     public void addCommand(String Symbol, String Type , String CmdDirection, String  Price, String Quantity)
     {
-        mainController.addCommand(Symbol, Type, CmdDirection, Price, Quantity);
+        mainController.addCommand(userName, Symbol, Type, CmdDirection, Price, Quantity);
     }
 }

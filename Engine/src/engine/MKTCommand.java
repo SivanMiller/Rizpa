@@ -12,7 +12,7 @@ public class MKTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public MKTCommand(int Quantity, CmdDirection Direction) throws StockNegQuantityException {
+    public MKTCommand(User user,int Quantity, CmdDirection Direction) throws StockNegQuantityException {
         if (Quantity < 0)
             throw new StockNegQuantityException();
         this.Price = 0;
@@ -20,6 +20,8 @@ public class MKTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.Direction = Direction;
         this.Order = ORDER_COUNTER;
+        this.user=user;
+
         ORDER_COUNTER++;
     }
 

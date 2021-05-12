@@ -13,7 +13,7 @@ public class LMTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public LMTCommand(int Price, int Quantity, CmdDirection Direction) throws CommandNegPriceException, StockNegQuantityException {
+    public LMTCommand(User user,int Price, int Quantity, CmdDirection Direction) throws CommandNegPriceException, StockNegQuantityException {
         if (Price < 0)
             throw new CommandNegPriceException();
         if (Quantity < 0)
@@ -23,6 +23,7 @@ public class LMTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.Direction = Direction;
         this.Order = ORDER_COUNTER;
+        this.user=user;
         ORDER_COUNTER++;
     }
 
