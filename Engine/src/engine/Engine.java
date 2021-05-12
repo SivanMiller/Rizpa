@@ -4,6 +4,7 @@ import exception.*;
 import generated.*;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
+import objects.TransactionDTO;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -95,14 +96,14 @@ public class Engine implements RizpaMethods {
         // Converting XML Stocks to Engine stocks
         for (int i = 0; i < users.size(); i++) {
 
-            List<Holding> userHoldings = new ArrayList<>();
+            Map<String, Holding> userHoldings = new HashMap<>();
             List<RseItem> items = users.get(i).getRseHoldings().getRseItem();
 
             for (RseItem item : items)
             {
                 if (Stocks.containsKey(item.getSymbol().toUpperCase())) {
                     Holding holding = new Holding(item.getQuantity(), Stocks.get(item.getSymbol().toUpperCase()));
-                    userHoldings.add(holding);
+                    userHoldings.put(holding.getStock().getSymbol(), holding);
                 } else {
                     Users = tempMapUsers;
                     throw new XMLException("You are trying to load a user with a holding of stock '" +
@@ -155,7 +156,15 @@ public class Engine implements RizpaMethods {
             try {
                 Command.CmdDirection Direction = convertStringToCmdDirection(CmdDirection);
                 int nType = Integer.parseInt(Type);
-                return stock.addNewCommand(user,nType, Direction, Price, Quantity);
+                NewCmdOutcomeDTO newCmdOutcomeDTO = stock.addNewCommand(user,nType, Direction, Price, Quantity);
+
+                //Commit transaction in users
+                for (TransactionDTO transaction : newCmdOutcomeDTO.getNewTransaction()){
+                    transaction.getBuyUser().commitBuyTransaction(stock, transaction);
+                    transaction.getSellUser().commitSellTransaction(stock, transaction);
+                }
+
+                return newCmdOutcomeDTO;
             } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
                 throw e;
             }

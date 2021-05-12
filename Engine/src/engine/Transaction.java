@@ -14,15 +14,16 @@ public class Transaction {
     private String Date;
     private int Turnover;
     protected int Order;
+    protected User buyUser;
+    protected User sellUser;
 
-    public Transaction(){
-        this.Date =DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
-    }
-    public Transaction(int Price, int Quantity, String Date, int Order) {
+    public Transaction(int Price, int Quantity, String Date, int Order, User buyUser, User sellUser) {
         this.Price = Price;
         this.Quantity = Quantity;
         this.Turnover = Price * Quantity;
-        this.Date =DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+        this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
+        this.buyUser = buyUser;
+        this.sellUser = sellUser;
         this.Order = ORDER_COUNTER;
      }
 
@@ -54,6 +55,23 @@ public class Transaction {
         this.Turnover = Turnover;
     }
 
+
+    public User getBuyUser() {
+        return buyUser;
+    }
+
+    public void setBuyUser(User buyUser) {
+        this.buyUser = buyUser;
+    }
+
+    public User getSellUser() {
+        return sellUser;
+    }
+
+    public void setSellUser(User sellUser) {
+        this.sellUser = sellUser;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,6 +97,6 @@ public class Transaction {
     }
 
     public TransactionDTO convertToDTO() {
-        return new TransactionDTO(this.Price, this.Quantity, this.Date, this.Turnover);
+        return new TransactionDTO(this.Price, this.Quantity, this.Date, this.Turnover, this.buyUser, this.sellUser);
     }
 }

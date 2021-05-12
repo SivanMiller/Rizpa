@@ -1,18 +1,20 @@
 package engine;
 
+import objects.TransactionDTO;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class User {
 
     private String Name;
-    private List<Holding> Holdings;
+    private Map<String, Holding> Holdings;
 
-    public User(String name, List<Holding> holdings) {
+    public User(String name, Map<String, Holding> holdings) {
         Name = name;
         Holdings = holdings;
     }
-
 
     public String getName() {
         return Name;
@@ -22,12 +24,34 @@ public class User {
         Name = name;
     }
 
-    public List<Holding> getHoldings() {
+    public Map<String, Holding> getHoldings() {
         return Holdings;
     }
 
-    public void setHoldings(List<Holding> holdings) {
+    public Holding getHolding(String Symbol) { return Holdings.get(Symbol); }
+
+    public void setHoldings(Map<String, Holding> holdings) {
         Holdings = holdings;
+    }
+
+    public void commitBuyTransaction(Stock stock, TransactionDTO transaction){
+        Holding stockHolding = this.getHolding(stock.getSymbol());
+        if (stockHolding == null)
+        {
+            Holding newHolding = new Holding(transaction.getQuantity(), stock);
+            this.getHoldings().put(stock.getSymbol(), newHolding);
+        }
+        else {
+            stockHolding.setQuantity(stockHolding.getQuantity() + transaction.getQuantity());
+        }
+    }
+
+    public void commitSellTransaction(Stock stock, TransactionDTO transaction){
+        Holding stockHolding = this.getHolding(stock.getSymbol());
+        stockHolding.setQuantity(stockHolding.getQuantity() - transaction.getQuantity());
+        if (stockHolding.getQuantity() == 0) {
+            this.getHoldings().remove(stock.getSymbol());
+        }
     }
 
     @Override

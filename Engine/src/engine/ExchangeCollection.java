@@ -57,10 +57,11 @@ public class ExchangeCollection {
     public int getLastTransactionPrice() { return LastPrice; }
 
     public void addNewTransaction(Transaction newTransaction) {
-        //Transaction trNewTransaction = new Transaction(Price, Quantity, Date, Price * Quantity, Order);
-        // Adding to Transaction set
+       // Adding to Transaction set
         Transaction.add(newTransaction);
+
         this.LastPrice = newTransaction.getPrice();
+
         // Sum of all transactions turnover
         this.Turnover += newTransaction.getPrice() * newTransaction.getQuantity();
     }
@@ -103,7 +104,7 @@ public class ExchangeCollection {
                 // the quantity is matching
                 if (nQuantity == 0) {
                     // add new Transaction
-                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), NewCommand.getQuantity(), Date, NewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), NewCommand.getQuantity(), Date, NewCommand.Order, NewCommand.getUser(), this.SellCommand.peek().getUser());
                     addNewTransaction(NewTransaction);
                     outcome.addTransaction(NewTransaction.convertToDTO());
                     NewCommand.setQuantity(0);
@@ -114,7 +115,7 @@ public class ExchangeCollection {
                 else if (nQuantity > 0) {
                     //sDate = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
                     // add new Transaction
-                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), NewCommand.getQuantity(), Date, NewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), NewCommand.getQuantity(), Date, NewCommand.Order, NewCommand.getUser(), this.SellCommand.peek().getUser());
                     addNewTransaction(NewTransaction);
                     outcome.addTransaction(NewTransaction.convertToDTO());
                     NewCommand.setQuantity(0);
@@ -124,7 +125,7 @@ public class ExchangeCollection {
                 // there is more Stock to BUY----> nQuantity < 0
                 else {
                     // add new Transaction
-                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), this.SellCommand.peek().getQuantity(), Date, NewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.SellCommand.peek().getPrice(), this.SellCommand.peek().getQuantity(), Date, NewCommand.Order, NewCommand.getUser(), this.SellCommand.peek().getUser());
                     addNewTransaction(NewTransaction);
                     outcome.addTransaction(NewTransaction.convertToDTO());
                     // update BUY command??
@@ -165,7 +166,7 @@ public class ExchangeCollection {
                 if (nQuantity == 0) {
                     // add new Transaction
 
-                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), NewCommand.getQuantity(), sDate, NewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), NewCommand.getQuantity(), sDate, NewCommand.Order, this.BuyCommand.peek().getUser(), NewCommand.getUser());
                     addNewTransaction(NewTransaction);
                     outcome.addTransaction(NewTransaction.convertToDTO());
                     NewCommand.setQuantity(0);
@@ -176,7 +177,7 @@ public class ExchangeCollection {
                 //The quantity in the BUY collection is larger
                 else if (nQuantity > 0) {
                     // add new Transaction
-                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), NewCommand.getQuantity(), sDate, NewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), NewCommand.getQuantity(), sDate, NewCommand.Order, this.BuyCommand.peek().getUser(), NewCommand.getUser());
                     addNewTransaction(NewTransaction);
                     outcome.addTransaction(NewTransaction.convertToDTO());
                     NewCommand.setQuantity(0);
@@ -186,7 +187,7 @@ public class ExchangeCollection {
                 //The quantity in the BUY collection is smaller ----> nQuantity < 0
                 else {
                     // add new Transaction
-                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), this.BuyCommand.peek().getQuantity(), sDate, NewCommand.Order);
+                    Transaction NewTransaction = new Transaction(this.BuyCommand.peek().getPrice(), this.BuyCommand.peek().getQuantity(), sDate, NewCommand.Order, this.BuyCommand.peek().getUser(), NewCommand.getUser());
                     addNewTransaction(NewTransaction);
                     outcome.addTransaction(NewTransaction.convertToDTO());
 

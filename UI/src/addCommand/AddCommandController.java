@@ -109,7 +109,7 @@ public class AddCommandController {
     @FXML
     private void onActionCommand() {
         mainController.addCommand(StockSymbol.getValue(), CommandType.getValue(), CmdDirection,
-                                  price.getText(), QuantityCommand.getText());
+                                  price.getText(), QuantityCommand.getText()); //TODO: When sell command check quantity of user's stocks. make sure he has enough to sell
     }
 
 }

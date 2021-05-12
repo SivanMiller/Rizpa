@@ -87,7 +87,7 @@ public class Stock {
                '}';
     }
 
-    public NewCmdOutcomeDTO addNewCommand(User user,int Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addNewCommand(User user, int Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
             // the values of the enum start from 0

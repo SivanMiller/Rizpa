@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import messages.MessagesController;
+import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 import userTab.UserTabController;
 
@@ -122,7 +123,7 @@ public class AppController {
     public List<String> getUserStocks(String userName){
         List<String> stocks = new ArrayList<>();
 
-        for (Holding holding : engine.getUsers().get(userName).getHoldings())
+        for (Holding holding : engine.getUsers().get(userName).getHoldings().values())
         {
             stocks.add(holding.getStock().getSymbol());
         }
@@ -140,12 +141,12 @@ public class AppController {
             if (Type == "LMT"){
                 type = "1";
             }
-            else if(Type == "MKT"){
+            else if(Type == "MKT") {
                 type = "2";
             }
-            engine.addCommand(userName, Symbol, type, CmdDirection, price, quantity);
+            NewCmdOutcomeDTO newCmdOutcomeDTO = engine.addCommand(userName, Symbol, type, CmdDirection, price, quantity);
             refreshTabs();
-            messagesController.addMessage("Command added successfully!");
+            messagesController.addMessage(newCmdOutcomeDTO.toString());
         }
         catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
             messagesController.addMessage(e.getMessage());
@@ -159,10 +160,7 @@ public class AppController {
         try {
             int res = Integer.parseInt(str);
             //If input is negative
-            if (res <= 0)
-                throw new Exception("Please enter only positive numbers");
-            else
-                return res;
+            return res;
         } catch (NumberFormatException e) {
             throw new Exception("Please enter only numbers");
         }

@@ -12,9 +12,12 @@ public class NewCmdOutcomeDTO {
         this.NewTransaction = new ArrayList<>();
     }
 
+    public List<TransactionDTO> getNewTransaction() { return NewTransaction; }
+
     public void addCommand(CommandDTO newCommand) {
         NewCommand = newCommand;
     }
+
     public void addTransaction(TransactionDTO newTransaction) {
         this.NewTransaction.add(newTransaction);
     }

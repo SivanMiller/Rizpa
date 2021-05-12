@@ -14,6 +14,7 @@ import userTab.UserTabController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class UserDetailsController implements Initializable {
@@ -55,11 +56,11 @@ public class UserDetailsController implements Initializable {
         this.stockSum.setText(stockSum);
     }
 
-    public void setStocksTable(List<Holding> holdings) {
+    public void setStocksTable(Map<String, Holding> holdings) {
         List<StockDetails> userList = new ArrayList();
 
         stockDetails.setItems(this.data);
-        for(Holding holding : holdings) {
+        for(Holding holding : holdings.values()) {
             StockDetails stockDetails = new StockDetails(holding.getStock().getCompanyName(), holding.getStock().getSymbol(),
                                     holding.getQuantity(), holding.getStock().getPrice());
             userList.add(stockDetails);

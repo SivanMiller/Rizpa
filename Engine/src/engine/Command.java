@@ -13,8 +13,6 @@ public abstract class Command {
         SELL
     };
 
-
-
     protected int Price;
     protected int Quantity;
     protected String Date;
@@ -22,8 +20,11 @@ public abstract class Command {
     protected int Order;
     protected User user;
 
-    public User getUser() { return user;    }
-    public int getPrice() {  return Price;    }
+    public void setUser(User user) { this.user = user; }
+
+    public User getUser() { return user;  }
+
+    public int getPrice() {  return Price;  }
 
     public void setPrice(int nPrice) {
         this.Price = nPrice;
