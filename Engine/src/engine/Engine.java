@@ -143,8 +143,9 @@ public class Engine implements RizpaMethods {
         return stock.convertToDTO();
     }
 
-    public NewCmdOutcomeDTO addCommand(String Symbol, String Type , String CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addCommand(String userName,String Symbol, String Type , String CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
         Stock stock = this.Stocks.get(Symbol);
+        User user = this.Users.get(userName);
 
         //Check if such stock exists in stock map
         if (stock == null) {
@@ -154,7 +155,7 @@ public class Engine implements RizpaMethods {
             try {
                 Command.CmdDirection Direction = convertStringToCmdDirection(CmdDirection);
                 int nType = Integer.parseInt(Type);
-                return stock.addNewCommand(nType, Direction, Price, Quantity);
+                return stock.addNewCommand(user,nType, Direction, Price, Quantity);
             } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
                 throw e;
             }

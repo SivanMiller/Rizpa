@@ -13,12 +13,16 @@ public abstract class Command {
         SELL
     };
 
+
+
     protected int Price;
     protected int Quantity;
     protected String Date;
     protected CmdDirection Direction;
     protected int Order;
+    protected User user;
 
+    public User getUser() { return user;    }
     public int getPrice() {  return Price;    }
 
     public void setPrice(int nPrice) {
