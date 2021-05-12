@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import messages.MessagesController;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
+import userTab.AdminTabController;
 import userTab.UserTabController;
 
 import javax.xml.bind.JAXBException;
@@ -47,6 +48,7 @@ public class AppController {
         tabControllersList = new ArrayList<>();
     }
 
+
     public void setEngine(Engine engine) {
         this.engine = engine;
     }
@@ -63,6 +65,10 @@ public class AppController {
     public void setMessagesController(MessagesController messagesController) {
         this.messagesController = messagesController;
         this.messagesController.setMainController(this);
+    }
+
+    public void clearMessages(){
+        messagesController.clearMessages();
     }
 
     public void loadXML(String filePath){
@@ -106,6 +112,23 @@ public class AppController {
                 messagesController.addMessage(e.getMessage());
             }
         }
+        createAdminTab();
+    }
+
+    private void createAdminTab() {
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                URL url = getClass().getResource("/userTab/adminTab.fxml");
+                loader.setLocation(url);
+                Tab adminTab = loader.load();
+
+                AdminTabController adminTabController = loader.getController();
+                usersTabPane.getTabs().add(adminTab);
+
+            } catch (IOException e) {
+                messagesController.addMessage(e.getMessage());
+            }
+
 
     }
 

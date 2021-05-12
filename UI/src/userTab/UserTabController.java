@@ -67,4 +67,8 @@ public class UserTabController {
     {
         mainController.addCommand(userName, Symbol, Type, CmdDirection, Price, Quantity);
     }
+    @FXML
+    private void changedTab(){
+        mainController.clearMessages();
+    }
 }
