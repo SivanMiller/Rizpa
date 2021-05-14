@@ -44,15 +44,18 @@
       </Label>
       <TableView fx:id="buyCommandTableView" prefHeight="100.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
-          <TableColumn fx:id="buyDate" minWidth="-1.0" text="Date" />
-          <TableColumn fx:id="buyType" minWidth="-1.0" text="Type" />
-            <TableColumn fx:id="buyQuantity" minWidth="-1.0" text="Quantity" />
-            <TableColumn fx:id="buyPrice" minWidth="-1.0" text="Price" />
-            <TableColumn fx:id="buyUser" minWidth="-1.0" text="User" />
+          <TableColumn fx:id="buyDate" editable="false" minWidth="-1.0" text="Date" />
+          <TableColumn fx:id="buyType" editable="false" minWidth="-1.0" text="Type" />
+            <TableColumn fx:id="buyQuantity" editable="false" minWidth="-1.0" text="Quantity" />
+            <TableColumn fx:id="buyPrice" editable="false" minWidth="-1.0" text="Price" />
+            <TableColumn fx:id="buyUser" editable="false" minWidth="-1.0" text="User" />
         </columns>
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <TableView fx:id="sellCommandTableView" prefHeight="100.0" prefWidth="400.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
         <columns>
@@ -65,6 +68,9 @@
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <TableView fx:id="transactionTableView" prefHeight="100.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
         <columns>
@@ -77,6 +83,9 @@
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <Label fx:id="transactionLabel" text="Transactions:" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <GridPane.margin>

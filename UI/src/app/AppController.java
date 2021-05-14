@@ -89,7 +89,6 @@ public class AppController {
         for (UserTabController controller : tabControllersList){
             controller.createUserTab(engine.getUser(controller.getUserName()));
         }
-        //adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
     }
 
     private void createUserTabs() {
@@ -120,7 +119,7 @@ public class AppController {
     private void createAdminTab() {
             try {
                 FXMLLoader loader = new FXMLLoader();
-                URL url = getClass().getResource("/adminTab/adminTab1.fxml");
+                URL url = getClass().getResource("/adminTab/adminTab.fxml");
                 loader.setLocation(url);
                 Tab adminTab = loader.load();
 
