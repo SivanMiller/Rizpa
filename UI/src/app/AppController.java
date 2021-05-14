@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import messages.MessagesController;
+import objects.ExchangeCollectionDTO;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 import userTab.AdminTabController;
@@ -29,6 +30,7 @@ public class AppController {
 
     @FXML private HeaderController headerController;
     @FXML private MessagesController messagesController;
+    @FXML private AdminTabController adminTabController;
     @FXML private AnchorPane messages;
     @FXML private TabPane usersTabPane;
     @FXML private GridPane header;
@@ -88,6 +90,7 @@ public class AppController {
         for (UserTabController controller : tabControllersList){
             controller.addUserTab(engine.getUsers().get(controller.getUserName()));
         }
+        //adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
     }
 
     private void createUserTabs() {
@@ -122,12 +125,16 @@ public class AppController {
                 loader.setLocation(url);
                 Tab adminTab = loader.load();
 
-                AdminTabController adminTabController = loader.getController();
+                this.adminTabController = loader.getController();
                 usersTabPane.getTabs().add(adminTab);
+                this.adminTabController.setMainController(this);
+                this.adminTabController.addAdminTab();
+               //this.adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
 
             } catch (IOException e) {
                 messagesController.addMessage(e.getMessage());
             }
+
 
 
     }
@@ -137,7 +144,7 @@ public class AppController {
 
         for (StockDTO stock : engine.getAllStocks())
         {
-            stocks.add(stock.getSymbol());
+            stocks.add(stock.getStockSymbol());
         }
 
         return stocks;
@@ -187,5 +194,9 @@ public class AppController {
         } catch (NumberFormatException e) {
             throw new Exception("Please enter only numbers");
         }
+    }
+    public ExchangeCollectionDTO getExchangeCollectionForStock(String stockSymbol)
+    {
+       return engine.getExchangeCollectionDTO(stockSymbol);
     }
 }

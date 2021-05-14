@@ -1,29 +1,69 @@
 package objects;
 
-public abstract class CommandDTO {
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 
+public class CommandDTO {
+    public final SimpleStringProperty date;
+    public final SimpleStringProperty type;
+    public final SimpleIntegerProperty quantity;
+    public final SimpleIntegerProperty price;
+    public final SimpleStringProperty user;
 
-    protected int Price;
-    protected int Quantity;
-    protected String Date;
-    protected int Turnover;
-
-    public String getDate() {
-        return Date;
+    public CommandDTO(String date, String type, Integer quantity, Integer price, String user) {
+        this.date = new SimpleStringProperty(date);
+        this.type = new SimpleStringProperty(type);
+        this.quantity = new SimpleIntegerProperty(quantity);
+        this.price = new SimpleIntegerProperty(price);
+        this.user =new SimpleStringProperty(user);
     }
 
-    public int getPrice() {
-        return Price;
+    public String getDate() {
+        return date.get();
+    }
+
+    public SimpleStringProperty getDateProperty() {
+        return date;
+    }
+
+    public String getType() {
+        return type.get();
+    }
+
+    public SimpleStringProperty getTypeProperty() {
+        return type;
     }
 
     public int getQuantity() {
-        return Quantity;
+        return quantity.get();
     }
 
-    public int getTurnover() {
-        return Turnover;
+    public SimpleIntegerProperty getQuantityProperty() {
+        return quantity;
+    }
+
+    public int getPrice() {
+        return price.get();
+    }
+
+    public SimpleIntegerProperty getPriceProperty() {
+        return price;
+    }
+
+    public String getUser() {
+        return user.get();
+    }
+
+    public SimpleStringProperty getUserProperty() {
+        return user;
     }
 
     @Override
-    public abstract String toString();
+    public String toString() {
+        return "Price = " + getPrice() +
+                ", Quantity = " + getQuantity() +
+                ", Date = '" + getDate() + '\'' +
+                ", User = " + getUser();
+    }
+
 }

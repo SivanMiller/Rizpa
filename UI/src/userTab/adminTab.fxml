@@ -10,7 +10,7 @@
         <content>
           <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                <children>
-                  <fx:include source="adminDetails.fxml" />
+                  <fx:include fx:id="adminDetails" source="adminDetails.fxml" />
                </children>
             </AnchorPane>
         </content>

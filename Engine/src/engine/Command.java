@@ -1,6 +1,7 @@
 package engine;
 
 import objects.CommandDTO;
+import objects.CommandDTOS;
 
 import java.util.Comparator;
 import java.util.Objects;

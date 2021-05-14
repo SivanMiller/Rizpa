@@ -1,9 +1,6 @@
 package engine;
 
-import objects.CommandDTO;
-import objects.ExchangeCollectionDTO;
-import objects.NewCmdOutcomeDTO;
-import objects.TransactionDTO;
+import objects.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

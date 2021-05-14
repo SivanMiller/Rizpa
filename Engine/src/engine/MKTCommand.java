@@ -1,7 +1,8 @@
 package engine;
 
 import exception.StockNegQuantityException;
-import objects.MKTCommandDTO;
+import objects.CommandDTO;
+import objects.MKTCommandDTOS;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -34,10 +35,9 @@ public class MKTCommand extends Command {
                 ", Direction =" + Direction +
                 ", Order =" + Order;
     }
-
-    @Override
-    public MKTCommandDTO convertToDTO() {
-        return new MKTCommandDTO(this.Price, this.Quantity, this.Date, this.Price * this.Quantity);
+@Override
+    public CommandDTO convertToDTO() {
+        return new CommandDTO(this.Date, "MKT", this.Quantity, this.Price,this.user.getName());
     }
 }
 

@@ -9,6 +9,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import objects.StockDTO;
 import userTab.UserTabController;
 
 import java.net.URL;
@@ -22,13 +23,13 @@ public class UserDetailsController implements Initializable {
 
     @FXML private TextField userName;
     @FXML private TextField stockSum;
-    @FXML private TableView<StockDetails> stockDetails;
-    @FXML private TableColumn<StockDetails, String> companyName;
-    @FXML private TableColumn<StockDetails, String> stockSymbol;
-    @FXML private TableColumn<StockDetails, Integer> stockQuantity;
-    @FXML private TableColumn<StockDetails, Integer> stockPrice;
+    @FXML private TableView<StockDTO> stockDetails;
+    @FXML private TableColumn<StockDTO, String> stockSymbol;
+    @FXML private TableColumn<StockDTO, String> companyName;
+    @FXML private TableColumn<StockDTO, Integer> stockQuantity;
+    @FXML private TableColumn<StockDTO, Integer> stockPrice;
 
-    private ObservableList<StockDetails> data;
+    private ObservableList<StockDTO> data;
 
     public void setMainController(UserTabController mainController) {
         this.mainController = mainController;
@@ -37,10 +38,10 @@ public class UserDetailsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        companyName.setCellValueFactory(new PropertyValueFactory<StockDetails, String>("companyName"));
-        stockSymbol.setCellValueFactory(new PropertyValueFactory<StockDetails, String>("stockSymbol"));
-        stockQuantity.setCellValueFactory(new PropertyValueFactory<StockDetails, Integer>("stockQuantity"));
-        stockPrice.setCellValueFactory(new PropertyValueFactory<StockDetails, Integer>("stockPrice"));
+        companyName.setCellValueFactory(new PropertyValueFactory<StockDTO, String>("companyName"));
+        stockSymbol.setCellValueFactory(new PropertyValueFactory<StockDTO, String>("stockSymbol"));
+        stockQuantity.setCellValueFactory(new PropertyValueFactory<StockDTO, Integer>("stockQuantity"));
+        stockPrice.setCellValueFactory(new PropertyValueFactory<StockDTO, Integer>("stockPrice"));
     }
 
     public void setUserName(String userName) {
@@ -57,13 +58,17 @@ public class UserDetailsController implements Initializable {
     }
 
     public void setStocksTable(Map<String, Holding> holdings) {
-        List<StockDetails> userList = new ArrayList();
+
+
+
+        List<StockDTO> userList = new ArrayList();
 
         stockDetails.setItems(this.data);
         for(Holding holding : holdings.values()) {
-            StockDetails stockDetails = new StockDetails(holding.getStock().getCompanyName(), holding.getStock().getSymbol(),
+            StockDTO stockDTO = new StockDTO(holding.getStock().getCompanyName(), holding.getStock().getSymbol(),
                                     holding.getQuantity(), holding.getStock().getPrice());
-            userList.add(stockDetails);
+
+            userList.add(stockDTO);
         }
 
         data = FXCollections.observableArrayList(userList);

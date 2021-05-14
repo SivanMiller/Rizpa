@@ -1,6 +1,7 @@
 package engine;
 
 import exception.*;
+import objects.ExchangeCollectionDTO;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
@@ -42,10 +43,6 @@ public class Stock {
 
     public int getPrice() {
         return Price;
-    }
-
-    public ExchangeCollection getExchangeCollection() {
-        return ExchangeCollection;
     }
 
     public void setCompanyName(String CompanyName) {
@@ -113,9 +110,12 @@ public class Stock {
 
     }
 
+    public ExchangeCollectionDTO getExchangeCollection()
+    {
+        return (this.ExchangeCollection.convertToDTO());
+    }
+
     public StockDTO convertToDTO() {
-        return new StockDTO(this.getCompanyName(), this.getSymbol(), this.getPrice(),
-                             this.ExchangeCollection.convertToDTO(),
-                             this.ExchangeCollection.convertToDTO().getTransaction().size(), ExchangeCollection.getTurnover() );
+        return new StockDTO(this.getCompanyName(), this.getSymbol(),0, this.getPrice());//TODO how to get the Quantity
     }
 }

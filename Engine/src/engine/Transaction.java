@@ -97,6 +97,6 @@ public class Transaction {
     }
 
     public TransactionDTO convertToDTO() {
-        return new TransactionDTO(this.Price, this.Quantity, this.Date, this.Turnover, this.buyUser, this.sellUser);
+        return new TransactionDTO(this.Price, this.Quantity, this.Date, this.Turnover, this.buyUser.getName(), this.sellUser.getName());
     }
 }

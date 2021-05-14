@@ -1,13 +1,10 @@
 package addCommand;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import userDetails.StockDetails;
 import userTab.UserTabController;
 
 public class AddCommandController {

@@ -2,7 +2,8 @@ package engine;
 
 import exception.CommandNegPriceException;
 import exception.StockNegQuantityException;
-import objects.LMTCommandDTO;
+import objects.CommandDTO;
+import objects.LMTCommandDTOS;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,8 +39,8 @@ public class LMTCommand extends Command {
     }
 
     @Override
-    public LMTCommandDTO convertToDTO() {
-        return new LMTCommandDTO(this.Price, this.Quantity, this.Date, this.Price * this.Quantity);
+    public CommandDTO convertToDTO() {
+        return new CommandDTO(this.Date, "LMT", this.Quantity, this.Price,this.user.getName());
     }
 }
 

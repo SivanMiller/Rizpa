@@ -2,9 +2,7 @@ package engine;
 import app.AppController;
 import exception.*;
 import generated.*;
-import objects.NewCmdOutcomeDTO;
-import objects.StockDTO;
-import objects.TransactionDTO;
+import objects.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -160,8 +158,8 @@ public class Engine implements RizpaMethods {
 
                 //Commit transaction in users
                 for (TransactionDTO transaction : newCmdOutcomeDTO.getNewTransaction()){
-                    transaction.getBuyUser().commitBuyTransaction(stock, transaction);
-                    transaction.getSellUser().commitSellTransaction(stock, transaction);
+                    Users.get(transaction.getBuyUser()).commitBuyTransaction(stock, transaction);
+                    Users.get(transaction.getSellUser()).commitSellTransaction(stock, transaction);
                 }
 
                 return newCmdOutcomeDTO;
@@ -188,6 +186,11 @@ public class Engine implements RizpaMethods {
     public boolean doesStockExists(String Symbol) {
         //Check if such stock exists in stock map
         return (this.Stocks.containsKey(Symbol));
+    }
+
+    public ExchangeCollectionDTO getExchangeCollectionDTO(String stockSymbol)
+    {
+        return this.Stocks.get(stockSymbol).getExchangeCollection();
     }
 }
 
