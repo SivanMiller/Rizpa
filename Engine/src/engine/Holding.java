@@ -1,5 +1,8 @@
 package engine;
 
+import objects.HoldingDTO;
+import objects.StockDTO;
+
 import java.util.Objects;
 
 public class Holding {
@@ -46,5 +49,9 @@ public class Holding {
                 "Quantity=" + Quantity +
                 ", Stock=" + Stock +
                 '}';
+    }
+
+    public HoldingDTO convertToDTO() {
+        return new HoldingDTO(this.getStock().getCompanyName(), this.getStock().getSymbol(),this.getQuantity(), this.getStock().getPrice());
     }
 }

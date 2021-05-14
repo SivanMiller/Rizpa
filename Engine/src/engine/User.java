@@ -2,8 +2,6 @@ package engine;
 
 import objects.TransactionDTO;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class User {
@@ -38,17 +36,17 @@ public class User {
         Holding stockHolding = this.getHolding(stock.getSymbol());
         if (stockHolding == null)
         {
-            Holding newHolding = new Holding(transaction.getQuantity(), stock);
+            Holding newHolding = new Holding(transaction.getTransactionQuantity(), stock);
             this.getHoldings().put(stock.getSymbol(), newHolding);
         }
         else {
-            stockHolding.setQuantity(stockHolding.getQuantity() + transaction.getQuantity());
+            stockHolding.setQuantity(stockHolding.getQuantity() + transaction.getTransactionQuantity());
         }
     }
 
     public void commitSellTransaction(Stock stock, TransactionDTO transaction){
         Holding stockHolding = this.getHolding(stock.getSymbol());
-        stockHolding.setQuantity(stockHolding.getQuantity() - transaction.getQuantity());
+        stockHolding.setQuantity(stockHolding.getQuantity() - transaction.getTransactionQuantity());
         if (stockHolding.getQuantity() == 0) {
             this.getHoldings().remove(stock.getSymbol());
         }

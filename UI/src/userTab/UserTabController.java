@@ -2,6 +2,7 @@ package userTab;
 
 import addCommand.AddCommandController;
 import app.AppController;
+import engine.Command;
 import engine.Holding;
 import engine.Stock;
 import engine.User;
@@ -52,7 +53,7 @@ public class UserTabController {
 
     public void toggleAddCommand()
     {
-        addCommandController.togggleDisplay();
+        addCommandController.DisplayBuySell();
     }
 
     public List<String> getAllStocks() {
@@ -63,12 +64,14 @@ public class UserTabController {
         return mainController.getUserStocks(userDetailsController.getUserNameString());
     }
 
-    public void addCommand(String Symbol, String Type , String CmdDirection, String  Price, String Quantity)
+    public boolean addCommand(String Symbol, Stock.CmdType Type , Command.CmdDirection CmdDirection, String  Price, String Quantity)
     {
-        mainController.addCommand(userName, Symbol, Type, CmdDirection, Price, Quantity);
+        return mainController.addCommand(userName, Symbol, Type, CmdDirection, Price, Quantity);
     }
+
     @FXML
     private void changedTab(){
         mainController.clearMessages();
+        addCommandController.resetVisibility();
     }
 }

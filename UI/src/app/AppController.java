@@ -1,8 +1,6 @@
 package app;
 
-import engine.Engine;
-import engine.Holding;
-import engine.User;
+import engine.*;
 import exception.*;
 import header.HeaderController;
 import javafx.fxml.FXML;
@@ -38,6 +36,7 @@ public class AppController {
     private List<UserTabController> tabControllersList;
     private Engine engine;
     private Stage primaryStage;
+    private boolean isXMLLoaded = false;
 
 
 
@@ -79,10 +78,12 @@ public class AppController {
             engine.loadXML(filePath);
             this.createUserTabs();
             messagesController.addMessage("File loaded successfully!");
+            isXMLLoaded = true;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
                  JAXBException | StockSymbolLowercaseException e) {
             messagesController.addMessage(e.getMessage());
-            messagesController.addMessage("The system will continue with the last version.");
+            if (isXMLLoaded)
+                messagesController.addMessage("The system will continue with the last version.");
         }
     }
 
@@ -161,28 +162,24 @@ public class AppController {
         return stocks;
     }
 
-    public void addCommand(String userName, String Symbol, String Type , String CmdDirection, String Price, String Quantity) {
+    public boolean addCommand(String userName, String Symbol, Stock.CmdType Type , Command.CmdDirection CmdDirection, String Price, String Quantity) {
 
         try {
             messagesController.clearMessages();
             int quantity = convertStringToInt(Quantity);
             int price = convertStringToInt(Price);
-            String type = "0";
-            if (Type == "LMT"){
-                type = "1";
-            }
-            else if(Type == "MKT") {
-                type = "2";
-            }
-            NewCmdOutcomeDTO newCmdOutcomeDTO = engine.addCommand(userName, Symbol, type, CmdDirection, price, quantity);
+            NewCmdOutcomeDTO newCmdOutcomeDTO = engine.addCommand(userName, Symbol, Type, CmdDirection, price, quantity);
             refreshTabs();
             messagesController.addMessage(newCmdOutcomeDTO.toString());
+            return true;
         }
         catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
             messagesController.addMessage(e.getMessage());
+            return false;
 
         } catch (Exception e) {
             messagesController.addMessage(e.getMessage());
+            return false;
         }
     }
 

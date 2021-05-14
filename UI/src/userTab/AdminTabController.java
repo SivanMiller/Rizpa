@@ -33,4 +33,10 @@ public class AdminTabController {
     {
         return mainController.getExchangeCollectionForStock(stockName);
     }
+
+    @FXML
+    public void tabChanged(){
+        mainController.clearMessages();
+        adminDetailsController.resetTab();
+    }
 }

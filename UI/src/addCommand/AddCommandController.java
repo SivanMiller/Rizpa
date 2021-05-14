@@ -1,5 +1,7 @@
 package addCommand;
 
+import engine.Command;
+import engine.Stock;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,7 +12,7 @@ import userTab.UserTabController;
 public class AddCommandController {
     private UserTabController mainController;
     @FXML private ComboBox<String> StockSymbol;
-    @FXML private ComboBox<String> CommandType;
+    @FXML private ComboBox<Stock.CmdType> CommandType;
     @FXML private RadioButton BuyButton;
     @FXML private RadioButton sellButton;
     @FXML private TextField QuantityCommand;
@@ -21,7 +23,7 @@ public class AddCommandController {
     @FXML private Label priceLabel;
     @FXML private TextField price;
 
-    private String CmdDirection;
+    private Command.CmdDirection CmdDirection;
 
     private SimpleBooleanProperty sellBuyProperty;
     private SimpleBooleanProperty commandValuesProperty;
@@ -54,14 +56,16 @@ public class AddCommandController {
         priceLabel.visibleProperty().bind(LMTProperty);
 
         // initialize command type chooser
-        CommandType.getItems().add("LMT");
-        CommandType.getItems().add("MKT");
+        CommandType.getItems().add(Stock.CmdType.LMT);
+        CommandType.getItems().add(Stock.CmdType.MKT);
 
+        BuyButton.setUserData(Command.CmdDirection.BUY);
+        sellButton.setUserData(Command.CmdDirection.SELL);
     }
 
-    public void togggleDisplay()
+    public void DisplayBuySell()
     {
-        sellBuyProperty.set(!sellBuyProperty.get());
+        sellBuyProperty.set(true);
     }
 
     @FXML
@@ -72,12 +76,12 @@ public class AddCommandController {
         if (BuyButton.isSelected()){
             data = FXCollections.observableArrayList(mainController.getAllStocks());
             StockSymbol.setItems(data);
-            CmdDirection = "1";
+            CmdDirection = (Command.CmdDirection)BuyButton.getUserData();
         }
         if (sellButton.isSelected()) {
             data = FXCollections.observableArrayList(mainController.getUserStocks());
             StockSymbol.setItems(data);
-            CmdDirection = "2";
+            CmdDirection = (Command.CmdDirection)sellButton.getUserData();
         }
     }
     @FXML
@@ -94,7 +98,7 @@ public class AddCommandController {
             addCommandProperty.set(false);
         }
 
-        if(CommandType.getValue() != null && CommandType.getValue() == "LMT") {
+        if(CommandType.getValue() == Stock.CmdType.LMT) {
             LMTProperty.set(true);
         }
         else {
@@ -103,10 +107,26 @@ public class AddCommandController {
         }
     }
 
+    public void resetVisibility()
+    {
+        BuyButton.setSelected(false);
+        sellButton.setSelected(false);
+        StockSymbol.getSelectionModel().clearSelection();
+        CommandType.getSelectionModel().clearSelection();
+        QuantityCommand.clear();
+        price.clear();
+        sellBuyProperty.set(false);
+        addCommandProperty.set(false);
+        commandValuesProperty.set(false);
+        LMTProperty.set(false);
+    }
+
     @FXML
     private void onActionCommand() {
-        mainController.addCommand(StockSymbol.getValue(), CommandType.getValue(), CmdDirection,
-                                  price.getText(), QuantityCommand.getText()); //TODO: When sell command check quantity of user's stocks. make sure he has enough to sell
+        if (mainController.addCommand(StockSymbol.getValue(), CommandType.getValue(), CmdDirection,
+                price.getText(), QuantityCommand.getText())) {
+            resetVisibility();
+        }
     }
 
 }

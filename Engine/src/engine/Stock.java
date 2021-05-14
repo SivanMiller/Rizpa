@@ -84,16 +84,16 @@ public class Stock {
                '}';
     }
 
-    public NewCmdOutcomeDTO addNewCommand(User user, int Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addNewCommand(User user, CmdType Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
             // the values of the enum start from 0
-            Type--;
+            //Type--;
 
-            if (Type == CmdType.LMT.ordinal()) {
+            if (Type == CmdType.LMT) {
                 newCommand = new LMTCommand(user, Price, Quantity, Direction);
             }
-            else if (Type == CmdType.MKT.ordinal()) {
+            else if (Type == CmdType.MKT) {
                 newCommand = new MKTCommand(user, Quantity, Direction);
             }
             else {
@@ -101,8 +101,9 @@ public class Stock {
             }
 
             //Update stock price
+            NewCmdOutcomeDTO newCommandDTO = this.ExchangeCollection.addNewCommand(newCommand);
             this.Price = this.ExchangeCollection.getLastTransactionPrice();
-            return this.ExchangeCollection.addNewCommand(newCommand);
+            return newCommandDTO;
         }
         catch (CommandNegPriceException | StockNegQuantityException e) {
             throw e;

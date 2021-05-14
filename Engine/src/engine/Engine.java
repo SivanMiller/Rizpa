@@ -1,5 +1,4 @@
 package engine;
-import app.AppController;
 import exception.*;
 import generated.*;
 import objects.*;
@@ -26,6 +25,9 @@ public class Engine implements RizpaMethods {
 
     public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
+            if(!FileName.endsWith(".xml")){
+                 throw new XMLException("File must be .xml format");
+            }
             InputStream inputStream = new FileInputStream(new File(FileName));
             //Getting XML Data
             RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, FileName);
@@ -142,7 +144,7 @@ public class Engine implements RizpaMethods {
         return stock.convertToDTO();
     }
 
-    public NewCmdOutcomeDTO addCommand(String userName,String Symbol, String Type , String CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addCommand(String userName,String Symbol, Stock.CmdType Type , Command.CmdDirection CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException, UserHoldingQuntityNotEnough {
         Stock stock = this.Stocks.get(Symbol);
         User user = this.Users.get(userName);
 
@@ -152,18 +154,24 @@ public class Engine implements RizpaMethods {
         }
         else {
             try {
-                Command.CmdDirection Direction = convertStringToCmdDirection(CmdDirection);
-                int nType = Integer.parseInt(Type);
-                NewCmdOutcomeDTO newCmdOutcomeDTO = stock.addNewCommand(user,nType, Direction, Price, Quantity);
+                //Command.CmdDirection Direction = convertStringToCmdDirection(CmdDirection);
+                //int nType = Integer.parseInt(Type);
 
-                //Commit transaction in users
-                for (TransactionDTO transaction : newCmdOutcomeDTO.getNewTransaction()){
-                    Users.get(transaction.getBuyUser()).commitBuyTransaction(stock, transaction);
-                    Users.get(transaction.getSellUser()).commitSellTransaction(stock, transaction);
+                if (CmdDirection == Command.CmdDirection.SELL && user.getHolding(stock.getSymbol()).getQuantity() < Quantity) {
+                    throw new UserHoldingQuntityNotEnough();
                 }
+                else {
+                    NewCmdOutcomeDTO newCmdOutcomeDTO = stock.addNewCommand(user, Type, CmdDirection, Price, Quantity);
 
-                return newCmdOutcomeDTO;
-            } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {
+                    //Commit transaction in users
+                    for (TransactionDTO transaction : newCmdOutcomeDTO.getNewTransaction()) {
+                        Users.get(transaction.getTransactionBuyUser()).commitBuyTransaction(stock, transaction);
+                        Users.get(transaction.getTransactionSellUser()).commitSellTransaction(stock, transaction);
+                    }
+
+                    return newCmdOutcomeDTO;
+                }
+            } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough e) {
                 throw e;
             }
         }
@@ -181,7 +189,6 @@ public class Engine implements RizpaMethods {
             throw new NoSuchCmdDirectionException();
         }
     }
-
 
     public boolean doesStockExists(String Symbol) {
         //Check if such stock exists in stock map
