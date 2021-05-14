@@ -1,7 +1,6 @@
 package engine;
 
 import objects.CommandDTO;
-//import objects.CommandDTOS;
 
 import java.util.Comparator;
 import java.util.Objects;
@@ -12,6 +11,11 @@ public abstract class Command {
     public enum CmdDirection {
         BUY,
         SELL
+    };
+
+    public enum CmdType {
+        LMT,
+        MKT
     };
 
     protected int Price;
@@ -66,7 +70,6 @@ public abstract class Command {
 
     @Override
     public abstract String toString();
-
 }
 
 class SortCommands implements Comparator<Command> {

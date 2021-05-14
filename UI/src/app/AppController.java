@@ -11,10 +11,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import messages.MessagesController;
-import objects.ExchangeCollectionDTO;
-import objects.NewCmdOutcomeDTO;
-import objects.StockDTO;
-import userTab.AdminTabController;
+import objects.*;
+import adminTab.AdminTabController;
 import userTab.UserTabController;
 
 import javax.xml.bind.JAXBException;
@@ -89,14 +87,14 @@ public class AppController {
 
     private void refreshTabs(){
         for (UserTabController controller : tabControllersList){
-            controller.addUserTab(engine.getUsers().get(controller.getUserName()));
+            controller.createUserTab(engine.getUser(controller.getUserName()));
         }
         //adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
     }
 
     private void createUserTabs() {
         usersTabPane.getTabs().clear();
-        for(User user : engine.getUsers().values())
+        for(UserDTO user : engine.getAllUsers())
         {
             try {
                 FXMLLoader loader = new FXMLLoader();
@@ -108,7 +106,7 @@ public class AppController {
                 tabControllersList.add(userTabController);
                 userTabController.setMainController(this);
                 userTab.setText(user.getName());
-                userTabController.addUserTab(user);
+                userTabController.createUserTab(user);
 
                 usersTabPane.getTabs().add(userTab);
 
@@ -122,14 +120,14 @@ public class AppController {
     private void createAdminTab() {
             try {
                 FXMLLoader loader = new FXMLLoader();
-                URL url = getClass().getResource("/userTab/adminTab.fxml");
+                URL url = getClass().getResource("/adminTab/adminTab.fxml");
                 loader.setLocation(url);
                 Tab adminTab = loader.load();
 
                 this.adminTabController = loader.getController();
                 usersTabPane.getTabs().add(adminTab);
                 this.adminTabController.setMainController(this);
-                this.adminTabController.addAdminTab();
+                this.adminTabController.createAdminTab();
                //this.adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
 
             } catch (IOException e) {
@@ -154,15 +152,15 @@ public class AppController {
     public List<String> getUserStocks(String userName){
         List<String> stocks = new ArrayList<>();
 
-        for (Holding holding : engine.getUsers().get(userName).getHoldings().values())
+        for (HoldingDTO holding : engine.getUser((userName)).getHoldings())
         {
-            stocks.add(holding.getStock().getSymbol());
+            stocks.add(holding.getStockSymbol());
         }
 
         return stocks;
     }
 
-    public boolean addCommand(String userName, String Symbol, Stock.CmdType Type , Command.CmdDirection CmdDirection, String Price, String Quantity) {
+    public boolean addCommand(String userName, String Symbol, Command.CmdType Type , Command.CmdDirection CmdDirection, String Price, String Quantity) {
 
         try {
             messagesController.clearMessages();

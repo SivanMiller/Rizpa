@@ -13,7 +13,7 @@ public interface RizpaMethods {
     public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException;
     public List<StockDTO> getAllStocks();
     public StockDTO getStock(String Symbol) throws NoSuchStockException;
-    public NewCmdOutcomeDTO addCommand(String userName, String Symbol, Stock.CmdType Type, Command.CmdDirection CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException, UserHoldingQuntityNotEnough;
+    public NewCmdOutcomeDTO addCommand(String userName, String Symbol, Command.CmdType Type, Command.CmdDirection CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException, UserHoldingQuntityNotEnough;
     public boolean doesStockExists(String Symbol);
 
 }

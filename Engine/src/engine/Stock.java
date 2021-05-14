@@ -9,10 +9,6 @@ import java.util.*;
 
 public class Stock {
 
-    public enum CmdType {
-        LMT,
-        MKT
-    }
     private String CompanyName;
     private String Symbol;
     private int Price;
@@ -84,16 +80,16 @@ public class Stock {
                '}';
     }
 
-    public NewCmdOutcomeDTO addNewCommand(User user, CmdType Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addNewCommand(User user, Command.CmdType Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
             // the values of the enum start from 0
             //Type--;
 
-            if (Type == CmdType.LMT) {
+            if (Type == Command.CmdType.LMT) {
                 newCommand = new LMTCommand(user, Price, Quantity, Direction);
             }
-            else if (Type == CmdType.MKT) {
+            else if (Type == Command.CmdType.MKT) {
                 newCommand = new MKTCommand(user, Quantity, Direction);
             }
             else {

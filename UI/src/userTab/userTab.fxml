@@ -14,9 +14,9 @@
                <children>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <fx:include fx:id="userDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" source="../userDetails/userDetails.fxml" />
+                        <fx:include fx:id="userDetails" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" source="userDetails/userDetails.fxml" />
                         <Separator maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" />
-                        <fx:include fx:id="addCommand" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" source="../addCommand/addCommand.fxml" />
+                        <fx:include fx:id="addCommand" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" source="addCommand/addCommand.fxml" />
                      </children>
                   </HBox>
                </children>

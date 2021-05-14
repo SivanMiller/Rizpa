@@ -1,16 +1,13 @@
 package userTab;
 
-import addCommand.AddCommandController;
+import objects.UserDTO;
+import userTab.addCommand.AddCommandController;
 import app.AppController;
 import engine.Command;
-import engine.Holding;
-import engine.Stock;
-import engine.User;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import userDetails.UserDetailsController;
+import userTab.userDetails.UserDetailsController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserTabController {
@@ -43,17 +40,17 @@ public class UserTabController {
         this.addCommandController = addCommandController;
     }
 
-    public void addUserTab(User user){
+    public void createUserTab(UserDTO user){
         userDetailsController.setUserName(user.getName());
         userName = user.getName();
-        userDetailsController.setStockSum("0");
+        userDetailsController.setHoldingsSum(user.getHoldingsTurnover());
         userDetailsController.setStocksTable(user.getHoldings());
-
     }
 
     public void toggleAddCommand()
     {
         addCommandController.DisplayBuySell();
+        clearMessages();
     }
 
     public List<String> getAllStocks() {
@@ -64,14 +61,18 @@ public class UserTabController {
         return mainController.getUserStocks(userDetailsController.getUserNameString());
     }
 
-    public boolean addCommand(String Symbol, Stock.CmdType Type , Command.CmdDirection CmdDirection, String  Price, String Quantity)
+    public boolean addCommand(String Symbol, Command.CmdType Type , Command.CmdDirection CmdDirection, String  Price, String Quantity)
     {
         return mainController.addCommand(userName, Symbol, Type, CmdDirection, Price, Quantity);
     }
 
     @FXML
     private void changedTab(){
-        mainController.clearMessages();
+        clearMessages();
         addCommandController.resetVisibility();
+    }
+
+    public void clearMessages(){
+        mainController.clearMessages();
     }
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="adminTab.adminDetails.AdminDetailsController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="NEVER" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="100.0" />
+    <ColumnConstraints hgrow="NEVER" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+  </rowConstraints>
+   <children>
+      <ComboBox fx:id="stockSymbol" onAction="#onActionChoseStock" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </ComboBox>
+      <Label fx:id="stockListLabel" text="Select Stock:" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </Label>
+      <TableView fx:id="buyCommandTableView" prefHeight="100.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
+        <columns>
+          <TableColumn fx:id="buyDate" minWidth="-1.0" text="Date" />
+          <TableColumn fx:id="buyType" minWidth="-1.0" text="Type" />
+            <TableColumn fx:id="buyQuantity" minWidth="-1.0" text="Quantity" />
+            <TableColumn fx:id="buyPrice" minWidth="-1.0" text="Price" />
+            <TableColumn fx:id="buyUser" minWidth="-1.0" text="User" />
+        </columns>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </TableView>
+      <TableView fx:id="sellCommandTableView" prefHeight="100.0" prefWidth="400.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
+        <columns>
+          <TableColumn fx:id="sellDate" text="Date" />
+          <TableColumn fx:id="sellType" text="Type" />
+            <TableColumn fx:id="sellQuantity" text="Quantity" />
+            <TableColumn fx:id="sellPrice" text="Price" />
+            <TableColumn fx:id="sellUser" editable="false" text="User" />
+        </columns>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </TableView>
+      <TableView fx:id="transactionTableView" prefHeight="100.0" prefWidth="400.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5">
+        <columns>
+          <TableColumn fx:id="transactionDate" text="Date" />
+          <TableColumn fx:id="transactionQuantity" text="Quantity" />
+            <TableColumn fx:id="transactionPrice" text="Price" />
+            <TableColumn fx:id="transactionBuyUser" text="Buy User" />
+            <TableColumn fx:id="transactionSellUser" text="Sell User" />
+        </columns>
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </TableView>
+      <Label fx:id="transactionLabel" text="Transactions:" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="buyCommandLabel" text="Buy Commands:" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="sellCommandLabel" text="Sell Commands:" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</GridPane>

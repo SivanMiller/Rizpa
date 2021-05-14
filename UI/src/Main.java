@@ -126,7 +126,7 @@
 ////        }
 ////
 ////        try {
-////            NewCmdOutcomeDTO newCommand = engine.addCommand(stockSymbol, CmdType ,CmdDirection, Price, Quantity);
+////            NewCmdOutcomeDTO newCommand = engine.userTab.addCommand(stockSymbol, CmdType ,CmdDirection, Price, Quantity);
 ////            System.out.println(newCommand.toString());
 ////        }
 ////        catch (NoSuchStockException | CommandNegPriceException | StockNegQuantityException | NoSuchCmdDirectionException | NoSuchCmdTypeException e) {

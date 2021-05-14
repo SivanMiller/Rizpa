@@ -19,10 +19,6 @@ public class Engine implements RizpaMethods {
     private Map<String, Stock> Stocks;
     private Map<String, User> Users;
 
-    public Map<String, User> getUsers() {
-        return Users;
-    }
-
     public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
             if(!FileName.endsWith(".xml")){
@@ -144,7 +140,23 @@ public class Engine implements RizpaMethods {
         return stock.convertToDTO();
     }
 
-    public NewCmdOutcomeDTO addCommand(String userName,String Symbol, Stock.CmdType Type , Command.CmdDirection CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException, UserHoldingQuntityNotEnough {
+
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> list = new ArrayList<>();
+        for (User user : Users.values()) {
+            list.add(user.convertToDTO());
+        }
+
+        return list;
+    }
+
+    public UserDTO getUser(String Name) {
+        User user = this.Users.get(Name);
+
+        return user.convertToDTO();
+    }
+
+    public NewCmdOutcomeDTO addCommand(String userName, String Symbol, Command.CmdType Type , Command.CmdDirection CmdDirection, int Price, int Quantity) throws NoSuchStockException, StockNegQuantityException, CommandNegPriceException, NoSuchCmdDirectionException, NoSuchCmdTypeException, UserHoldingQuntityNotEnough {
         Stock stock = this.Stocks.get(Symbol);
         User user = this.Users.get(userName);
 

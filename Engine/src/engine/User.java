@@ -1,17 +1,28 @@
 package engine;
 
+import objects.HoldingDTO;
 import objects.TransactionDTO;
+import objects.UserDTO;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User {
 
     private String Name;
+    private int HoldingsTurnover;
     private Map<String, Holding> Holdings;
 
     public User(String name, Map<String, Holding> holdings) {
         Name = name;
         Holdings = holdings;
+
+        for (Holding holding : this.Holdings.values())
+        {
+            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
+        }
     }
 
     public String getName() {
@@ -31,6 +42,19 @@ public class User {
     public void setHoldings(Map<String, Holding> holdings) {
         Holdings = holdings;
     }
+
+    public int getHoldingsTurnover() {
+        for (Holding holding : this.Holdings.values())
+        {
+            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
+        }
+        return HoldingsTurnover;
+    }
+
+    public void setHoldingsTurnover(int holdingsTurnover) {
+        HoldingsTurnover = holdingsTurnover;
+    }
+
 
     public void commitBuyTransaction(Stock stock, TransactionDTO transaction){
         Holding stockHolding = this.getHolding(stock.getSymbol());
@@ -58,5 +82,15 @@ public class User {
                 "Name='" + Name + '\'' +
                 ", Holdings=" + Holdings.toString() +
                 '}';
+    }
+
+    public UserDTO convertToDTO(){
+        List<HoldingDTO> holdings = new ArrayList<>();
+
+        for (Holding holding : this.getHoldings().values()){
+            holdings.add(holding.convertToDTO());
+        }
+
+        return new UserDTO(this.getName(), this.getHoldingsTurnover(), holdings);
     }
 }
