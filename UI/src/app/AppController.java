@@ -120,7 +120,7 @@ public class AppController {
     private void createAdminTab() {
             try {
                 FXMLLoader loader = new FXMLLoader();
-                URL url = getClass().getResource("/adminTab/adminTab.fxml");
+                URL url = getClass().getResource("/adminTab/adminTab1.fxml");
                 loader.setLocation(url);
                 Tab adminTab = loader.load();
 
