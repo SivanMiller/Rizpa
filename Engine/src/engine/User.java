@@ -44,6 +44,7 @@ public class User {
     }
 
     public int getHoldingsTurnover() {
+        HoldingsTurnover = 0;
         for (Holding holding : this.Holdings.values())
         {
             HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();

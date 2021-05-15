@@ -10,6 +10,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import messages.MessagesController;
 import objects.*;
 import adminTab.AdminTabController;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AppController {
 
@@ -157,6 +159,10 @@ public class AppController {
         }
 
         return stocks;
+    }
+
+    public List<Pair<String, Integer>> getStockHistory(String Symbol){
+        return engine.getStockHistory(Symbol);
     }
 
     public boolean addCommand(String userName, String Symbol, Command.CmdType Type , Command.CmdDirection CmdDirection, String Price, String Quantity) {

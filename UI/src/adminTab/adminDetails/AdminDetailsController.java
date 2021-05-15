@@ -6,17 +6,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.*;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Pair;
 import objects.CommandDTO;
 import objects.ExchangeCollectionDTO;
 import objects.TransactionDTO;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class AdminDetailsController implements Initializable {
@@ -51,6 +55,8 @@ public class AdminDetailsController implements Initializable {
     @FXML    private TableColumn<TransactionDTO, String>  transactionSellUser;
     private ObservableList<TransactionDTO> tranListData;
 
+    @FXML private LineChart<String,Number> stockHistoryChart;
+
     private SimpleBooleanProperty showProperty;
     public AdminDetailsController() {
        this.showProperty = new SimpleBooleanProperty(false);
@@ -59,13 +65,13 @@ public class AdminDetailsController implements Initializable {
         this.mainController = mainController;
     }
 
-    public void resetTab(){
-        showProperty.set(false);
-        stockSymbol.getSelectionModel().clearSelection();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        //Price History Graph
+//        stockHistoryChart.getXAxis().setLabel("Date");
+//        stockHistoryChart.getYAxis().setLabel("Price");
+//        stockHistoryChart.setTitle("Stock Monitoring");
 
         buyDate.setCellValueFactory(new PropertyValueFactory<CommandDTO, String>("Date"));
         buyType.setCellValueFactory(new PropertyValueFactory<CommandDTO, String>("Type"));
@@ -91,10 +97,11 @@ public class AdminDetailsController implements Initializable {
         buyCommandLabel.visibleProperty().bind(showProperty);
         sellCommandLabel.visibleProperty().bind(showProperty);
         transactionLabel.visibleProperty().bind(showProperty);
-
+        stockHistoryChart.visibleProperty().bind(showProperty);
     }
+
     public void setStocksComboBox(List<String> stocksNameList) {
-        ObservableList<String> list=FXCollections.observableArrayList(stocksNameList);
+        ObservableList<String> list = FXCollections.observableArrayList(stocksNameList);
         this.stockSymbol.setItems(list);
     }
 
@@ -104,6 +111,16 @@ public class AdminDetailsController implements Initializable {
         String chosenStockName = stockSymbol.getValue();
         showProperty.set(true);
         setCommandTables(mainController.getExchangeCollectionDtoForStock(chosenStockName));
+
+        //Price History Graph
+        List<Pair<String, Integer>> priceHistory = mainController.getStockHistory(chosenStockName);
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        for (int i = 0; i < priceHistory.size(); i++){
+           series.getData().add(new XYChart.Data(priceHistory.get(i).getKey(),
+                                                 priceHistory.get(i).getValue()));
+        }
+        stockHistoryChart.getData().setAll(series);
     }
 
     public void setCommandTables(ExchangeCollectionDTO data) {
@@ -116,6 +133,11 @@ public class AdminDetailsController implements Initializable {
 
         tranListData= FXCollections.observableArrayList(data.getTransaction());
         transactionTableView.setItems(this.tranListData);
+    }
+
+    public void resetTab(){
+        showProperty.set(false);
+        stockSymbol.getSelectionModel().clearSelection();
     }
 }
 

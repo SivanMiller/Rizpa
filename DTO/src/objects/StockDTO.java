@@ -77,8 +77,9 @@ package objects;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class StockDTO {
+import java.util.Map;
 
+public class StockDTO {
     public final SimpleStringProperty companyName;
     public final SimpleStringProperty stockSymbol;
     public final SimpleIntegerProperty stockQuantity;

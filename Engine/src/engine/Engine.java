@@ -1,6 +1,7 @@
 package engine;
 import exception.*;
 import generated.*;
+import javafx.util.Pair;
 import objects.*;
 
 import javax.xml.bind.JAXBContext;
@@ -140,6 +141,9 @@ public class Engine implements RizpaMethods {
         return stock.convertToDTO();
     }
 
+    public List<Pair<String, Integer>> getStockHistory(String Symbol){
+        return this.Stocks.get(Symbol).getPriceHistory();
+    }
 
     public List<UserDTO> getAllUsers() {
         List<UserDTO> list = new ArrayList<>();

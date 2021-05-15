@@ -5,7 +5,11 @@ import adminTab.adminDetails.AdminDetailsController;
 import app.AppController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import javafx.util.Pair;
 import objects.ExchangeCollectionDTO;
+
+import java.util.List;
+import java.util.Map;
 
 public class AdminTabController {
     @FXML private GridPane adminDetails;
@@ -29,6 +33,10 @@ public class AdminTabController {
     public ExchangeCollectionDTO getExchangeCollectionDtoForStock(String stockName)
     {
         return mainController.getExchangeCollectionForStock(stockName);
+    }
+
+    public List<Pair<String, Integer>> getStockHistory(String Symbol){
+        return mainController.getStockHistory(Symbol);
     }
 
     @FXML
