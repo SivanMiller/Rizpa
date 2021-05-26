@@ -5,6 +5,7 @@ import exception.*;
 import header.HeaderController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AppController {
+public class    AppController {
 
     @FXML private HeaderController headerController;
     @FXML private MessagesController messagesController;
@@ -32,13 +33,12 @@ public class AppController {
     @FXML private AnchorPane messages;
     @FXML private TabPane usersTabPane;
     @FXML private GridPane header;
+    @FXML private ScrollPane app;
 
     private List<UserTabController> tabControllersList;
     private Engine engine;
     private Stage primaryStage;
     private boolean isXMLLoaded = false;
-
-
 
     @FXML
     public void initialize() {
@@ -119,24 +119,21 @@ public class AppController {
     }
 
     private void createAdminTab() {
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                URL url = getClass().getResource("/adminTab/adminTab.fxml");
-                loader.setLocation(url);
-                Tab adminTab = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL url = getClass().getResource("/adminTab/adminTab.fxml");
+            loader.setLocation(url);
+            Tab adminTab = loader.load();
 
-                this.adminTabController = loader.getController();
-                usersTabPane.getTabs().add(adminTab);
-                this.adminTabController.setMainController(this);
-                this.adminTabController.createAdminTab();
-               //this.adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
+            this.adminTabController = loader.getController();
+            usersTabPane.getTabs().add(adminTab);
+            this.adminTabController.setMainController(this);
+            this.adminTabController.createAdminTab(); //TODO: Check if needed
+           //this.adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
 
-            } catch (IOException e) {
-                messagesController.addMessage(e.getMessage());
-            }
-
-
-
+        } catch (IOException e) {
+            messagesController.addMessage(e.getMessage());
+        }
     }
 
     public List<String> getAllStocks(){
@@ -198,5 +195,10 @@ public class AppController {
     public ExchangeCollectionDTO getExchangeCollectionForStock(String stockSymbol)
     {
        return engine.getExchangeCollectionDTO(stockSymbol);
+    }
+
+    public void ChangeTheme(String theme) {
+        this.app.getStylesheets().clear();
+        this.app.getStylesheets().add(getClass().getResource("/app/themes/" + theme + ".css").toExternalForm());
     }
 }

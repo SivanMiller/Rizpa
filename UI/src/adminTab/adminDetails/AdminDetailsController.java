@@ -109,18 +109,20 @@ public class AdminDetailsController implements Initializable {
     public void onActionChoseStock()
     {
         String chosenStockName = stockSymbol.getValue();
-        showProperty.set(true);
-        setCommandTables(mainController.getExchangeCollectionDtoForStock(chosenStockName));
+        if  (chosenStockName != null) {
+            showProperty.set(true);
+            setCommandTables(mainController.getExchangeCollectionDtoForStock(chosenStockName));
 
-        //Price History Graph
-        List<Pair<String, Integer>> priceHistory = mainController.getStockHistory(chosenStockName);
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
+            //Price History Graph
+            List<Pair<String, Integer>> priceHistory = mainController.getStockHistory(chosenStockName);
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
 
-        for (int i = 0; i < priceHistory.size(); i++){
-           series.getData().add(new XYChart.Data(priceHistory.get(i).getKey(),
-                                                 priceHistory.get(i).getValue()));
+            for (int i = 0; i < priceHistory.size(); i++) {
+                series.getData().add(new XYChart.Data(priceHistory.get(i).getKey(),
+                        priceHistory.get(i).getValue()));
+            }
+            stockHistoryChart.getData().setAll(series);
         }
-        stockHistoryChart.getData().setAll(series);
     }
 
     public void setCommandTables(ExchangeCollectionDTO data) {
