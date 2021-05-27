@@ -199,6 +199,8 @@ public class    AppController {
 
     public void ChangeTheme(String theme) {
         this.app.getStylesheets().clear();
-        this.app.getStylesheets().add(getClass().getResource("/app/themes/" + theme + ".css").toExternalForm());
+        if (theme != "Default") {
+            this.app.getStylesheets().add(getClass().getResource("/app/themes/" + theme + ".css").toExternalForm());
+        }
     }
 }

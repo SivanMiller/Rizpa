@@ -28,6 +28,7 @@ public class HeaderController {
 
     @FXML
     private void initialize() {
+        this.comboTheme.getItems().add("Default");
         this.comboTheme.getItems().add("Dark");
         this.comboTheme.getItems().add("Blue");
         this.comboTheme.getItems().add("Brown");
