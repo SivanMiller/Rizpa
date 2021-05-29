@@ -1,21 +1,25 @@
 package header;
 
 import app.AppController;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.binding.Bindings;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class HeaderController {
 
     @FXML private Button LoadXMLButton;
     @FXML private ComboBox<String> comboTheme;
+    @FXML private ProgressBar progressBar;
+    @FXML private Label progressPercent;
+    @FXML private Label progressMessage;
     private AppController mainController;
     private Stage primaryStage;
 
@@ -52,5 +56,22 @@ public class HeaderController {
     @FXML
     public void onSelectTheme(){
         mainController.ChangeTheme(comboTheme.getValue());
+    }
+
+    public void bindTaskToUI(Task<Boolean> aTask){
+        // task progress bar
+        progressBar.progressProperty().bind(aTask.progressProperty());
+        
+        //task message
+        progressMessage.textProperty().bind(aTask.messageProperty());
+
+        // task percent label
+        progressPercent.textProperty().bind(
+                Bindings.concat(
+                Bindings.format("%.0f",
+                        Bindings.multiply(
+                                aTask.progressProperty(),
+                                100)),
+                " %"));
     }
 }

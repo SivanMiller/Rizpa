@@ -68,11 +68,6 @@ public class AdminDetailsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //Price History Graph
-//        stockHistoryChart.getXAxis().setLabel("Date");
-//        stockHistoryChart.getYAxis().setLabel("Price");
-//        stockHistoryChart.setTitle("Stock Monitoring");
-
         buyDate.setCellValueFactory(new PropertyValueFactory<CommandDTO, String>("Date"));
         buyType.setCellValueFactory(new PropertyValueFactory<CommandDTO, String>("Type"));
         buyQuantity.setCellValueFactory(new PropertyValueFactory<CommandDTO, Integer>("Quantity"));

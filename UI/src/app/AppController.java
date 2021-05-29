@@ -3,6 +3,7 @@ package app;
 import engine.*;
 import exception.*;
 import header.HeaderController;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
@@ -15,6 +16,7 @@ import javafx.util.Pair;
 import messages.MessagesController;
 import objects.*;
 import adminTab.AdminTabController;
+import tasks.FileTask;
 import userTab.UserTabController;
 
 import javax.xml.bind.JAXBException;
@@ -23,7 +25,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class    AppController {
 
@@ -44,6 +45,7 @@ public class    AppController {
     public void initialize() {
         if (headerController != null && messagesController != null) {
             headerController.setMainController(this);
+            headerController.setPrimaryStage(primaryStage);
             messagesController.setMainController(this);
         }
         tabControllersList = new ArrayList<>();
@@ -75,8 +77,13 @@ public class    AppController {
     public void loadXML(String filePath){
         try {
             messagesController.clearMessages();
+
+            FileTask fileTask = new FileTask();
             engine.loadXML(filePath);
-            this.createUserTabs();
+            bindTaskToUI(fileTask,
+                        () -> createUserTabs());
+            new Thread(fileTask).start();
+
             messagesController.addMessage("File loaded successfully!");
             isXMLLoaded = true;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
@@ -85,6 +92,13 @@ public class    AppController {
             if (isXMLLoaded)
                 messagesController.addMessage("The system will continue with the last version.");
         }
+    }
+
+    private void bindTaskToUI(Task<Boolean> aTask, Runnable onFinish){
+        headerController.bindTaskToUI(aTask);
+        aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
+            onFinish.run();
+        });
     }
 
     private void refreshTabs(){
@@ -128,9 +142,7 @@ public class    AppController {
             this.adminTabController = loader.getController();
             usersTabPane.getTabs().add(adminTab);
             this.adminTabController.setMainController(this);
-            this.adminTabController.createAdminTab(); //TODO: Check if needed
-           //this.adminTabController.setBuyCommandTable(engine.getExchangeCollectionDTO("GOOGL"));
-
+            this.adminTabController.setStocksCombo(this.getAllStocks());
         } catch (IOException e) {
             messagesController.addMessage(e.getMessage());
         }

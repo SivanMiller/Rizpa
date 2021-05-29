@@ -25,9 +25,8 @@ public class AdminTabController {
         this.mainController = mainController;
     }
 
-    public void createAdminTab(){
-        adminDetailsController.setStocksComboBox(mainController.getAllStocks());
-
+    public void setStocksCombo(List<String> stocks){
+        adminDetailsController.setStocksComboBox(stocks);
     }
 
     public ExchangeCollectionDTO getExchangeCollectionDtoForStock(String stockName)
