@@ -20,7 +20,7 @@ public class Engine implements RizpaMethods {
     private Map<String, Stock> Stocks;
     private Map<String, User> Users;
 
-    public void loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
+    public RizpaStockExchangeDescriptor loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
         try {
             if(!FileName.endsWith(".xml")){
                  throw new XMLException("File must be .xml format");
@@ -29,8 +29,8 @@ public class Engine implements RizpaMethods {
             //Getting XML Data
             RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, FileName);
             //Filling stock collection
-            convertDescriptor(stockDescriptor);
-        } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
+            return stockDescriptor;
+        } catch (JAXBException | FileNotFoundException | XMLException  e) {
             throw e;
         }
     }
@@ -42,17 +42,8 @@ public class Engine implements RizpaMethods {
         return (RizpaStockExchangeDescriptor) u.unmarshal(in);
     }
 
-    //Converting JAXB Data to actual data
-    private void convertDescriptor(RizpaStockExchangeDescriptor rizpaDescriptor) throws StockNegPriceException, XMLException, StockSymbolLowercaseException {
-        List<RseStock> stocks = rizpaDescriptor.getRseStocks().getRseStock();
-        List<RseUser> users = rizpaDescriptor.getRseUsers().getRseUser();
-
-        this.convertXMLStocks(stocks);
-        this.convertXMLUsers(users);
-
-    }
-
-    private void convertXMLStocks(List<RseStock> stocks) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
+   public void convertXMLStocks(RizpaStockExchangeDescriptor descriptor) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
+        List<RseStock> stocks = descriptor.getRseStocks().getRseStock();
         Map<String, Stock> tempMapStocks = this.Stocks;
         Stocks = new HashMap<>();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
@@ -86,7 +77,8 @@ public class Engine implements RizpaMethods {
         }
     }
 
-    private void convertXMLUsers(List<RseUser> users) throws XMLException {
+    public void convertXMLUsers(RizpaStockExchangeDescriptor descriptor) throws XMLException {
+        List<RseUser> users = descriptor.getRseUsers().getRseUser();
         Map<String, User> tempMapUsers = this.Users;
         Users = new HashMap<>();
 
@@ -170,13 +162,18 @@ public class Engine implements RizpaMethods {
         }
         else {
             try {
-                //Command.CmdDirection Direction = convertStringToCmdDirection(CmdDirection);
-                //int nType = Integer.parseInt(Type);
+                if (CmdDirection == Command.CmdDirection.SELL) {
+                    int userQuantity = user.getHolding(stock.getSymbol()).getQuantity();
+                    for (CommandDTO command : stock.getExchangeCollection().getSellCommand()) {
+                        if (command.getUser() == userName)
+                            userQuantity -= command.getQuantity();
+                    }
+                    if (userQuantity < Quantity) {
+                        throw new UserHoldingQuntityNotEnough();
+                    }
 
-                if (CmdDirection == Command.CmdDirection.SELL && user.getHolding(stock.getSymbol()).getQuantity() < Quantity) {
-                    throw new UserHoldingQuntityNotEnough();
                 }
-                else {
+
                     NewCmdOutcomeDTO newCmdOutcomeDTO = stock.addNewCommand(user, Type, CmdDirection, Price, Quantity);
 
                     //Commit transaction in users
@@ -186,7 +183,7 @@ public class Engine implements RizpaMethods {
                     }
 
                     return newCmdOutcomeDTO;
-                }
+
             } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough e) {
                 throw e;
             }

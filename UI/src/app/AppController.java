@@ -75,23 +75,20 @@ public class    AppController {
     }
 
     public void loadXML(String filePath){
-        try {
+
             messagesController.clearMessages();
 
-            FileTask fileTask = new FileTask();
-            engine.loadXML(filePath);
+            FileTask fileTask = new FileTask(engine, filePath);
+            //engine.loadXML(filePath);
             bindTaskToUI(fileTask,
-                        () -> createUserTabs());
+                    () -> createUserTabs());
             new Thread(fileTask).start();
 
             messagesController.addMessage("File loaded successfully!");
             isXMLLoaded = true;
-        } catch (StockNegPriceException | XMLException | FileNotFoundException |
-                 JAXBException | StockSymbolLowercaseException e) {
-            messagesController.addMessage(e.getMessage());
             if (isXMLLoaded)
                 messagesController.addMessage("The system will continue with the last version.");
-        }
+        
     }
 
     private void bindTaskToUI(Task<Boolean> aTask, Runnable onFinish){
