@@ -81,7 +81,9 @@ public class    AppController {
             FileTask fileTask = new FileTask(engine, filePath, this);
             //engine.loadXML(filePath);
             bindTaskToUI(fileTask,
-                    () -> createUserTabs());
+                    () -> {createUserTabs();
+                    headerController.hideProgressBar();
+                });
             new Thread(fileTask).start();
 
 //            messagesController.addMessage("File loaded successfully!");

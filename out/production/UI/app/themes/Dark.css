@@ -4,12 +4,20 @@
     -fx-base: #373e43;
     -fx-control-inner-background: derive(-fx-base, 35%);
     -fx-control-inner-background-alt: -fx-control-inner-background ;
+    -fx-font-family: "Comic Sans MS";
+
 }
 
 .label{
     -fx-text-fill: lightgray;
-}
 
+}
+#rizpaLabel
+{
+    -fx-font-size: 60;
+    -fx-font-style: italic;
+
+}
 .text-field {
     -fx-prompt-text-fill: gray;
 }
@@ -18,7 +26,10 @@
     -fx-font-weight: bold;
     -fx-font-size: 18px;
 }
+.tab-pane{
 
+    -fx-font-family: "Comic Sans MS";
+}
 .button{
     -fx-focus-traversable: false;
 }

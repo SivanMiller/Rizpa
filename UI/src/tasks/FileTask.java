@@ -70,6 +70,8 @@ public class FileTask extends Task<Boolean> {
                         appController.addMessage("File loaded successfully");
                     }
             );
+            Thread.sleep(1000);
+
             return Boolean.TRUE;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
                 JAXBException | StockSymbolLowercaseException e) {

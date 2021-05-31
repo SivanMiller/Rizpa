@@ -6,11 +6,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 public class MessagesController {
 
     @FXML private ListView<String> messageList;
+    @FXML private Label messegeLable;
     private AppController mainController;
 
     public void setMainController(AppController mainController) {

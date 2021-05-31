@@ -3,16 +3,32 @@
     -fx-base: #8EB8E5;
     -fx-control-inner-background: derive(-fx-base, 35%);
     -fx-control-inner-background-alt: -fx-control-inner-background ;
+    -fx-font-family: Georgia;
 }
 
 .label{
     -fx-text-fill: #492C1D;
+
+}
+#rizpaLabel
+{
+    -fx-font-size: 50;
+
+}
+#messegeLable
+{
+    -fx-font-size: 22;
+    -fx-font-family: Georgia;
+
 }
 
 .text-field {
     -fx-prompt-text-fill: #6B7F82;
 }
+.tab-pane{
 
+    -fx-font-family: Georgia;
+}
 .button{
     -fx-focus-traversable: false;
 	-fx-background-color: #7C99B4;
