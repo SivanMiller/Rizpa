@@ -1,21 +1,25 @@
 .root { 
-    -fx-accent: DarkSlateBlue;
-    -fx-base: LightSkyBlue;
+    -fx-accent: #5B5750;
+    -fx-base: #8EB8E5;
     -fx-control-inner-background: derive(-fx-base, 35%);
     -fx-control-inner-background-alt: -fx-control-inner-background ;
 }
 
 .label{
-    -fx-text-fill: DarkSlateBlue;
+    -fx-text-fill: #492C1D;
 }
 
 .text-field {
-    -fx-prompt-text-fill: Indigo;
+    -fx-prompt-text-fill: #6B7F82;
 }
 
 .button{
     -fx-focus-traversable: false;
-	-fx-background-color: SteelBlue;
+	-fx-background-color: #7C99B4;
+}
+
+.combo-box{
+    -fx-background-color: #7C99B4;
 }
 
 .button:hover{
@@ -23,7 +27,7 @@
 }
 
 .separator *.line { 
-    -fx-background-color: #6495ED;
+    -fx-background-color: -fx-accent;
     -fx-border-style: solid;
     -fx-border-width: 0.5px;
 }
@@ -41,19 +45,14 @@
     -fx-font-weight: none;
 }
 
-.list-cell:even,
-.list-cell:odd,
 .table-row-cell:even,
 .table-row-cell:odd{    
     -fx-control-inner-background: derive(-fx-base, 15%);
 }
-
-.list-cell:empty,
 .table-row-cell:empty {
     -fx-background-color: transparent;
 }
 
-.list-cell,
 .table-row-cell{
     -fx-border-color: transparent;
     -fx-table-cell-border-color:transparent;

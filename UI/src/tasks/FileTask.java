@@ -6,6 +6,9 @@ public class FileTask extends Task<Boolean> {
 
     @Override
     protected Boolean call() throws Exception {
+        long totalStocks;
+        long totalUsers;
+
         updateProgress(0,100);
         Thread.sleep(1000);
         updateProgress(20,100);

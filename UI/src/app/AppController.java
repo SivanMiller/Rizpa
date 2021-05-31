@@ -97,7 +97,8 @@ public class    AppController {
     private void bindTaskToUI(Task<Boolean> aTask, Runnable onFinish){
         headerController.bindTaskToUI(aTask);
         aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
-            onFinish.run();
+            if(aTask.valueProperty().getValue() == Boolean.TRUE)
+                onFinish.run();
         });
     }
 
