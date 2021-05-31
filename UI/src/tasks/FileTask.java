@@ -1,10 +1,12 @@
 package tasks;
 
+import app.AppController;
 import engine.Engine;
 import exception.StockNegPriceException;
 import exception.StockSymbolLowercaseException;
 import exception.XMLException;
 import generated.RizpaStockExchangeDescriptor;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import javax.xml.bind.JAXBException;
@@ -14,11 +16,14 @@ public class FileTask extends Task<Boolean> {
 
     private Engine engine;
     private String filePath;
+    private AppController appController;
 
-    public FileTask(Engine engine, String file) {
+    public FileTask(Engine engine, String filePath, AppController appController) {
         this.engine = engine;
-        this.filePath = file;
+        this.filePath = filePath;
+        this.appController = appController;
     }
+
 
     @Override
     protected Boolean call() throws Exception {
@@ -27,30 +32,57 @@ public class FileTask extends Task<Boolean> {
             long totalStocks = descriptor.getRseStocks().getRseStock().size();
             long totalUsers = descriptor.getRseUsers().getRseUser().size();
             long totalWork = totalStocks + totalStocks + 10;
+            long accumWork = 0;
             updateProgress(0, totalWork);
             Thread.sleep(10);
-            updateMessage("Fetching file..");
-            updateProgress(10, totalWork);
+            //updateMessage("Fetching file..");
+
+            Platform.runLater(
+                    () -> appController.addMessage("Fetching file..")
+            );
+            accumWork += 10;
+            updateProgress(accumWork, totalWork);
             Thread.sleep(100);
 
             this.engine.convertXMLStocks(descriptor);
-            updateProgress(totalStocks, totalWork);
-            updateMessage("Fetching stocks..");
+            accumWork += totalStocks;
+            updateProgress(accumWork, totalWork);
+            //updateMessage("Fetching stocks..");
+            Platform.runLater(
+                    () -> appController.addMessage("Fetching stocks..")
+            );
             Thread.sleep(1000);
 
             this.engine.convertXMLUsers(descriptor);
-            updateProgress(totalUsers, totalWork);
-            updateMessage("Fetching users..");
+            accumWork += totalUsers;
+            updateProgress(accumWork, totalWork);
+            //updateMessage("Fetching users..");
+            Platform.runLater(
+                    () -> appController.addMessage("Fetching users..")
+            );
             Thread.sleep(1000);
 
             updateProgress(totalWork, totalWork);
-            updateMessage("File loaded successfully");
+            //updateMessage("File loaded successfully");
+            Platform.runLater(
+                    () -> {
+                        appController.clearMessages();
+                        appController.addMessage("File loaded successfully");
+                    }
+            );
             return Boolean.TRUE;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
                 JAXBException | StockSymbolLowercaseException e) {
-            updateMessage(e.getMessage());
+            Platform.runLater(
+                    () -> {
+                        appController.clearMessages();
+                        appController.addMessage(e.getMessage());
+                        if (appController.isXMLLoaded == true)
+                            appController.addMessage("The system will continue with the last version.");
+                    }
+            );
+           // updateMessage(e.getMessage());
+            return Boolean.FALSE;
         }
-        return Boolean.FALSE;
-
     }
 }

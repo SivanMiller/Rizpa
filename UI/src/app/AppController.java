@@ -39,7 +39,7 @@ public class    AppController {
     private List<UserTabController> tabControllersList;
     private Engine engine;
     private Stage primaryStage;
-    private boolean isXMLLoaded = false;
+    public boolean isXMLLoaded = false;
 
     @FXML
     public void initialize() {
@@ -78,25 +78,31 @@ public class    AppController {
 
             messagesController.clearMessages();
 
-            FileTask fileTask = new FileTask(engine, filePath);
+            FileTask fileTask = new FileTask(engine, filePath, this);
             //engine.loadXML(filePath);
             bindTaskToUI(fileTask,
                     () -> createUserTabs());
             new Thread(fileTask).start();
 
-            messagesController.addMessage("File loaded successfully!");
-            isXMLLoaded = true;
-            if (isXMLLoaded)
-                messagesController.addMessage("The system will continue with the last version.");
+//            messagesController.addMessage("File loaded successfully!");
+//            isXMLLoaded = true;
+//            if (isXMLLoaded)
+//                messagesController.addMessage("The system will continue with the last version.");
 
     }
 
     private void bindTaskToUI(Task<Boolean> aTask, Runnable onFinish){
         headerController.bindTaskToUI(aTask);
         aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(aTask.valueProperty().getValue() == Boolean.TRUE)
+            if(aTask.valueProperty().getValue() == Boolean.TRUE) {
                 onFinish.run();
+                isXMLLoaded = true;
+            }
         });
+    }
+
+    public void addMessage(String message){
+        messagesController.addMessage(message);
     }
 
     private void refreshTabs(){
