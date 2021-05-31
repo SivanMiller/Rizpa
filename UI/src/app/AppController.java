@@ -88,7 +88,7 @@ public class    AppController {
             isXMLLoaded = true;
             if (isXMLLoaded)
                 messagesController.addMessage("The system will continue with the last version.");
-        
+
     }
 
     private void bindTaskToUI(Task<Boolean> aTask, Runnable onFinish){
