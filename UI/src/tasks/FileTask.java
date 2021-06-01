@@ -33,10 +33,7 @@ public class FileTask extends Task<Boolean> {
             long totalUsers = descriptor.getRseUsers().getRseUser().size();
             long totalWork = totalStocks + totalStocks;
             long accumWork = 0;
-            updateProgress(0, totalWork);
-            Thread.sleep(100);
-            //updateMessage("Fetching file..");
-
+            updateProgress(accumWork, totalWork);
             Platform.runLater(
                     () -> appController.addMessage("Fetching file..")
             );
@@ -53,14 +50,12 @@ public class FileTask extends Task<Boolean> {
             this.engine.convertXMLUsers(descriptor);
             accumWork += totalUsers;
             updateProgress(accumWork, totalWork);
-            //updateMessage("Fetching users..");
             Platform.runLater(
                     () -> appController.addMessage("Fetching users..")
             );
             Thread.sleep(500);
 
             updateProgress(totalWork, totalWork);
-            //updateMessage("File loaded successfully");
             Platform.runLater(
                     () -> {
                        // appController.clearMessages();

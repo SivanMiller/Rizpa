@@ -41,7 +41,7 @@ public class HeaderController {
     private void initialize() {
         this.comboTheme.getItems().add("Default");
         this.comboTheme.getItems().add("Dark");
-        this.comboTheme.getItems().add("Blue");
+        this.comboTheme.getItems().add("Purple");
         this.comboTheme.getItems().add("Brown");
         this.progressBar.visibleProperty().bind(progressProperty);
         this.progressPercent.visibleProperty().bind(progressProperty);

@@ -2,37 +2,44 @@
     -fx-accent: #DDE392;
     -fx-focus-color: -fx-accent;
     -fx-base: #504B3A;
-    -fx-control-inner-background: derive(-fx-base, 35%);
-    -fx-control-inner-background-alt: -fx-control-inner-background;
-    -fx-font-family: "Agency FB";
-    -fx-font-size: 16px;
+    -fx-font-family: "Arharoni";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }
 
 .label {
     -fx-text-fill: white;
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
 }
 #rizpaLabel {
     -fx-font-size: 40px;
 }
 
 .text-field {
-    -fx-prompt-text-fill: #7D8570;
+    -fx-background-color: #504B3A;;
+    -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
+    -fx-border-radius: 20px;
+    -fx-background-radius:20px;
 }
 .tab-pane{
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
 }
 .button{
     -fx-focus-traversable: false;
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
+    -fx-background-radius:20px;
 }
 
 .button:hover{
     -fx-focus-traversable: false;
     -fx-text-fill: white;
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
+}
+.combo-box {
+    -fx-border-radius: 20px;
+    -fx-background-radius:20px;
 }
 
 .separator *.line {
@@ -47,12 +54,12 @@
 
 .button:default {
     -fx-base: -fx-accent;
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
 } 
 
 .table-view{
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
-    -fx-font-family: "Agency FB";
+    -fx-font-family: "Arharoni";
 }
 
 .table-view .column-header .label{
