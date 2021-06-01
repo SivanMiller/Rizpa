@@ -82,7 +82,7 @@ public class    AppController {
             //engine.loadXML(filePath);
             bindTaskToUI(fileTask,
                     () -> {createUserTabs();
-                    headerController.hideProgressBar();
+                   // headerController.hideProgressBar();
                 });
             new Thread(fileTask).start();
 
@@ -96,6 +96,7 @@ public class    AppController {
     private void bindTaskToUI(Task<Boolean> aTask, Runnable onFinish){
         headerController.bindTaskToUI(aTask);
         aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
+            headerController.hideProgressBar();
             if(aTask.valueProperty().getValue() == Boolean.TRUE) {
                 onFinish.run();
                 isXMLLoaded = true;

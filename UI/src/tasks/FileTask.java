@@ -63,7 +63,7 @@ public class FileTask extends Task<Boolean> {
             //updateMessage("File loaded successfully");
             Platform.runLater(
                     () -> {
-                       // appController.clearMessages();
+                        appController.clearMessages();
                         appController.addMessage("File loaded successfully");
                     }
             );
