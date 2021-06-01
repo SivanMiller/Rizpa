@@ -60,21 +60,18 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </TextField>
-      <TableView fx:id="stockDetails" prefHeight="100.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+      <TableView fx:id="stockDetails" prefHeight="108.0" prefWidth="306.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="companyName" prefWidth="101.33334350585938" text="Company" />
           <TableColumn fx:id="stockSymbol" prefWidth="97.0" text="Symbol" />
           <TableColumn fx:id="stockQuantity" prefWidth="73.33331298828125" text="Quantity" />
-            <TableColumn fx:id="stockPrice" prefWidth="185.66668701171875" text="Price" />
+            <TableColumn fx:id="stockPrice" prefWidth="51.66668701171875" text="Price" />
         </columns>
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
       </TableView>
-      <Button mnemonicParsing="false" onAction="#onActionAddCommand" prefHeight="27.0" prefWidth="138.0" text="Add RSE Command" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
+      <Button mnemonicParsing="false" onAction="#onActionAddCommand" text="Add RSE Command" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
