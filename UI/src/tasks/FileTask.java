@@ -58,7 +58,7 @@ public class FileTask extends Task<Boolean> {
             updateProgress(totalWork, totalWork);
             Platform.runLater(
                     () -> {
-                       // appController.clearMessages();
+                        appController.clearMessages();
                         appController.addMessage("File loaded successfully");
                     }
             );
