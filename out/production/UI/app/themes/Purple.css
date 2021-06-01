@@ -50,6 +50,7 @@
 
 .combo-box:hover{
     -fx-background-color: #E8CEE4;
+    -fx-text-fill: white;
 }
 .separator *.line {
     -fx-background-color: -fx-accent;
