@@ -12,7 +12,7 @@ import javafx.scene.control.ListView;
 public class MessagesController {
 
     @FXML private ListView<String> messageList;
-    @FXML private Label messegeLable;
+    @FXML private Label messegeLabel;
     private AppController mainController;
 
     public void setMainController(AppController mainController) {
@@ -24,9 +24,5 @@ public class MessagesController {
     public void addMessage(String message){
         messageList.getItems().add(message);
     }
-
-//    public void bindTaskToUI(Task<Boolean> aTask){
-//       // messageList.itemsProperty().bind();
-//    }
 
 }

@@ -1,5 +1,6 @@
 .root { 
     -fx-accent: #5B5750;
+    -fx-focus-color: -fx-accent;
     -fx-base: #8EB8E5;
     -fx-control-inner-background: derive(-fx-base, 35%);
     -fx-control-inner-background-alt: -fx-control-inner-background ;
@@ -8,7 +9,6 @@
 
 .label{
     -fx-text-fill: #492C1D;
-    -fx-text-fill: white;
 
 }
 #rizpaLabel
@@ -16,7 +16,7 @@
     -fx-font-size: 50;
 
 }
-#messegeLable
+#messageLabel
 {
     -fx-font-size: 22;
     -fx-font-family: Georgia;

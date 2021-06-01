@@ -13,8 +13,8 @@
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
   <columnConstraints>
       <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
-      <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" prefWidth="100.0" />
       <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" />
+      <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" prefWidth="70.0" />
     <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
       <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" />
     <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
@@ -33,7 +33,7 @@
             <Font name="Calibri Bold" size="14.0" />
          </font>
       </Button>
-      <Label fx:id="rizpaLabel" text="Rizpa" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.vgrow="ALWAYS">
+      <Label fx:id="rizpaLabel" contentDisplay="TOP" text="Rizpa" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowSpan="2" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
          </GridPane.margin>
@@ -59,7 +59,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </GridPane.margin>
       </ProgressBar>
-      <Label fx:id="progressPercent" text="0%" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Label fx:id="progressPercent" prefHeight="17.0" prefWidth="57.0" text="0%" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <font>
             <Font name="Calibri" size="14.0" />
          </font>

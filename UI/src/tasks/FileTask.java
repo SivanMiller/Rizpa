@@ -31,27 +31,24 @@ public class FileTask extends Task<Boolean> {
             RizpaStockExchangeDescriptor descriptor = engine.loadXML(this.filePath);
             long totalStocks = descriptor.getRseStocks().getRseStock().size();
             long totalUsers = descriptor.getRseUsers().getRseUser().size();
-            long totalWork = totalStocks + totalStocks + 10;
+            long totalWork = totalStocks + totalStocks;
             long accumWork = 0;
             updateProgress(0, totalWork);
-            Thread.sleep(10);
+            Thread.sleep(100);
             //updateMessage("Fetching file..");
 
             Platform.runLater(
                     () -> appController.addMessage("Fetching file..")
             );
-            accumWork += 10;
-            updateProgress(accumWork, totalWork);
-            Thread.sleep(100);
+            Thread.sleep(500);
 
             this.engine.convertXMLStocks(descriptor);
             accumWork += totalStocks;
             updateProgress(accumWork, totalWork);
-            //updateMessage("Fetching stocks..");
             Platform.runLater(
                     () -> appController.addMessage("Fetching stocks..")
             );
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             this.engine.convertXMLUsers(descriptor);
             accumWork += totalUsers;
@@ -60,17 +57,17 @@ public class FileTask extends Task<Boolean> {
             Platform.runLater(
                     () -> appController.addMessage("Fetching users..")
             );
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             updateProgress(totalWork, totalWork);
             //updateMessage("File loaded successfully");
             Platform.runLater(
                     () -> {
-                        appController.clearMessages();
+                       // appController.clearMessages();
                         appController.addMessage("File loaded successfully");
                     }
             );
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             return Boolean.TRUE;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
