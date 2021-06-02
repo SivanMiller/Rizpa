@@ -18,6 +18,8 @@
 }
 
 .text-field {
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 0.5px;
     -fx-text-fill: #5D576B;
     -fx-background-color: #D7BCE8;
     -fx-font-family: "Arial Black";
@@ -28,6 +30,8 @@
     -fx-font-family: "Arial Black";
 }
 .button{
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 0.5px;
     -fx-focus-traversable: false;
     -fx-font-family: "Arial Black";
     -fx-border-radius: 10px;
@@ -43,6 +47,8 @@
     -fx-font-family: "Arial Black";
 }
 .combo-box {
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 0.5px;
     -fx-border-radius: 10px;
     -fx-background-radius:10px;
     -fx-background-color: #D7BCE8;
@@ -62,6 +68,8 @@
 }
 
 .table-view{
+    -fx-border-color: -fx-accent;
+    -fx-border-width: 0.5px;
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
     -fx-font-family: "Arial Black";
 }

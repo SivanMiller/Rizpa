@@ -16,7 +16,9 @@
 }
 
 .text-field {
-    -fx-background-color: #504B3A;;
+    -fx-border-color: derive(-fx-base,45%);
+    -fx-border-width: 0.5px;
+    -fx-background-color: -fx-base;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-family: "Arharoni";
@@ -27,9 +29,12 @@
     -fx-font-family: "Arharoni";
 }
 .button{
+    -fx-border-color: derive(-fx-base,45%);
+    -fx-border-width: 0.5px;
     -fx-focus-traversable: false;
     -fx-font-family: "Arharoni";
     -fx-background-radius:20px;
+    -fx-border-radius: 20px;
 }
 
 .button:hover{
@@ -38,12 +43,14 @@
     -fx-font-family: "Arharoni";
 }
 .combo-box {
+    -fx-border-color: derive(-fx-base,45%);
+    -fx-border-width: 0.5px;
     -fx-border-radius: 20px;
     -fx-background-radius:20px;
 }
 
 .separator *.line {
-    -fx-background-color: #504B3A;
+    -fx-background-color: derive(-fx-base,45%);
     -fx-border-style: solid;
     -fx-border-width: 1px;
 }
@@ -52,12 +59,9 @@
     -fx-background-color: derive(-fx-base,45%)
 }
 
-.button:default {
-    -fx-base: -fx-accent;
-    -fx-font-family: "Arharoni";
-} 
-
 .table-view{
+    -fx-border-color: derive(-fx-base,45%);
+    -fx-border-width: 0.5px;
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
     -fx-font-family: "Arharoni";
 }
