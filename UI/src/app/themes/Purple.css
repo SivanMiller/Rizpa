@@ -2,16 +2,22 @@
     -fx-accent: #8884FF;
     -fx-focus-color: -fx-accent;
     -fx-base: #FDE2FF;
-    -fx-control-inner-background: derive(-fx-base, 35%);
-    -fx-control-inner-background-alt: -fx-control-inner-background;
     -fx-font-family: "Arial Black";
     -fx-font-size: 12px;
     -fx-text-fill: #5D576B;
+    -fx-control-inner-background: derive(-fx-base, 35%);
+    -fx-control-inner-background-alt: -fx-control-inner-background;
+}
+
+.radio-button{
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 12px;
 }
 
 .label {
     -fx-text-fill: #5D576B;
     -fx-font-family: "Arial Black";
+    -fx-font-size: 12px;
 }
 #rizpaLabel {
     -fx-font-size: 40px;
@@ -23,17 +29,17 @@
     -fx-text-fill: #5D576B;
     -fx-background-color: #D7BCE8;
     -fx-font-family: "Arial Black";
+    -fx-font-size: 12px;
     -fx-border-radius: 10px;
     -fx-background-radius:10px;
 }
-.tab-pane{
-    -fx-font-family: "Arial Black";
-}
+
 .button{
     -fx-border-color: -fx-accent;
     -fx-border-width: 0.5px;
     -fx-focus-traversable: false;
     -fx-font-family: "Arial Black";
+    -fx-font-size: 12px;
     -fx-border-radius: 10px;
     -fx-background-radius:10px;
     -fx-text-fill: #5D576B;
@@ -45,6 +51,7 @@
     -fx-text-fill: white;
     -fx-background-color: #E8CEE4;
     -fx-font-family: "Arial Black";
+    -fx-font-size: 12px;
 }
 .combo-box {
     -fx-border-color: -fx-accent;

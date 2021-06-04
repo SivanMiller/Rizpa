@@ -2,14 +2,20 @@
     -fx-accent: #DDE392;
     -fx-focus-color: -fx-accent;
     -fx-base: #504B3A;
-    -fx-font-family: "Arharoni";
+    -fx-font-family: Consolas;
+    -fx-control-inner-background: derive(-fx-base, 35%);
+    -fx-control-inner-background-alt: -fx-control-inner-background ;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
+.radio-button{
+    -fx-font-family: Consolas;
+}
+
 .label {
     -fx-text-fill: white;
-    -fx-font-family: "Arharoni";
+    -fx-font-family: Consolas;
 }
 #rizpaLabel {
     -fx-font-size: 40px;
@@ -21,18 +27,16 @@
     -fx-background-color: -fx-base;
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-font-family: "Arharoni";
+    -fx-font-family: Consolas;
     -fx-border-radius: 20px;
     -fx-background-radius:20px;
 }
-.tab-pane{
-    -fx-font-family: "Arharoni";
-}
+
 .button{
     -fx-border-color: derive(-fx-base,45%);
     -fx-border-width: 0.5px;
     -fx-focus-traversable: false;
-    -fx-font-family: "Arharoni";
+    -fx-font-family: Consolas;
     -fx-background-radius:20px;
     -fx-border-radius: 20px;
 }
@@ -40,7 +44,7 @@
 .button:hover{
     -fx-focus-traversable: false;
     -fx-text-fill: white;
-    -fx-font-family: "Arharoni";
+    -fx-font-family: Consolas;
 }
 .combo-box {
     -fx-border-color: derive(-fx-base,45%);
@@ -63,7 +67,7 @@
     -fx-border-color: derive(-fx-base,45%);
     -fx-border-width: 0.5px;
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
-    -fx-font-family: "Arharoni";
+    -fx-font-family: Consolas;
 }
 
 .table-view .column-header .label{

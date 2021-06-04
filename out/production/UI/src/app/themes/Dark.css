@@ -1,4 +1,4 @@
-.root { 
+.root {
     -fx-accent: #1e74c6;
     -fx-focus-color: -fx-accent;
     -fx-base: #373e43;
@@ -8,51 +8,52 @@
     -fx-font-size: 12px;
 }
 
-.label {
+.radio-button{
+    -fx-font-family: "Comic Sans MS";
+}
+
+.label{
     -fx-text-fill: lightgray;
     -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 12px;
 }
 #rizpaLabel {
     -fx-font-size: 40px;
     -fx-font-style: italic;
 }
+
 .text-field {
     -fx-prompt-text-fill: gray;
     -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 12px;
 }
 
-.tab-pane {
-    -fx-font-family: "Comic Sans MS";
-}
-
-.button {
+.button{
     -fx-focus-traversable: false;
     -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 12px;
 }
 
-.button:hover {
+.button:hover{
     -fx-text-fill: white;
     -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 12px;
 }
 
-.separator *.line { 
+.separator *.line {
     -fx-background-color: #3C3C3C;
     -fx-border-style: solid;
     -fx-border-width: 1px;
 }
 
-.scroll-bar {
+.scroll-bar{
     -fx-background-color: derive(-fx-base,45%)
 }
-
-.button:default {
-    -fx-base: -fx-accent;
-    -fx-font-family: "Comic Sans MS";
-} 
 
 .table-view{
     -fx-selection-bar-non-focused: derive(-fx-base, 50%);
     -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 12px;
 }
 
 .table-view .column-header .label{
@@ -60,8 +61,10 @@
     -fx-font-weight: none;
 }
 
+.list-cell:even,
+.list-cell:odd,
 .table-row-cell:even,
-.table-row-cell:odd{    
+.table-row-cell:odd{
     -fx-control-inner-background: derive(-fx-base, 15%);
 }
 

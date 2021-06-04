@@ -39,7 +39,7 @@ public class FileTask extends Task<Boolean> {
             long totalWork = totalStocks + totalStocks + 10;
             long accumWork = 10;
             updateProgress(accumWork, totalWork);
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             this.engine.convertXMLStocks(descriptor);
             accumWork += totalStocks;
@@ -64,7 +64,7 @@ public class FileTask extends Task<Boolean> {
                         appController.addMessage("File loaded successfully");
                     }
             );
-            Thread.sleep(1000);
+            Thread.sleep(500);
 
             return Boolean.TRUE;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |

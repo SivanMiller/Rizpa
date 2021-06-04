@@ -163,17 +163,15 @@ public class Engine implements RizpaMethods {
         else {
             try {
                 if (CmdDirection == Command.CmdDirection.SELL) {
-                    int userQuantity = user.getHolding(stock.getSymbol()).getQuantity();
+                    int sellQuantity = 0;
                     for (CommandDTO command : stock.getExchangeCollection().getSellCommand()) {
                         if (command.getUser() == userName)
-                            userQuantity -= command.getQuantity();
+                            sellQuantity += command.getQuantity();
                     }
-                    if (userQuantity < Quantity) {
-                        throw new UserHoldingQuntityNotEnough();
+                    if ((user.getHolding(stock.getSymbol()).getQuantity() - sellQuantity) < Quantity) {
+                        throw new UserHoldingQuntityNotEnough(user.getName(), stock.getCompanyName(), sellQuantity);
                     }
-
                 }
-
                     NewCmdOutcomeDTO newCmdOutcomeDTO = stock.addNewCommand(user, Type, CmdDirection, Price, Quantity);
 
                     //Commit transaction in users

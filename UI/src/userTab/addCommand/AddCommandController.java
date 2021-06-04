@@ -101,7 +101,6 @@ public class AddCommandController {
             LMTProperty.set(true);
         }
         else {
-            commandPrice.setText("0");
             LMTProperty.set(false);
         }
     }
@@ -127,6 +126,5 @@ public class AddCommandController {
             resetVisibility();
         }
     }
-
 }
 

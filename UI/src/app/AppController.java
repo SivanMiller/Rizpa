@@ -79,17 +79,10 @@ public class    AppController {
             messagesController.clearMessages();
 
             FileTask fileTask = new FileTask(engine, filePath, this);
-            //engine.loadXML(filePath);
             bindTaskToUI(fileTask,
                     () -> {createUserTabs();
-                   // headerController.hideProgressBar();
                 });
             new Thread(fileTask).start();
-
-//            messagesController.addMessage("File loaded successfully!");
-//            isXMLLoaded = true;
-//            if (isXMLLoaded)
-//                messagesController.addMessage("The system will continue with the last version.");
 
     }
 
