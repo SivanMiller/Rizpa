@@ -28,16 +28,18 @@ public class FileTask extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
         try {
-            RizpaStockExchangeDescriptor descriptor = engine.loadXML(this.filePath);
-            long totalStocks = descriptor.getRseStocks().getRseStock().size();
-            long totalUsers = descriptor.getRseUsers().getRseUser().size();
-            long totalWork = totalStocks + totalStocks;
-            long accumWork = 0;
-            updateProgress(accumWork, totalWork);
+            updateProgress(0, 100);
             Platform.runLater(
                     () -> appController.addMessage("Fetching file..")
             );
-            Thread.sleep(500);
+            Thread.sleep(1000);
+            RizpaStockExchangeDescriptor descriptor = engine.loadXML(this.filePath);
+            long totalStocks = descriptor.getRseStocks().getRseStock().size();
+            long totalUsers = descriptor.getRseUsers().getRseUser().size();
+            long totalWork = totalStocks + totalStocks + 10;
+            long accumWork = 10;
+            updateProgress(accumWork, totalWork);
+            Thread.sleep(1000);
 
             this.engine.convertXMLStocks(descriptor);
             accumWork += totalStocks;
@@ -45,7 +47,7 @@ public class FileTask extends Task<Boolean> {
             Platform.runLater(
                     () -> appController.addMessage("Fetching stocks..")
             );
-            Thread.sleep(500);
+            Thread.sleep(1000);
 
             this.engine.convertXMLUsers(descriptor);
             accumWork += totalUsers;
@@ -53,7 +55,7 @@ public class FileTask extends Task<Boolean> {
             Platform.runLater(
                     () -> appController.addMessage("Fetching users..")
             );
-            Thread.sleep(500);
+            Thread.sleep(1000);
 
             updateProgress(totalWork, totalWork);
             Platform.runLater(
@@ -62,7 +64,7 @@ public class FileTask extends Task<Boolean> {
                         appController.addMessage("File loaded successfully");
                     }
             );
-            Thread.sleep(500);
+            Thread.sleep(1000);
 
             return Boolean.TRUE;
         } catch (StockNegPriceException | XMLException | FileNotFoundException |
@@ -75,7 +77,6 @@ public class FileTask extends Task<Boolean> {
                             appController.addMessage("The system will continue with the last version.");
                     }
             );
-           // updateMessage(e.getMessage());
             return Boolean.FALSE;
         }
     }

@@ -7,10 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Pair;
 import objects.CommandDTO;
@@ -56,6 +53,8 @@ public class AdminDetailsController implements Initializable {
     private ObservableList<TransactionDTO> tranListData;
 
     @FXML private LineChart<String,Number> stockHistoryChart;
+    @FXML private Label stockHistoryChartLabel;
+    @FXML private ScrollPane stockHistoryChartScroll;
 
     private SimpleBooleanProperty showProperty;
     public AdminDetailsController() {
@@ -93,6 +92,7 @@ public class AdminDetailsController implements Initializable {
         sellCommandLabel.visibleProperty().bind(showProperty);
         transactionLabel.visibleProperty().bind(showProperty);
         stockHistoryChart.visibleProperty().bind(showProperty);
+        stockHistoryChartLabel.visibleProperty().bind(showProperty);
     }
 
     public void setStocksComboBox(List<String> stocksNameList) {
