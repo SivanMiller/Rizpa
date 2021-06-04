@@ -32,7 +32,7 @@ public class FileTask extends Task<Boolean> {
             Platform.runLater(
                     () -> appController.addMessage("Fetching file..")
             );
-            Thread.sleep(1000);
+            Thread.sleep(500);
             RizpaStockExchangeDescriptor descriptor = engine.loadXML(this.filePath);
             long totalStocks = descriptor.getRseStocks().getRseStock().size();
             long totalUsers = descriptor.getRseUsers().getRseUser().size();
