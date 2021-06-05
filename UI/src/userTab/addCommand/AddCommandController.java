@@ -86,15 +86,14 @@ public class AddCommandController {
     @FXML
     private void onActionCommandValues()
     {
-        if(stockSymbol.getValue() != null                                &&
-           commandType.getValue() != null                                &&
-           !(commandQuantity.getText().trim().isEmpty())                 &&
-           ((LMTProperty.get() && !commandPrice.getText().trim().isEmpty()) ||
-            (!LMTProperty.get())) ) {
-            addCommandProperty.set(true);
-        }
-        else {
-            addCommandProperty.set(false);
+        if(stockSymbol.getValue() != null && commandType.getValue() != null && !(commandQuantity.getText().trim().isEmpty()))
+        {
+            if(commandType.getValue() == Command.CmdType.MKT)
+                addCommandProperty.set(true);
+            else if(!(commandPrice.getText().trim().isEmpty()))
+                addCommandProperty.set(true);
+            else
+                addCommandProperty.set(false);
         }
 
         if(commandType.getValue() == Command.CmdType.LMT) {
@@ -121,6 +120,8 @@ public class AddCommandController {
 
     @FXML
     private void onActionCommand() {
+        if(commandType.getValue()==Command.CmdType.MKT)
+            commandPrice.setText("0");
         if (mainController.addCommand(stockSymbol.getValue(), commandType.getValue(), CmdDirection,
                 commandPrice.getText(), commandQuantity.getText())) {
             resetVisibility();

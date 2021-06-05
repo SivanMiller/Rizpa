@@ -12,27 +12,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
-// TODO: הבעיה היא שפיצלנו את הטעינה של המניות והמשתמשים. אם המתודה של המניות מסתיימת בהצלחה,
-// TODO: כלומר אין בעיה בנתונים של המניות, היא מחליפה את הנתונים הקיימים במניות החדשות, בלי
-// TODO: תלות בזה שאולי יש שגיאות ביוזרים.
-// TODO: הפתרונות שחשבתי עליהם-
-// TODO: 1. כל אחת מהמתודות של הטעינה לא תטען נתונים חדשים אלא תחזיר אובייקטים מתאימים ונכתוב
-// TODO: מתודה חדשה שמקבלת את שתי האובייקטים ומכניסה אותם למנוע.
-// TODO: סוג של COMMIT
-// TODO: הבעיה בפתרון הזה היא שהוא יוצר תלות ענקית בין כל המתודות האלה ומחייב לקרוא להן בסדר
-// TODO: מסויים וזה פשוט מחורבןןן
-// TODO: 2. ליצור עוד שתי אובייקטים במנוע שמכילים את מה שהיה פעם ובמקרה והייתה איזה שגיאה
-// TODO: בקובץ היא תחזיר את האובייקטים למה שהיו לפני בטעינה.
-// TODO: מן הסתם ברגע שהקובץ תקין אז צריך לשמור גם בהם וגם באובייקטים הקיימים את מה שנטען.
-// TODO: הבעיה בפתרון הזה היא שאנחנו שומרים אובייקטים מיותרים וזה מכוער, אבל זה יוצר הרבה פחות
-// TODO:  תלות בין המתודות ולא מצריך לכתוב שום מתודה חדשה אלא רק במצב שיש בעיה ביוזרים
-// TODO:   בקובץ להחזיר גם את המניות למה שהיו קודם.
 
 public class Engine implements RizpaMethods {
 
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "generated";
 
     private Map<String, Stock> Stocks;
+    private Map<String, Stock> tempStocks;
     private Map<String, User> Users;
 
     public RizpaStockExchangeDescriptor loadXML(String FileName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
@@ -59,7 +45,7 @@ public class Engine implements RizpaMethods {
 
    public void convertXMLStocks(RizpaStockExchangeDescriptor descriptor) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
         List<RseStock> stocks = descriptor.getRseStocks().getRseStock();
-        Map<String, Stock> tempMapStocks = this.Stocks;
+        this.tempStocks = this.Stocks;
         Stocks = new HashMap<>();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
 
@@ -76,17 +62,17 @@ public class Engine implements RizpaMethods {
                         //Insert company name to company name set
                         setCompanies.add(newStock.getCompanyName());
                     } else {
-                        Stocks = tempMapStocks;
+                        Stocks = this.tempStocks;
                         throw new XMLException("There are two stocks with the same Company Name in the XML you are trying to load." +
                                 "Please make sure all stocks are from different companies");
                     }
                 } else {
-                    Stocks = tempMapStocks;
+                    Stocks = this.tempStocks;
                     throw new XMLException("There are two stocks with the same Symbol in the XML you are trying to load. " +
                             "Please make sure all stocks have different Symbols");
                 }
             } catch (StockNegPriceException | StockSymbolLowercaseException e) {
-                Stocks = tempMapStocks;
+                Stocks = this.tempStocks;
                 throw e;
             }
         }
@@ -110,6 +96,7 @@ public class Engine implements RizpaMethods {
                     userHoldings.put(holding.getStock().getSymbol(), holding);
                 } else {
                     Users = tempMapUsers;
+                    this.Stocks=this.tempStocks;
                     throw new XMLException("You are trying to load a user with a holding of stock '" +
                             item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks" );
                 }
@@ -123,6 +110,7 @@ public class Engine implements RizpaMethods {
                 Users.put(newUser.getName(), newUser);
             } else {
                 Users = tempMapUsers;
+                this.Stocks=this.tempStocks;
                 throw new XMLException("There are two users with the same Name in the XML you are trying to load. " +
                         "Please make sure all users have different Names");
             }

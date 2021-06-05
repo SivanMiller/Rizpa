@@ -68,7 +68,7 @@ public class UserTabController {
 
     @FXML
     private void changedTab(){
-        clearMessages(); //TODO check why deleted
+        clearMessages();
         addCommandController.resetVisibility();
     }
 
