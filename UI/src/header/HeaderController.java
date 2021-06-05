@@ -55,6 +55,7 @@ public class HeaderController {
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files", "*.xml"));
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         if (selectedFile == null) {
+            this.hideProgressBar();
             return;
         }
 
