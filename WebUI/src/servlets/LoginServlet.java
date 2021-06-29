@@ -21,19 +21,24 @@ public class LoginServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+
+    String STAM = "/Web/pages/login/stam.html";
+    String ERROR = "/Web/pages/login/error.html";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (usernameFromSession == null) {
             //user is not logged in yet
+            UserManager userManager = ServletUtils.getUserManager(getServletContext());
             String usernameFromParameter = request.getParameter(Constants.USERNAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter -
                 //redirect back to the index page
                 //this return an HTTP code back to the browser telling it to load
-                //response.sendRedirect(SIGN_UP_URL);
+
+                response.sendRedirect(ERROR);
                 //TODO: ERROR MESSAGE - NO USER ENTERED
             } else {
                 //normalize the username value
@@ -62,6 +67,7 @@ public class LoginServlet extends HttpServlet {
                         // http://timjansen.github.io/jarfiller/guide/servlet25/requestdispatcher.xhtml
 
                         //TODO: ERROR MESSAGE- "USER ALREADY EXISTS"
+                        response.sendRedirect(ERROR);
 
                         //request.setAttribute(Constants.USER_NAME_ERROR, errorMessage);
                         //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
@@ -77,13 +83,15 @@ public class LoginServlet extends HttpServlet {
                         //redirect the request to the chat room - in order to actually change the URL
 
                         //TODO: REDIRECT TO NEXT PAGE AND SHOW MESSAGE- "USER LOGGED IN!"
-                        //response.sendRedirect(CHAT_ROOM_URL);
+                        response.sendRedirect(STAM);
                     }
                 }
             }
         } else {
             //user is already logged in
            // response.sendRedirect(CHAT_ROOM_URL);
+            response.sendRedirect(STAM);
+            //TODO: REDIRECT TO NEXT PAGE
         }
     }
 

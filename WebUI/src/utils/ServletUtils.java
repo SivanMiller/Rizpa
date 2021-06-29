@@ -1,7 +1,5 @@
 package utils;
 
-
-
 import engine.UserManager;
 
 import javax.servlet.ServletContext;
