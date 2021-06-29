@@ -25,6 +25,12 @@ public class User {
         }
     }
 
+    public User(String name) {
+        Name = name;
+        Holdings = new HashMap<>();
+        HoldingsTurnover = 0;
+    }
+
     public String getName() {
         return Name;
     }
