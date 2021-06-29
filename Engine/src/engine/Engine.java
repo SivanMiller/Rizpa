@@ -43,6 +43,7 @@ public class Engine implements RizpaMethods {
 
 
 
+
     //Converting XML Data with JAXB
     private static RizpaStockExchangeDescriptor deserializeFrom(InputStream in, String FileName) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
