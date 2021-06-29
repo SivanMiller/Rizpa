@@ -29,9 +29,9 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String usernameFromSession = SessionUtils.getUsername(request);
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
         if (usernameFromSession == null) {
             //user is not logged in yet
-            UserManager userManager = ServletUtils.getUserManager(getServletContext());
             String usernameFromParameter = request.getParameter(Constants.USERNAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter -
@@ -91,6 +91,7 @@ public class LoginServlet extends HttpServlet {
             //user is already logged in
            // response.sendRedirect(CHAT_ROOM_URL);
             response.sendRedirect(STAM);
+            //TODO: CHECK IF USERNAME IS COMPATIBLLE WITH SESSION USER
             //TODO: REDIRECT TO NEXT PAGE
         }
     }
