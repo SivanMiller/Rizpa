@@ -7,6 +7,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="WebUI" />
         </element>
+        <element id="directory" name="lib">
+          <element id="file-copy" path="$PROJECT_DIR$/WebUI/web/WEB-INF/lib/gson-2.7.jar" />
+        </element>
       </element>
     </root>
   </artifact>

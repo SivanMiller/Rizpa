@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="pages/login/LoginControl.js"></script>
     <title>Rizpa</title>
 </head>
 <body>
@@ -9,9 +11,10 @@
         <h1>Welcome to Rizpa!</h1>
         <br/>
         <h2>Please enter a unique user name:</h2>
-        <form id="loginForm" method="GET" action="loginResponse">
+        <form id="loginForm" method="GET" onsubmit="checkLogin()">
             <input type="text" name="username" class=""/>
             <input type="submit" value="Login"/>
+
         </form>
     </div>
 </body>

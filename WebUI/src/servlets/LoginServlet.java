@@ -1,9 +1,11 @@
 package servlets;
 
+import com.google.gson.Gson;
 import engine.UserManager;
 import utils.ServletUtils;
 import utils.SessionUtils;
 import constants.Constants;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,12 +29,16 @@ public class LoginServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
+        Gson gson= new Gson();
+
+        //String jsonResponse = gson.toJson(cav);
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        String usernameFromParameter = request.getParameter(Constants.USERNAME);
+
         if (usernameFromSession == null) {
             //user is not logged in yet
-            String usernameFromParameter = request.getParameter(Constants.USERNAME);
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
                 //no username in session and no username in parameter -
                 //redirect back to the index page
@@ -90,8 +96,12 @@ public class LoginServlet extends HttpServlet {
         } else {
             //user is already logged in
            // response.sendRedirect(CHAT_ROOM_URL);
-            response.sendRedirect(STAM);
-            //TODO: CHECK IF USERNAME IS COMPATIBLLE WITH SESSION USER
+            if(usernameFromSession == usernameFromParameter)
+            {
+                response.sendRedirect(STAM);
+
+            }
+            //TODO: ERROR message that the user is conected
             //TODO: REDIRECT TO NEXT PAGE
         }
     }
