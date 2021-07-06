@@ -13,13 +13,15 @@ function checkLogin() {
 
     event.preventDefault();
     var userName = $('.userName').val();
+    var isAdmin = $('.isAdmin').val();
 
     $.ajax
     ({
         url: 'loginResponse',
         data: {
             action: "loginResponse",
-            userName: userName
+            userName: userName,
+            isAdmin: isAdmin
         },
         type: 'GET',
         success: sendRedirect,
