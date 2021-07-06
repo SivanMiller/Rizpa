@@ -2,6 +2,7 @@ package servlets;
 
 import com.google.gson.Gson;
 import engine.UserManager;
+import javafx.util.Pair;
 import utils.ServletUtils;
 import utils.SessionUtils;
 import constants.Constants;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Set;
 
 public class LoginServlet extends HttpServlet {
     /**
@@ -24,19 +27,20 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
 
-    String STAM = "/Web/pages/login/stam.html";
-    String ERROR = "/Web/pages/login/error.html";
+    String STAM = "/web/pages/login/stam.html";
+    String ERROR = "/web/pages/login/error.html";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
         Gson gson= new Gson();
+        String json;
 
         //String jsonResponse = gson.toJson(cav);
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         String usernameFromParameter = request.getParameter(Constants.USERNAME);
-
+        Pair<Boolean, String> res;
         if (usernameFromSession == null) {
             //user is not logged in yet
             if (usernameFromParameter == null || usernameFromParameter.isEmpty()) {
@@ -44,7 +48,14 @@ public class LoginServlet extends HttpServlet {
                 //redirect back to the index page
                 //this return an HTTP code back to the browser telling it to load
 
-                response.sendRedirect(ERROR);
+                //response.sendRedirect(ERROR);
+
+                try (PrintWriter out = response.getWriter()) {
+                    res = new Pair<>(false, "No User name entered!");
+                    json = gson.toJson(res);
+                    out.println(json);
+                    out.flush();
+                }
                 //TODO: ERROR MESSAGE - NO USER ENTERED
             } else {
                 //normalize the username value
@@ -73,7 +84,13 @@ public class LoginServlet extends HttpServlet {
                         // http://timjansen.github.io/jarfiller/guide/servlet25/requestdispatcher.xhtml
 
                         //TODO: ERROR MESSAGE- "USER ALREADY EXISTS"
-                        response.sendRedirect(ERROR);
+                        try (PrintWriter out = response.getWriter()) {
+                            res = new Pair<>(false, "User name already exists");
+                            json = gson.toJson(res);
+                            out.println(json);
+                            out.flush();
+                        }
+                        //response.sendRedirect(ERROR);
 
                         //request.setAttribute(Constants.USER_NAME_ERROR, errorMessage);
                         //getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(request, response);
@@ -89,20 +106,39 @@ public class LoginServlet extends HttpServlet {
                         //redirect the request to the chat room - in order to actually change the URL
 
                         //TODO: REDIRECT TO NEXT PAGE AND SHOW MESSAGE- "USER LOGGED IN!"
-                        response.sendRedirect(STAM);
+                        try (PrintWriter out = response.getWriter()) {
+                            res = new Pair<>(true, "You are logged in!");
+                            json = gson.toJson(res);
+                            out.println(json);
+                            out.flush();
+                        }
+                        //response.sendRedirect(STAM);
                     }
                 }
             }
         } else {
             //user is already logged in
            // response.sendRedirect(CHAT_ROOM_URL);
-            if(usernameFromSession == usernameFromParameter)
-            {
-                response.sendRedirect(STAM);
-
-            }
-            //TODO: ERROR message that the user is conected
             //TODO: REDIRECT TO NEXT PAGE
+            if(usernameFromSession.equals(usernameFromParameter)) {
+                //response.sendRedirect(STAM);
+                try (PrintWriter out = response.getWriter()) {
+                    res = new Pair<>(true, "You are logged in!");
+                    json = gson.toJson(res);
+                    out.println(json);
+                    out.flush();
+                }
+            }
+            //TODO: ERROR message that the user is connected
+            else {
+                try (PrintWriter out = response.getWriter()) {
+                    res = new Pair<>(false, "You are already logged in with user name " + usernameFromSession);
+                    json = gson.toJson(res);
+                    out.println(json);
+                    out.flush();
+                }
+            }
+
         }
     }
 
