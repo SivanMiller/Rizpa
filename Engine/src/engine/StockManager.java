@@ -18,6 +18,9 @@ public class StockManager {
         Stock newStock = new Stock(CompanyName, Symbol, Price);
         Stocks.put(Symbol, newStock);
     }
+    public synchronized void addStock(String Symbol, Stock newStock) throws StockSymbolLowercaseException, StockNegPriceException {
+       Stocks.put(Symbol, newStock);
+    }
 
     public synchronized void removeStock(String Symbol) {
         Stocks.remove(Symbol);

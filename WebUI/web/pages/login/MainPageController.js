@@ -40,3 +40,4 @@ function refreshUserListCallback(users) {
         tr.appendTo(usersTable);
     });
 }
+

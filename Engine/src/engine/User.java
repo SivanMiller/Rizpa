@@ -25,10 +25,17 @@ public class User {
         }
     }
 
+
+
     public User(String name) {
         Name = name;
         Holdings = new HashMap<>();
         HoldingsTurnover = 0;
+    }
+
+    public void addHolding(Holding newHold)
+    {
+        Holdings.put(newHold.getStock().getSymbol(),newHold);
     }
 
     public String getName() {
@@ -44,6 +51,7 @@ public class User {
     }
 
     public Holding getHolding(String Symbol) { return Holdings.get(Symbol); }
+
 
     public void setHoldings(Map<String, Holding> holdings) {
         Holdings = holdings;
