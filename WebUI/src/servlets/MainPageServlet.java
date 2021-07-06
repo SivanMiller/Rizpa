@@ -6,6 +6,7 @@ import constants.Constants;
 import engine.User;
 import engine.UserManager;
 import javafx.util.Pair;
+import objects.StockDTO;
 import utils.ServletUtils;
 
 import javax.jnlp.ClipboardService;
@@ -26,23 +27,30 @@ public class MainPageServlet extends HttpServlet {
         response.setContentType("application/json");
         Gson gson = new Gson();
         String json = "";
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
 
         String actionFromParam = request.getParameter(Constants.ACTION);
 
         try (PrintWriter out = response.getWriter()) {
-        switch (actionFromParam) {
-            case("getUsers"): {
+            switch (actionFromParam) {
+                case ("getUsers"): {
                     json = gson.toJson(this.getUsers());
+                    break;
+                }
+                case ("getStocks"): {
+                    json = gson.toJson(userManager.getStocks());
+
                     break;
                 }
             }
 
-        out.println(json);
-        out.flush();
+            out.println(json);
+            out.flush();
         }
     }
 
-    public List<Pair<String, String>> getUsers(){
+
+      public List<Pair<String, String>> getUsers(){
         List<Pair<String, String>> res = new ArrayList<>();
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         Pair<String, String> userPair;

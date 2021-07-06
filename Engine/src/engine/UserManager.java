@@ -1,11 +1,13 @@
 package engine;
 
+import exception.NoSuchStockException;
 import exception.StockNegPriceException;
 import exception.StockSymbolLowercaseException;
 import exception.XMLException;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseItem;
 import generated.RseStock;
+import objects.StockDTO;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -139,6 +141,22 @@ public class UserManager {
                 }
             }
 
+    }
+    public StockDTO getStock(String Symbol)
+    {
+        Stock stock = this.stocksManger.getStocks().get(Symbol);
+
+        return stock.convertToDTO();
+    }
+
+    public List<StockDTO> getStocks() {
+        List<StockDTO> res=new ArrayList<>();
+        StockDTO stockDTO;
+        for( String stockSymbol: this.stocksManger.getStocks().keySet())
+        {
+            res.add(getStock(stockSymbol));
+        }
+        return res;
     }
 
 }

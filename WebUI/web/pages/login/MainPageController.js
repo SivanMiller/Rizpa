@@ -2,6 +2,8 @@ window.onload = function ()
 {
     refreshUserList();
     setInterval(refreshUserList, 2000);
+    refreshStockList();
+    setInterval(refreshStockList, 2000);
 };
 
 
@@ -21,7 +23,7 @@ function refreshUserList() {
 function refreshUserListCallback(users) {
     var usersTable = $('.usersTable tbody');
     usersTable.empty();
-    //var userList = json.users;
+
 
     var tr = $(document.createElement('tr'));
 
@@ -41,3 +43,46 @@ function refreshUserListCallback(users) {
     });
 }
 
+function refreshStockList() {
+    $.ajax(
+        {
+            url: 'mainPage',
+            data: {
+                action: "getStocks"
+            },
+            type: 'GET',
+            success: refreshStockListCallback
+        }
+    );
+}
+function refreshStockListCallback(stocks) {
+    var usersTable = $('.stocksTable tbody');
+    usersTable.empty();
+
+
+    var tr = $(document.createElement('tr'));
+
+    var td = $(document.createElement('td')).text("company name");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("stock symbol");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("price");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("turnover");
+    td.appendTo(tr);
+    tr.appendTo(usersTable);
+
+    stocks.forEach(function (stock) {
+        tr = $(document.createElement('tr'));
+        td = $(document.createElement('td')).text(stock.companyName);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(stock.stockSymbol);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(stock.stockPrice);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(stock.stockQuantity);
+        td.appendTo(tr);
+
+        tr.appendTo(usersTable);
+    });
+}

@@ -4,8 +4,6 @@ package objects;
 //    private String CompanyName;
 //    private String Symbol;
 //    private int Price;
-//    private ExchangeCollectionDTO ExchangeCollection;
-//    private int TransactionNum; // Transactions Number
 //    private int Turnover; // Transactions sum of turnovers
 //
 //    public StockDTO(String CompanyName, String Symbol, int Price,
@@ -82,6 +80,7 @@ import java.util.Map;
 public class StockDTO {
     public final SimpleStringProperty companyName;
     public final SimpleStringProperty stockSymbol;
+    //todo: change to stock turnover
     public final SimpleIntegerProperty stockQuantity;
     public final SimpleIntegerProperty stockPrice;
 
