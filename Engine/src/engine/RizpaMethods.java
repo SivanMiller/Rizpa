@@ -1,7 +1,6 @@
 package engine;
 
 import exception.*;
-import generated.RizpaStockExchangeDescriptor;
 import objects.NewCmdOutcomeDTO;
 import objects.StockDTO;
 
