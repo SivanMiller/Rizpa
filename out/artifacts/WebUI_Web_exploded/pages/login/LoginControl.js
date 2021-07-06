@@ -13,13 +13,12 @@ function checkLogin() {
 
     event.preventDefault();
     var userName = $('.userName').val();
-    var isAdmin = $('.isAdmin').val();
+    var isAdmin = $('.isAdmin').is(':checked');
 
     $.ajax
     ({
         url: 'loginResponse',
         data: {
-            action: "loginResponse",
             userName: userName,
             isAdmin: isAdmin
         },

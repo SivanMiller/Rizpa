@@ -98,7 +98,7 @@ public class LoginServlet extends HttpServlet {
                     }
                     else {
 
-                        if( isAdmin == "on")
+                        if( isAdmin.equals(Boolean.TRUE.toString()))
                             userManager.addAdmin(usernameFromParameter);
                         else
                             userManager.addUser(usernameFromParameter);

@@ -42,7 +42,7 @@ public class UserManager {
     private boolean isAdminExists(String adminname) {
         return Admins.contains(adminname);
     }
-public boolean isExists(String name)
+    public boolean isExists(String name)
 {
     return isAdminExists(name)|| isUserExists(name);
 }
