@@ -76,7 +76,7 @@ public class UserManager {
         convertXMLStocks(stockDescriptor);
 
         convertXMLUserHolding(stockDescriptor,Users.get(userName));
-        } catch (JAXBException | FileNotFoundException | XMLException  e) {
+        } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
             throw e;
         }
     }

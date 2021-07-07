@@ -86,3 +86,40 @@ function refreshStockListCallback(stocks) {
         tr.appendTo(usersTable);
     });
 }
+
+function loadGameClicked(event) {
+    //var file = event.target.files[0];
+    //var reader = new FileReader();
+    //var creatorName = getUserName();
+
+    //reader.onload = function () {
+       // var content = reader.result;
+
+    var fileName = event.target.files[0];
+    var fileName = $('#myfile').val();
+    $.ajax(
+        {
+            url: 'mainPage',
+            data: {
+                action: "loadXML",
+                fileName: fileName
+            },
+            type: 'GET',
+            //success: refreshUserListCallback
+        }
+    );
+    //};
+
+    // $.ajax // Getting creator's name.
+    //     ({
+    //         url: 'login',
+    //         data: {
+    //             action: "status"
+    //         },
+    //         type: 'GET',
+    //         success: function (json) {
+    //             creatorName = json.userName;
+    //             reader.readAsText(file);
+    //         }
+    //     });
+}

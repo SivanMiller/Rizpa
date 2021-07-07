@@ -5,15 +5,21 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import constants.Constants;
 import engine.User;
 import engine.UserManager;
+import exception.StockNegPriceException;
+import exception.StockSymbolLowercaseException;
+import exception.*;
 import javafx.util.Pair;
 import objects.StockDTO;
 import utils.ServletUtils;
+import utils.SessionUtils;
 
 import javax.jnlp.ClipboardService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.JAXBException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -42,6 +48,10 @@ public class MainPageServlet extends HttpServlet {
 
                     break;
                 }
+                case ("loadXML"): {
+                    this.userLoadXML(request);
+                    break;
+                }
             }
 
             out.println(json);
@@ -49,6 +59,25 @@ public class MainPageServlet extends HttpServlet {
         }
     }
 
+    public void userLoadXML(HttpServletRequest request) {
+        String usernameFromSession = SessionUtils.getUsername(request);
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        String filenameFromParameter = request.getParameter(Constants.FILE_NAME);
+
+        try {
+            userManager.loadXML(filenameFromParameter, usernameFromSession);
+        } catch (StockNegPriceException e) {
+            e.printStackTrace();
+        } catch (XMLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (StockSymbolLowercaseException e) {
+            e.printStackTrace();
+        }
+    }
 
       public List<Pair<String, String>> getUsers(){
         List<Pair<String, String>> res = new ArrayList<>();

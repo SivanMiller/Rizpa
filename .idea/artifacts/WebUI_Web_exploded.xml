@@ -6,6 +6,8 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="WebUI" />
+          <element id="module-output" name="Engine" />
+          <element id="module-output" name="DTO" />
         </element>
         <element id="directory" name="lib">
           <element id="file-copy" path="$PROJECT_DIR$/WebUI/web/WEB-INF/lib/gson-2.7.jar" />
