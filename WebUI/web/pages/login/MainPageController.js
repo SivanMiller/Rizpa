@@ -88,12 +88,6 @@ function refreshStockListCallback(stocks) {
 }
 
 function loadGameClicked(event) {
-    //var file = event.target.files[0];
-    //var reader = new FileReader();
-    //var creatorName = getUserName();
-
-    //reader.onload = function () {
-       // var content = reader.result;
 
     var fileName = event.target.files[0];
     var fileName = $('#myfile').val();
@@ -108,18 +102,4 @@ function loadGameClicked(event) {
             //success: refreshUserListCallback
         }
     );
-    //};
-
-    // $.ajax // Getting creator's name.
-    //     ({
-    //         url: 'login',
-    //         data: {
-    //             action: "status"
-    //         },
-    //         type: 'GET',
-    //         success: function (json) {
-    //             creatorName = json.userName;
-    //             reader.readAsText(file);
-    //         }
-    //     });
 }

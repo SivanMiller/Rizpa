@@ -30,7 +30,6 @@ public class MainPageServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/json");
         Gson gson = new Gson();
         String json = "";
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
@@ -40,51 +39,47 @@ public class MainPageServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             switch (actionFromParam) {
                 case ("getUsers"): {
+                    response.setContentType("application/json");
                     json = gson.toJson(this.getUsers());
+                    out.println(json);
+                    out.flush();
                     break;
                 }
                 case ("getStocks"): {
+                    response.setContentType("application/json");
                     json = gson.toJson(userManager.getStocks());
+                    out.println(json);
+                    out.flush();
 
                     break;
                 }
                 case ("loadXML"): {
-                    this.userLoadXML(request);
+                    this.userLoadXML(request, response);
                     break;
                 }
             }
-
-            out.println(json);
-            out.flush();
         }
     }
 
-    public void userLoadXML(HttpServletRequest request) {
+    public void userLoadXML(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String usernameFromSession = SessionUtils.getUsername(request);
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         String filenameFromParameter = request.getParameter(Constants.FILE_NAME);
 
         try {
             userManager.loadXML(filenameFromParameter, usernameFromSession);
-        } catch (StockNegPriceException e) {
-            e.printStackTrace();
-        } catch (XMLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (StockSymbolLowercaseException e) {
-            e.printStackTrace();
+        } catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException | StockSymbolLowercaseException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getOutputStream().println(e.getMessage());
         }
     }
 
-      public List<Pair<String, String>> getUsers(){
+    public List<Pair<String, String>> getUsers() {
         List<Pair<String, String>> res = new ArrayList<>();
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         Pair<String, String> userPair;
 
-        for (String name : userManager.getUsers().keySet()){
+        for (String name : userManager.getUsers().keySet()) {
             userPair = new Pair(name, "Consumer");
             res.add(userPair);
         }
