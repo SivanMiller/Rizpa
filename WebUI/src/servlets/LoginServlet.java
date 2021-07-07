@@ -27,7 +27,7 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
 
-    String STAM = "/web/pages/login/stam.html";
+    String STAM = "/web/pages/login/MainPage.html";
     String ERROR = "/web/pages/login/error.html";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
