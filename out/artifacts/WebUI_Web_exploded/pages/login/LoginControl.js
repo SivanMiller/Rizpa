@@ -1,4 +1,4 @@
-var stam = "/Web/pages/login/stam.html";
+var stam = "/Web/pages/login/MainPage.html";
 
 function sendRedirect(json)
 {
