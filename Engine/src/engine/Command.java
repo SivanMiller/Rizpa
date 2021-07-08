@@ -15,7 +15,9 @@ public abstract class Command {
 
     public enum CmdType {
         LMT,
-        MKT
+        MKT,
+        FOK,
+        IOC
     };
 
     protected int Price;
