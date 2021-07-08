@@ -12,7 +12,8 @@ import java.util.Map;
 public class User {
 
     private String Name;
-    private int HoldingsTurnover;
+//    private int HoldingsTurnover;
+    private int Funds;
     private Map<String, Holding> Holdings;
 
     public User(String name, Map<String, Holding> holdings) {
@@ -21,21 +22,22 @@ public class User {
 
         for (Holding holding : this.Holdings.values())
         {
-            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
+//            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
+            Funds += holding.getQuantity() * holding.getStock().getPrice();
         }
     }
-
-
 
     public User(String name) {
         Name = name;
         Holdings = new HashMap<>();
-        HoldingsTurnover = 0;
+//        HoldingsTurnover = 0;
+        Funds = 0;
     }
 
     public void addHolding(Holding newHold)
     {
-        Holdings.put(newHold.getStock().getSymbol(),newHold);
+        Holdings.put(newHold.getStock().getSymbol(), newHold);
+        this.Funds += newHold.getQuantity() * newHold.getStock().getPrice();
     }
 
     public String getName() {
@@ -52,24 +54,21 @@ public class User {
 
     public Holding getHolding(String Symbol) { return Holdings.get(Symbol); }
 
-
     public void setHoldings(Map<String, Holding> holdings) {
         Holdings = holdings;
     }
 
-    public int getHoldingsTurnover() {
-        HoldingsTurnover = 0;
-        for (Holding holding : this.Holdings.values())
-        {
-            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
-        }
-        return HoldingsTurnover;
-    }
+//    public int getHoldingsTurnover() {
+//        HoldingsTurnover = 0;
+//        for (Holding holding : this.Holdings.values())
+//        {
+//            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
+//        }
+//        return HoldingsTurnover;
+//    }
 
-    public void setHoldingsTurnover(int holdingsTurnover) {
-        HoldingsTurnover = holdingsTurnover;
-    }
-
+    public void AddFunds(int fundsToAdd) { this.Funds += fundsToAdd; }
+    public int getFunds() { return this.Funds; }
 
     public void commitBuyTransaction(Stock stock, TransactionDTO transaction){
         Holding stockHolding = this.getHolding(stock.getSymbol());
@@ -81,14 +80,19 @@ public class User {
         else {
             stockHolding.setQuantity(stockHolding.getQuantity() + transaction.getTransactionQuantity());
         }
-    }
 
-    public void commitSellTransaction(Stock stock, TransactionDTO transaction){
+        this.Funds += transaction.getTransactionQuantity() * transaction.getTransactionPrice();
+     }
+
+    public void commitSellTransaction(Stock stock, TransactionDTO transaction) {
         Holding stockHolding = this.getHolding(stock.getSymbol());
         stockHolding.setQuantity(stockHolding.getQuantity() - transaction.getTransactionQuantity());
+
         if (stockHolding.getQuantity() == 0) {
             this.getHoldings().remove(stock.getSymbol());
         }
+
+        this.Funds -= transaction.getTransactionQuantity() * transaction.getTransactionPrice();
     }
 
     @Override
@@ -106,6 +110,7 @@ public class User {
             holdings.add(holding.convertToDTO());
         }
 
-        return new UserDTO(this.getName(), this.getHoldingsTurnover(), holdings);
+        return new UserDTO(this.getName(), this.Funds, holdings);
     }
+
 }

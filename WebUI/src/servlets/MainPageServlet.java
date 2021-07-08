@@ -1,25 +1,16 @@
 package servlets;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import constants.Constants;
-import engine.User;
 import engine.UserManager;
-import exception.StockNegPriceException;
-import exception.StockSymbolLowercaseException;
-import exception.*;
 import javafx.util.Pair;
-import objects.StockDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
-import javax.jnlp.ClipboardService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -33,7 +24,7 @@ public class MainPageServlet extends HttpServlet {
         Gson gson = new Gson();
         String json = "";
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
-
+        String userNameFromSession = SessionUtils.getUsername(request);
         String actionFromParam = request.getParameter(Constants.ACTION);
 
         try (PrintWriter out = response.getWriter()) {
@@ -53,24 +44,30 @@ public class MainPageServlet extends HttpServlet {
 
                     break;
                 }
-                case ("loadXML"): {
-                    this.userLoadXML(request, response);
+                case("isAdmin"): {
+                    if (!SessionUtils.isAdmin(request)){
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                    else{
+                        response.setStatus(HttpServletResponse.SC_OK);
+                    }
+                    break;
+                }
+                case("userFunds"):{
+                    response.setContentType("application/json");
+                    int funds = userManager.getUserFunds(userNameFromSession);
+                    json = gson.toJson(funds);
+                    out.println(json);
+                    out.flush();
+                    break;
+                }
+                case("addFunds"):{
+                    String userFundsFromParameter = request.getParameter(Constants.USER_FUNDS);
+                    int funds = Integer.parseInt(userFundsFromParameter);
+                    userManager.addUserFunds(userNameFromSession ,funds);
                     break;
                 }
             }
-        }
-    }
-
-    public void userLoadXML(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String usernameFromSession = SessionUtils.getUsername(request);
-        UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        String filenameFromParameter = request.getParameter(Constants.FILE_NAME);
-
-        try {
-            userManager.loadXML(filenameFromParameter, usernameFromSession);
-        } catch (StockNegPriceException | XMLException | FileNotFoundException | JAXBException | StockSymbolLowercaseException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getOutputStream().println(e.getMessage());
         }
     }
 

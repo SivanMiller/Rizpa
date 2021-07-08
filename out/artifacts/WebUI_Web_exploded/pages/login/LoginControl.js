@@ -1,17 +1,10 @@
-var stam = "/Web/pages/login/MainPage.html";
+var MainPage = "pages/mainPage/MainPage.html";
 
 function sendRedirect(res)
 {
-    //if (json.key){
-        window.location = stam;
-    //}
+    window.location = MainPage;
 
-    alert(res.responseText);
-}
-
-function error(res)
-{
-    alert(res.responseText);
+    alert(res);
 }
 
 function checkLogin() {
@@ -29,7 +22,10 @@ function checkLogin() {
         },
         type: 'GET',
         success: sendRedirect,
-        error: error,
+        error: function (error)
+        {
+            alert(error.responseText);
+        }
     });
 
 }

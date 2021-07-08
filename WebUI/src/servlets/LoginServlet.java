@@ -1,20 +1,15 @@
 package servlets;
 
-import com.google.gson.Gson;
 import engine.UserManager;
-import javafx.util.Pair;
 import utils.ServletUtils;
 import utils.SessionUtils;
 import constants.Constants;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Set;
 
 public class LoginServlet extends HttpServlet {
 
@@ -36,7 +31,7 @@ public class LoginServlet extends HttpServlet {
         String usernameFromParameter = request.getParameter(Constants.USERNAME);
         //normalize the username value
         usernameFromParameter = usernameFromParameter.trim();
-        String isAdmin= request.getParameter(Constants.ISADMIN);
+        String isAdmin= request.getParameter(Constants.IS_ADMIN);
 
         // No session created for this user yet
         if (usernameFromSession == null) {
@@ -52,10 +47,13 @@ public class LoginServlet extends HttpServlet {
                         response.getOutputStream().println("Username " + usernameFromParameter + " already exists. Please enter a different username.");
                     }
                     else { //User name valid, create session
-                        if( isAdmin.equals(Boolean.TRUE.toString()))
+                        if( isAdmin.equals(Boolean.TRUE.toString())) {
                             userManager.addAdmin(usernameFromParameter);
-                        else
+                            request.getSession(true).setAttribute(Constants.IS_ADMIN, "TRUE");
+                        }
+                        else {
                             userManager.addUser(usernameFromParameter);
+                        }
 
                        //create session
                         request.getSession(true).setAttribute(Constants.USERNAME, usernameFromParameter);

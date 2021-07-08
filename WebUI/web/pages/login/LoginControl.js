@@ -1,10 +1,10 @@
-var MainPage = "/Web/pages/login/MainPage.html";
+var MainPage = "pages/mainPage/MainPage.html";
 
 function sendRedirect(res)
 {
     window.location = MainPage;
 
-    alert(res.responseText);
+    alert(res);
 }
 
 function checkLogin() {

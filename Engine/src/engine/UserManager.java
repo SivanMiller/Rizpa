@@ -1,6 +1,5 @@
 package engine;
 
-import exception.NoSuchStockException;
 import exception.StockNegPriceException;
 import exception.StockSymbolLowercaseException;
 import exception.XMLException;
@@ -12,10 +11,7 @@ import objects.StockDTO;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class UserManager {
@@ -25,9 +21,11 @@ public class UserManager {
     private Map<String, User> Users;
     private List<String> Admins;
     private StockManager stocksManger;
+
     public UserManager() {
         Users = new HashMap<>();
         Admins = new ArrayList<>();
+        stocksManger = new StockManager();
     }
 
     public synchronized void addAdmin(String AdminName)
@@ -40,7 +38,6 @@ public class UserManager {
         User newUser = new User(username);
         Users.put(username, newUser);
     }
-
 
     public synchronized void removeUser(String username) {
         Users.remove(username);
@@ -56,32 +53,29 @@ public class UserManager {
     private boolean isUserExists(String username) {
         return Users.containsKey(username);
     }
-    private boolean isAdminExists(String adminname) {
-        return Admins.contains(adminname);
+    private boolean isAdminExists(String adminName) {
+        return Admins.contains(adminName);
     }
     public boolean isExists(String name)
 {
-    return isAdminExists(name)|| isUserExists(name);
+    return isAdminExists(name) || isUserExists(name);
 }
 
-    public void loadXML(String FileName, String userName) throws StockNegPriceException, XMLException, FileNotFoundException, JAXBException, StockSymbolLowercaseException {
+    public void loadXML(InputStream in, String userName) throws StockNegPriceException, XMLException, JAXBException, StockSymbolLowercaseException {
         try {
-            if(!FileName.endsWith(".xml")){
-                throw new XMLException("File must be .xml format");
-            }
-            InputStream inputStream = new FileInputStream(new File(FileName));
             //Getting XML Data
-            RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(inputStream, FileName);
-            //Filling stock collection
-        convertXMLStocks(stockDescriptor);
+            RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(in);
 
-        convertXMLUserHolding(stockDescriptor,Users.get(userName));
-        } catch (JAXBException | FileNotFoundException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
+            //Filling stock collection
+            convertXMLStocks(stockDescriptor);
+            //Filling user collection
+            convertXMLUserHolding(stockDescriptor,Users.get(userName));
+        } catch (JAXBException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
             throw e;
         }
     }
     //Converting XML Data with JAXB
-    private static RizpaStockExchangeDescriptor deserializeFrom(InputStream in, String FileName) throws JAXBException {
+    private static RizpaStockExchangeDescriptor deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
         return (RizpaStockExchangeDescriptor) u.unmarshal(in);
@@ -104,9 +98,8 @@ public class UserManager {
                         //Insert company name to company name set
                         setCompanies.add(newStock.getCompanyName());
                     }
-                    //the company name is already exists
+                    //the company name already exists
                     else {
-
                         throw new XMLException("There are two stocks with the same Company Name in the XML you are trying to load." +
                                 "Please make sure all stocks are from different companies");
                     }
@@ -118,40 +111,31 @@ public class UserManager {
     }
 
     public void convertXMLUserHolding(RizpaStockExchangeDescriptor descriptor,User user) throws XMLException {
-        List<RseItem> items =descriptor.getRseHoldings().getRseItem();
+        List<RseItem> items = descriptor.getRseHoldings().getRseItem();
 
-            for (RseItem item : items)
-            {
-                Stock stockToHold=this.stocksManger.getStocks().get(item.getSymbol().toUpperCase());
-                //check if stock symbol exists
-                if (stockToHold!= null) {           //stock Symbol exists
-                    //check if the user is already have this stock
-                    Holding holding = user.getHolding(item.getSymbol().toUpperCase());
-                    if (holding != null)
-                        holding.setQuantity(holding.getQuantity() + item.getQuantity());
-                    else {
-                        Holding newHolding = new Holding(item.getQuantity(), stockToHold);
-                        user.addHolding(newHolding);
-                    }
+        for (RseItem item : items) {
+            Stock stockToHold = this.stocksManger.getStocks().get(item.getSymbol().toUpperCase());
+            //check if stock symbol exists
+            if (stockToHold != null) {  //stock Symbol exists
+                //check if the user already has this stock
+                Holding holding = user.getHolding(item.getSymbol().toUpperCase());
+                if (holding != null)
+                    holding.setQuantity(holding.getQuantity() + item.getQuantity());
+                else {
+                    Holding newHolding = new Holding(item.getQuantity(), stockToHold);
+                    user.addHolding(newHolding);
                 }
-                else {//stock dont exists!!
-
-                   throw new XMLException("You are trying to load a user with a holding of stock '" +
-                            item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks" );
-                }
+            } else { //stock doesn't exist!!
+                throw new XMLException("You are trying to load a holding of stock '" +
+                        item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks");
             }
-
+        }
     }
-    public StockDTO getStock(String Symbol)
-    {
-        Stock stock = this.stocksManger.getStocks().get(Symbol);
 
-        return stock.convertToDTO();
-    }
+    public StockDTO getStock(String Symbol) { return this.stocksManger.getStocks().get(Symbol).convertToDTO(); }
 
     public List<StockDTO> getStocks() {
         List<StockDTO> res=new ArrayList<>();
-        StockDTO stockDTO;
         for( String stockSymbol: this.stocksManger.getStocks().keySet())
         {
             res.add(getStock(stockSymbol));
@@ -159,4 +143,10 @@ public class UserManager {
         return res;
     }
 
+    public int getUserFunds(String userName){
+        return this.Users.get(userName).getFunds();
+    }
+    public void addUserFunds(String userName, int funds){
+        this.Users.get(userName).AddFunds(funds);
+    }
 }
