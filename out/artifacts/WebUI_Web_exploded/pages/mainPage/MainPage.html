@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Rizpa</title>
+    <script src="../../jquery-3.6.0.min.js"></script>
+    <script src="MainPageController.js"></script>
+</head>
+<body>
+<div title="Files">
+    <h2 class="userFields">Files</h2>
+    <form id="uploadForm" enctype="multipart/form-data" method="POST" class="userFields">
+        <input type="file" name="file1" accept=".xml" class="userFields">
+        <input type="Submit" value="Upload File" class="userFields">
+    </form>
+</div>
+<div>
+    <h2 class="userFields">Commands:</h2>
+    <form>
+        <input type="number"  class="userFields" id="userFunds">
+        <input type="Submit" value="Add Funds" class="userFields" onclick="onAddFunds()">
+    </form><br>
+    <div id="funds-placeholder">
+    </div>
+    <button class="userFields" onclick="onAddCommand()">Add New Command</button><br>
+</div>
+<div>
+    <h2 class="userFields">Tables:</h2>
+    <div class="usersDiv">
+        <table class="usersTable">
+            <thead>
+            <th>Users online:</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="stocksDiv">
+        <table class="stocksTable">
+            <thead>
+            <th>stocks:</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
