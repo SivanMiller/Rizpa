@@ -1,14 +1,11 @@
 window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
-    refreshUserAccountMovementList();
     refreshUserList();
-   // setInterval(refreshUserList, 2000);
+    setInterval(refreshUserList, 2000);
     refreshStockList();
-   // setInterval(refreshStockList, 2000);
+    setInterval(refreshStockList, 2000);
     refreshUserFunds();
-
-
 };
 
 $.ajax({
@@ -77,51 +74,6 @@ function refreshUserList() {
             success: refreshUserListCallback
         }
     );
-}
-
-function refreshUserAccountMovementList() {
-    $.ajax(
-        {
-            url: 'mainPage',
-            data: {
-                action: "userAccountMovements"
-            },
-            type: 'GET',
-            success: refreshUserAccountMovementListCallback
-        }
-    );
-}
-function refreshUserAccountMovementListCallback(userActions) {
-    var userAccountMovementTable = $('.accountMovementTable tbody');
-    userAccountMovementTable.empty();
-
-    var tr = $(document.createElement('tr'));
-    var td = $(document.createElement('td')).text("action type");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("action date");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("action price");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("user funds before action");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("user funds after action");
-    td.appendTo(tr);
-    tr.appendTo(userAccountMovementTable);
-
-    userActions.forEach(function (action) {
-        tr = $(document.createElement('tr'));
-        td = $(document.createElement('td')).text(action.Type.value);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.Date.value);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.Price.value);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.remainderBefore.value);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.remainderAfter.value);
-        td.appendTo(tr);
-        tr.appendTo(userAccountMovementTable);
-    });
 }
 
 function refreshUserListCallback(users) {
