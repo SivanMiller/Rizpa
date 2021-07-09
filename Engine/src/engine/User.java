@@ -2,6 +2,7 @@ package engine;
 
 import objects.HoldingDTO;
 import objects.TransactionDTO;
+import objects.UserCommandDTO;
 import objects.UserDTO;
 
 import java.util.ArrayList;
@@ -15,11 +16,13 @@ public class User {
 //    private int HoldingsTurnover;
     private int Funds;
     private Map<String, Holding> Holdings;
+    private List<UserCommandDTO>  allAccountMovements;
+
 
     public User(String name, Map<String, Holding> holdings) {
         Name = name;
         Holdings = holdings;
-
+        allAccountMovements=new ArrayList<>();
         for (Holding holding : this.Holdings.values())
         {
 //            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
@@ -32,6 +35,8 @@ public class User {
         Holdings = new HashMap<>();
 //        HoldingsTurnover = 0;
         Funds = 0;
+        allAccountMovements=new ArrayList<>();
+
     }
 
     public void addHolding(Holding newHold)
@@ -66,8 +71,18 @@ public class User {
 //        }
 //        return HoldingsTurnover;
 //    }
+    public List<UserCommandDTO> getAllAccountMovements() {
+        return allAccountMovements;
+    }
 
-    public void AddFunds(int fundsToAdd) { this.Funds += fundsToAdd; }
+    public void AddFunds(int fundsToAdd) {
+        int tempFunds=this.Funds;
+        this.Funds += fundsToAdd;
+        UserCommandDTO newCommand=new UserCommandDTO(UserCommandDTO.CmdType.CHARGE.toString(),fundsToAdd,tempFunds,this.Funds);
+
+        this.allAccountMovements.add(newCommand);
+
+    }
     public int getFunds() { return this.Funds; }
 
     public void commitBuyTransaction(Stock stock, TransactionDTO transaction){
@@ -80,9 +95,11 @@ public class User {
         else {
             stockHolding.setQuantity(stockHolding.getQuantity() + transaction.getTransactionQuantity());
         }
-
+        int tempFunds=this.Funds;
         this.Funds += transaction.getTransactionQuantity() * transaction.getTransactionPrice();
-     }
+        UserCommandDTO newCommand= new UserCommandDTO(UserCommandDTO.CmdType.BUY.toString(),transaction.getTransactionDate(),transaction.getTransactionPrice(),tempFunds,this.Funds);
+        this.allAccountMovements.add(newCommand);
+    }
 
     public void commitSellTransaction(Stock stock, TransactionDTO transaction) {
         Holding stockHolding = this.getHolding(stock.getSymbol());
@@ -91,8 +108,12 @@ public class User {
         if (stockHolding.getQuantity() == 0) {
             this.getHoldings().remove(stock.getSymbol());
         }
+        int tempFunds=this.Funds;
 
         this.Funds -= transaction.getTransactionQuantity() * transaction.getTransactionPrice();
+        UserCommandDTO newCommand= new UserCommandDTO(UserCommandDTO.CmdType.SELL.toString(),transaction.getTransactionDate(),transaction.getTransactionPrice(),tempFunds,this.Funds);
+        this.allAccountMovements.add(newCommand);
+
     }
 
     @Override

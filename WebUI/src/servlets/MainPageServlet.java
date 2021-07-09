@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import constants.Constants;
 import engine.UserManager;
 import javafx.util.Pair;
+import objects.UserCommandDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -65,6 +66,13 @@ public class MainPageServlet extends HttpServlet {
                     String userFundsFromParameter = request.getParameter(Constants.USER_FUNDS);
                     int funds = Integer.parseInt(userFundsFromParameter);
                     userManager.addUserFunds(userNameFromSession ,funds);
+                    break;
+                }
+                case("userAccountMovements"):{
+                    response.setContentType("application/json");
+                    json = gson.toJson(userManager.getUserAccountMovementList(userNameFromSession));
+                    out.println(json);
+                    out.flush();
                     break;
                 }
             }

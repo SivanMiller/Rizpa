@@ -37,6 +37,7 @@ public class UploadFileServlet extends HttpServlet {
         String usernameFromSession = SessionUtils.getUsername(request);
 
         for (Part part : parts) {
+
             if (!part.getSubmittedFileName().endsWith(".xml")) {
                 try {
                     throw new XMLException("File must be .xml format");

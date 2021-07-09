@@ -7,6 +7,7 @@ import generated.RizpaStockExchangeDescriptor;
 import generated.RseItem;
 import generated.RseStock;
 import objects.StockDTO;
+import objects.UserCommandDTO;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -143,10 +144,23 @@ public class UserManager {
         return res;
     }
 
+    public List<UserCommandDTO> getUserAccountMovementList (String userName) {
+
+        return (this.Users.get(userName).getAllAccountMovements());
+    }
     public int getUserFunds(String userName){
         return this.Users.get(userName).getFunds();
     }
     public void addUserFunds(String userName, int funds){
         this.Users.get(userName).AddFunds(funds);
+    }
+
+    public void addStock(String userName, Stock newStock,int Quantity) throws Exception {
+        if(this.stocksManger.isStockExists(newStock.getSymbol()))
+            throw new Exception("the Stock: "+ newStock.getSymbol() +"is already exists in the system");
+        this.stocksManger.addStock(newStock.getSymbol(), newStock);
+        Holding newHolding = new Holding(Quantity, newStock);
+        this.Users.get(userName).addHolding(newHolding);
+
     }
 }

@@ -19,7 +19,6 @@ public abstract class Command {
         FOK,
         IOC
     };
-
     protected int Price;
     protected int Quantity;
     protected String Date;
