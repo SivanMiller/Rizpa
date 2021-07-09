@@ -1,11 +1,15 @@
 window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
+    $("#addStockForm").submit(onAddStock);
     refreshUserList();
     setInterval(refreshUserList, 2000);
     refreshStockList();
     setInterval(refreshStockList, 2000);
     refreshUserFunds();
+    setInterval(refreshUserFunds, 2000);
+    refreshUserAccountMovementList();
+    setInterval(refreshUserAccountMovementList, 2000);
 };
 
 $.ajax({
@@ -30,6 +34,35 @@ function hideUserFields(){
 
 function onAddCommand(){
 
+}
+function onAddStock(){
+    var newStockCompanyName = $('#newStockCompanyName').val();
+    var newStockSymbol      = $('#newStockSymbol').val();
+    var newStockQuantity    = $('#newStockQuantity').val();
+    var newStockPrice       = $('#newStockPrice').val();
+
+    $.ajax(
+        {
+            url: 'mainPage',
+            data: {
+                newStockCompanyName: newStockCompanyName,
+                newStockSymbol: newStockSymbol,
+                newStockQuantity: newStockQuantity,
+                newStockPrice: newStockPrice,
+                action: "addStock"
+            },
+            type: 'GET',
+            error: function (error) {
+                alert(error.responseText);
+            },
+            success: function (res) {
+                alert(res);
+                refreshStockList();
+            }
+        }
+    );
+
+    return false;
 }
 
 function onAddFunds(){
@@ -74,6 +107,52 @@ function refreshUserList() {
             success: refreshUserListCallback
         }
     );
+}
+
+function refreshUserAccountMovementList() {
+    $.ajax(
+        {
+            url: 'mainPage',
+            data: {
+                action: "userAccountMovements"
+            },
+            type: 'GET',
+            success: refreshUserAccountMovementListCallback
+        }
+    );
+}
+function refreshUserAccountMovementListCallback(userActions) {
+
+    var userAccountMovementTable = $('.accountMovementTable tbody');
+    userAccountMovementTable.empty();
+
+    var tr = $(document.createElement('tr'));
+    var td = $(document.createElement('td')).text("action type");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("action date");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("action price");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("user funds before action");
+    td.appendTo(tr);
+    td = $(document.createElement('td')).text("user funds after action");
+    td.appendTo(tr);
+    tr.appendTo(userAccountMovementTable);
+
+    userActions.forEach(function(action) {
+        tr = $(document.createElement('tr'));
+        td = $(document.createElement('td')).text(action.Type);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.Date);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.Price);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.remainderBefore);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.remainderAfter);
+        td.appendTo(tr);
+        tr.appendTo(userAccountMovementTable);
+    });
 }
 
 function refreshUserListCallback(users) {
