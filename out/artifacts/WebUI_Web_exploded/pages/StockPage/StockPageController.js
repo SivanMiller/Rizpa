@@ -5,12 +5,13 @@ window.onload = function () {
 
 function onAddCommand(){
 
-   var sivan = $('input[name=CommandDir]:checked', '#addCommandForm').val();
-//todo: get all parmeters from the form
-    if( $('#newCommandSellRadio').is(':checked'))
-        var newCommandDIR = "sell";
-    else if( $('#newCommandBuyRadio').is(':checked'))
-        var newCommandDIR = "buy";
+    //todo: get all parmeters from the form
+
+    // if( $('#newCommandSellRadio').is(':checked'))
+    //     var newCommandDIR = "sell";
+    // else if( $('#newCommandBuyRadio').is(':checked'))
+    //     var newCommandDIR = "buy";
+    var newCommandDIR = $('input[name=CommandDir]:checked', '#addCommandForm').val();
 
     // return value of the submit operation
     // by default - we'll always return false so it doesn't redirect the user.
@@ -18,7 +19,6 @@ function onAddCommand(){
 }
 
 function selectStockOptionCreate() {
-    //todo: move to the needed servlet
     $.ajax({
         url: 'mainPage',
         data: {
@@ -30,8 +30,6 @@ function selectStockOptionCreate() {
 }
 
 function selectStockOptionCreateCallBack(stockList){
-
-  //todo: need to go over the list and creat options
     var select = $('#newCommandStockSymbol');
 
     stockList.forEach(function(stock) {
