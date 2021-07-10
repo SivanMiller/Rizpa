@@ -8,24 +8,66 @@
 </head>
 <body>
 <div title="Files">
-    <h2 class="userFields">Files</h2>
+    <h2>Files</h2>
     <form id="uploadForm" enctype="multipart/form-data" method="POST" class="userFields">
         <input type="file" name="file1" accept=".xml" class="userFields">
         <input type="Submit" value="Upload File" class="userFields">
     </form>
 </div>
 <div>
-    <h2 class="userFields">Commands:</h2>
+    <h2>Commands:</h2>
     <form>
         <input type="number"  class="userFields" id="userFunds">
         <input type="Submit" value="Add Funds" class="userFields" onclick="onAddFunds()">
     </form><br>
     <div id="funds-placeholder">
     </div>
-    <button class="userFields" onclick="onAddCommand()">Add New Command</button><br>
+    <br><br>
+    <form class="userFields" onsubmit="onAddCommand()">
+        <label>Command Direction:</label><br>
+        <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
+        <label for="newCommandSellRadio">Sell</label>
+        <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
+        <label for="newCommandBuyRadio">Buy</label><br>
+
+        <label for="newCommandStockSymbol">Stock Symbol:</label>
+        <select id="newCommandStockSymbol"></select><br>
+
+        <label>Command Type:</label><br>
+        <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT">
+        <label for="newCommandLMTRadio">LMT</label>
+        <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT">
+        <label for="newCommandMKTRadio">MKT</label>
+        <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK">
+        <label for="newCommandFOKRadio">FOK</label>
+        <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC">
+        <label for="newCommandIOCRadio">IOC</label><br>
+
+        <label for="newCommandQuantity">Quantity:</label>
+        <input type="number" id="newCommandQuantity"><br>
+
+        <label for="newCommandPrice">Price:</label>
+        <input type="number" id="newCommandPrice"><br>
+
+        <input type="submit" value="Add New Command">
+    </form><br>
+    <br>
+    <br>
+    <form class="userFields" id="addStockForm">
+        <label for="newStockCompanyName">Company Name:</label>
+        <input type="text" id="newStockCompanyName"><br>
+        <label for="newStockSymbol">Company Symbol:</label>
+        <input type="text" id="newStockSymbol"><br>
+        <label for="newStockQuantity">Quantity:</label>
+        <input type="number" id="newStockQuantity"><br>
+        <label for="newStockPrice">Price:</label>
+        <input type="number" id="newStockPrice"><br>
+        <input type="submit" value="Add New Stock">
+    </form>
 </div>
 <div>
-    <h2 class="userFields">Tables:</h2>
+    <h2>Tables:</h2>
+
     <div class="usersDiv">
         <table class="usersTable">
             <thead>
@@ -40,6 +82,15 @@
         <table class="stocksTable">
             <thead>
             <th>stocks:</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="accountMovementDiv">
+        <table class="accountMovementTable">
+            <thead>
+            <th>All Account Movement:</th>
             </thead>
             <tbody>
             </tbody>

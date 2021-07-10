@@ -28,54 +28,83 @@ public class MainPageServlet extends HttpServlet {
         String userNameFromSession = SessionUtils.getUsername(request);
         String actionFromParam = request.getParameter(Constants.ACTION);
 
-        try (PrintWriter out = response.getWriter()) {
-            switch (actionFromParam) {
-                case ("getUsers"): {
+
+        switch (actionFromParam) {
+            case ("getUsers"): {
+                try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(this.getUsers());
                     out.println(json);
                     out.flush();
-                    break;
                 }
-                case ("getStocks"): {
+                break;
+            }
+            case ("getStocks"): {
+                try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(userManager.getStocks());
                     out.println(json);
                     out.flush();
-
-                    break;
                 }
-                case("isAdmin"): {
-                    if (!SessionUtils.isAdmin(request)){
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                    else{
-                        response.setStatus(HttpServletResponse.SC_OK);
-                    }
-                    break;
+                break;
+            }
+            case ("isAdmin"): {
+                if (!SessionUtils.isAdmin(request)) {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_OK);
                 }
-                case("userFunds"):{
+                break;
+            }
+            case ("userFunds"): {
+                try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     int funds = userManager.getUserFunds(userNameFromSession);
                     json = gson.toJson(funds);
                     out.println(json);
                     out.flush();
-                    break;
                 }
-                case("addFunds"):{
-                    String userFundsFromParameter = request.getParameter(Constants.USER_FUNDS);
-                    int funds = Integer.parseInt(userFundsFromParameter);
-                    userManager.addUserFunds(userNameFromSession ,funds);
-                    break;
-                }
-                case("userAccountMovements"):{
+                break;
+            }
+            case ("addFunds"): {
+                String userFundsFromParameter = request.getParameter(Constants.USER_FUNDS);
+                int funds = Integer.parseInt(userFundsFromParameter);
+                userManager.addUserFunds(userNameFromSession, funds);
+                break;
+            }
+            case ("userAccountMovements"): {
+                try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(userManager.getUserAccountMovementList(userNameFromSession));
                     out.println(json);
                     out.flush();
-                    break;
                 }
+                break;
             }
+            case ("addStock"): {
+                this.addStock(request, response);
+                break;
+            }
+        }
+    }
+
+    public void addStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String CompanyName = request.getParameter("newStockCompanyName");
+        String StockSymbol = request.getParameter("newStockSymbol");
+        String StockQuantityFromParam = request.getParameter("newStockQuantity");
+        int StockQuantity = Integer.parseInt(StockQuantityFromParam);
+        String StockPriceFromParam = request.getParameter("newStockPrice");
+        int StockPrice = Integer.parseInt(StockPriceFromParam);
+
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        String userNameFromSession = SessionUtils.getUsername(request);
+        try {
+            userManager.addStock(userNameFromSession, CompanyName, StockSymbol, StockPrice, StockQuantity);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getOutputStream().println("Congratulations! A new stock was Added!!");
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getOutputStream().println(e.getMessage());
         }
     }
 

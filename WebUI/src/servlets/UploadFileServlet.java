@@ -40,29 +40,21 @@ public class UploadFileServlet extends HttpServlet {
         String usernameFromSession = SessionUtils.getUsername(request);
 
         for (Part part : parts) {
-
-            if (!part.getSubmittedFileName().endsWith(".xml")) {
+            if (!part.getContentType().equals("text/xml")) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getOutputStream().println("File must be .xml format");
+                return;
+            } else {
                 try {
-                    throw new XMLException("File must be .xml format");
-                } catch (XMLException e) {
+                    userManager.loadXML(part.getInputStream(), usernameFromSession);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getOutputStream().println("File Loaded!");
+                } catch (StockNegPriceException | XMLException | JAXBException | StockSymbolLowercaseException e) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getOutputStream().println(e.getMessage());
                     return;
                 }
             }
-
-            try {
-                userManager.loadXML(part.getInputStream(), usernameFromSession);
-            } catch (StockNegPriceException | XMLException | JAXBException | StockSymbolLowercaseException e) {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getOutputStream().println(e.getMessage());
-                return;
-            }
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.getOutputStream().println("File Loaded!");
         }
-    }
-    private String readFromInputStream(InputStream inputStream) {
-        return new Scanner(inputStream).useDelimiter("\\Z").next();
     }
 }

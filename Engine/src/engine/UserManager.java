@@ -155,9 +155,10 @@ public class UserManager {
         this.Users.get(userName).AddFunds(funds);
     }
 
-    public void addStock(String userName, Stock newStock,int Quantity) throws Exception {
+    public void addStock(String userName, String CompanyName, String Symbol, int Price, int Quantity) throws Exception {
+        Stock newStock = new Stock(CompanyName, Symbol, Price);
         if(this.stocksManger.isStockExists(newStock.getSymbol()))
-            throw new Exception("the Stock: "+ newStock.getSymbol() +"is already exists in the system");
+            throw new Exception("The stock: "+ newStock.getSymbol() +" already exists in the system");
         this.stocksManger.addStock(newStock.getSymbol(), newStock);
         Holding newHolding = new Holding(Quantity, newStock);
         this.Users.get(userName).addHolding(newHolding);

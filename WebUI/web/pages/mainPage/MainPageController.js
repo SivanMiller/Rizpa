@@ -1,14 +1,15 @@
 window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
-    refreshUserAccountMovementList();
+    $("#addStockForm").submit(onAddStock);
     refreshUserList();
-   // setInterval(refreshUserList, 2000);
+    setInterval(refreshUserList, 2000);
     refreshStockList();
-   // setInterval(refreshStockList, 2000);
+    setInterval(refreshStockList, 2000);
     refreshUserFunds();
-
-
+    setInterval(refreshUserFunds, 2000);
+    refreshUserAccountMovementList();
+    setInterval(refreshUserAccountMovementList, 2000);
 };
 
 $.ajax({
@@ -33,6 +34,35 @@ function hideUserFields(){
 
 function onAddCommand(){
 
+}
+function onAddStock(){
+    var newStockCompanyName = $('#newStockCompanyName').val();
+    var newStockSymbol      = $('#newStockSymbol').val();
+    var newStockQuantity    = $('#newStockQuantity').val();
+    var newStockPrice       = $('#newStockPrice').val();
+
+    $.ajax(
+        {
+            url: 'mainPage',
+            data: {
+                newStockCompanyName: newStockCompanyName,
+                newStockSymbol: newStockSymbol,
+                newStockQuantity: newStockQuantity,
+                newStockPrice: newStockPrice,
+                action: "addStock"
+            },
+            type: 'GET',
+            error: function (error) {
+                alert(error.responseText);
+            },
+            success: function (res) {
+                alert(res);
+                refreshStockList();
+            }
+        }
+    );
+
+    return false;
 }
 
 function onAddFunds(){
@@ -92,6 +122,7 @@ function refreshUserAccountMovementList() {
     );
 }
 function refreshUserAccountMovementListCallback(userActions) {
+
     var userAccountMovementTable = $('.accountMovementTable tbody');
     userAccountMovementTable.empty();
 
@@ -108,17 +139,17 @@ function refreshUserAccountMovementListCallback(userActions) {
     td.appendTo(tr);
     tr.appendTo(userAccountMovementTable);
 
-    userActions.forEach(function (action) {
+    userActions.forEach(function(action) {
         tr = $(document.createElement('tr'));
-        td = $(document.createElement('td')).text(action.Type.value);
+        td = $(document.createElement('td')).text(action.Type);
         td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.Date.value);
+        td = $(document.createElement('td')).text(action.Date);
         td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.Price.value);
+        td = $(document.createElement('td')).text(action.Price);
         td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.remainderBefore.value);
+        td = $(document.createElement('td')).text(action.remainderBefore);
         td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.remainderAfter.value);
+        td = $(document.createElement('td')).text(action.remainderAfter);
         td.appendTo(tr);
         tr.appendTo(userAccountMovementTable);
     });
