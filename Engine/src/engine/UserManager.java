@@ -68,9 +68,9 @@ public class UserManager {
             RizpaStockExchangeDescriptor stockDescriptor = deserializeFrom(in);
 
             //Filling stock collection
-            convertXMLStocks(stockDescriptor);
+            Map<String, Stock> newStocks=convertXMLStocks(stockDescriptor);
             //Filling user collection
-            convertXMLUserHolding(stockDescriptor,Users.get(userName));
+            convertXMLUserHolding(stockDescriptor,Users.get(userName),newStocks);
         } catch (JAXBException | XMLException | StockNegPriceException | StockSymbolLowercaseException e) {
             throw e;
         }
@@ -82,8 +82,9 @@ public class UserManager {
         return (RizpaStockExchangeDescriptor) u.unmarshal(in);
     }
 
-    public void convertXMLStocks(RizpaStockExchangeDescriptor descriptor) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
+    public Map<String, Stock> convertXMLStocks(RizpaStockExchangeDescriptor descriptor) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
         List<RseStock> stocks = descriptor.getRseStocks().getRseStock();
+        Map<String, Stock> res=new HashMap<>();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
 
         // Converting XML Stocks to Engine stocks
@@ -95,7 +96,7 @@ public class UserManager {
                     // if stock with same Company Name already exists
                     if (!setCompanies.contains(newStock.getCompanyName())) {
                         //Insert stock to stock map
-                        this.stocksManger.addStock(newStock.getSymbol(), newStock);
+                        res.put(newStock.getSymbol(), newStock);
                         //Insert company name to company name set
                         setCompanies.add(newStock.getCompanyName());
                     }
@@ -108,16 +109,32 @@ public class UserManager {
             } catch (StockNegPriceException | StockSymbolLowercaseException e) {
                 throw e;
             }
+
         }
+        return res;
     }
 
-    public void convertXMLUserHolding(RizpaStockExchangeDescriptor descriptor,User user) throws XMLException {
+    public void convertXMLUserHolding(RizpaStockExchangeDescriptor descriptor,User user,Map<String, Stock> newStocks) throws XMLException {
         List<RseItem> items = descriptor.getRseHoldings().getRseItem();
 
         for (RseItem item : items) {
+           //if stocks exists in thw system or loaded in the new Xml file its ok
+            if(this.stocksManger.isStockExists(item.getSymbol()) || newStocks.containsKey(item.getSymbol()))
+            {
+                continue;
+            }
+            //stock doesn't exist!!
+            else {
+                throw new XMLException("You are trying to load a holding of stock '" +
+                        item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks");
+            }
+       }
+        //the file is proper and we can save the new data in the system
+        for(Stock stock : newStocks.values())
+            this.stocksManger.addStock(stock.getSymbol(),stock);
+
+       for (RseItem item : items) {
             Stock stockToHold = this.stocksManger.getStocks().get(item.getSymbol().toUpperCase());
-            //check if stock symbol exists
-            if (stockToHold != null) {  //stock Symbol exists
                 //check if the user already has this stock
                 Holding holding = user.getHolding(item.getSymbol().toUpperCase());
                 if (holding != null)
@@ -126,11 +143,7 @@ public class UserManager {
                     Holding newHolding = new Holding(item.getQuantity(), stockToHold);
                     user.addHolding(newHolding);
                 }
-            } else { //stock doesn't exist!!
-                throw new XMLException("You are trying to load a holding of stock '" +
-                        item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks");
             }
-        }
     }
 
     public StockDTO getStock(String Symbol) { return this.stocksManger.getStocks().get(Symbol).convertToDTO(); }
@@ -156,7 +169,7 @@ public class UserManager {
     }
 
     public void addStock(String userName, String CompanyName, String Symbol, int Price, int Quantity) throws Exception {
-        Stock newStock = new Stock(CompanyName, Symbol, Price);
+        Stock newStock = new Stock(CompanyName, Symbol.toUpperCase(), Price/Quantity);
         if(this.stocksManger.isStockExists(newStock.getSymbol()))
             throw new Exception("The stock: "+ newStock.getSymbol() +" already exists in the system");
         this.stocksManger.addStock(newStock.getSymbol(), newStock);
