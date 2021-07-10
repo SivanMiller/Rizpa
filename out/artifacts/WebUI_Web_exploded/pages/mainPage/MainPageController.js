@@ -32,9 +32,7 @@ function hideUserFields(){
     $(".userFields").hide();
 }
 
-function onAddCommand(){
 
-}
 function onAddStock(){
     var newStockCompanyName = $('#newStockCompanyName').val();
     var newStockSymbol      = $('#newStockSymbol').val();

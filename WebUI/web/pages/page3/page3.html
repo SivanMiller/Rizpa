@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="../../jquery-3.6.0.min.js"></script>
+    <script src="page3Controller.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<form  id="addCommandForm">
+<!--    <form name="CommandDir">-->
+    <label>Command Direction:</label><br>
+    <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
+    <label for="newCommandSellRadio">Sell</label>
+    <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
+    <label for="newCommandBuyRadio">Buy</label><br>
+<!--    </form>-->
+    <label for="newCommandStockSymbol">Stock Symbol:</label>
+    <select id="newCommandStockSymbol"></select><br>
+
+    <label>Command Type:</label><br>
+    <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT">
+    <label for="newCommandLMTRadio">LMT</label>
+    <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT">
+    <label for="newCommandMKTRadio">MKT</label>
+    <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK">
+    <label for="newCommandFOKRadio">FOK</label>
+    <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC">
+    <label for="newCommandIOCRadio">IOC</label><br>
+
+    <label for="newCommandQuantity">Quantity:</label>
+    <input type="number" id="newCommandQuantity"><br>
+
+    <label for="newCommandPrice">Price:</label>
+    <input type="number" id="newCommandPrice"><br>
+
+    <input type="submit" value="Add New Command">
+</form><br>
+<input type="submit" value="back to main page" onsubmit="back()"/>
+</body>
+</html>
