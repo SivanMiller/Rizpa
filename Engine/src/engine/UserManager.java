@@ -177,4 +177,8 @@ public class UserManager {
         this.Users.get(userName).addHolding(newHolding);
 
     }
+
+    public Set<String> getUserStocksSymbols(String UserName) {
+        return this.Users.get(UserName).getHoldings().keySet();
+    }
 }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class MainPageServlet extends HttpServlet {
 
@@ -27,7 +28,6 @@ public class MainPageServlet extends HttpServlet {
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         String userNameFromSession = SessionUtils.getUsername(request);
         String actionFromParam = request.getParameter(Constants.ACTION);
-
 
         switch (actionFromParam) {
             case ("getUsers"): {
@@ -85,6 +85,15 @@ public class MainPageServlet extends HttpServlet {
                 this.addStock(request, response);
                 break;
             }
+            case ("getUserStocks"): {
+                try (PrintWriter out = response.getWriter()) {
+                    response.setContentType("application/json");
+                    json = gson.toJson(this.getUserStocks(request));
+                    out.println(json);
+                    out.flush();
+                }
+                break;
+            }
         }
     }
 
@@ -124,6 +133,12 @@ public class MainPageServlet extends HttpServlet {
         }
 
         return res;
+    }
+
+    public Set<String> getUserStocks(HttpServletRequest request) {
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+        String userNameFromSession = SessionUtils.getUsername(request);
+        return userManager.getUserStocksSymbols(userNameFromSession);
     }
     /**
      * Handles the HTTP <code>GET</code> method.

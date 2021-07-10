@@ -27,4 +27,8 @@
         <servlet-name>UploadFileServlet</servlet-name>
         <url-pattern>/pages/mainPage/uploadFile</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MainPageServlet</servlet-name>
+        <url-pattern>/pages/page3/mainPage</url-pattern>
+    </servlet-mapping>
 </web-app>
