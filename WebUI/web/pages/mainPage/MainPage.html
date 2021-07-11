@@ -5,6 +5,7 @@
     <title>Rizpa</title>
     <script src="../../jquery-3.6.0.min.js"></script>
     <script src="MainPageController.js"></script>
+    <link rel="stylesheet" type="text/css" href="MainPage.css">
 </head>
 <body>
 <div title="Files">
@@ -16,41 +17,14 @@
 </div>
 <div>
     <h2>Commands:</h2>
+
+    <label for="userFunds">Your Funds:</label>
+    <input type="text" id="userFunds" disabled><br>
     <form>
-        <input type="number"  class="userFields" id="userFunds">
+        <input type="number"  class="userFields" id="addFunds">
         <input type="Submit" value="Add Funds" class="userFields" onclick="onAddFunds()">
     </form><br>
-    <div id="funds-placeholder">
-    </div>
-    <br><br>
-    <form class="userFields" onsubmit="onAddCommand()">
-        <label>Command Direction:</label><br>
-        <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
-        <label for="newCommandSellRadio">Sell</label>
-        <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
-        <label for="newCommandBuyRadio">Buy</label><br>
-
-        <label for="newCommandStockSymbol">Stock Symbol:</label>
-        <select id="newCommandStockSymbol"></select><br>
-
-        <label>Command Type:</label><br>
-        <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT">
-        <label for="newCommandLMTRadio">LMT</label>
-        <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT">
-        <label for="newCommandMKTRadio">MKT</label>
-        <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK">
-        <label for="newCommandFOKRadio">FOK</label>
-        <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC">
-        <label for="newCommandIOCRadio">IOC</label><br>
-
-        <label for="newCommandQuantity">Quantity:</label>
-        <input type="number" id="newCommandQuantity"><br>
-
-        <label for="newCommandPrice">Price:</label>
-        <input type="number" id="newCommandPrice"><br>
-
-        <input type="submit" value="Add New Command">
-    </form><br>
+    <br>
     <br>
     <br>
     <form class="userFields" id="addStockForm">
@@ -68,29 +42,41 @@
 <div>
     <h2>Tables:</h2>
 
-    <div class="usersDiv">
-        <table class="usersTable">
+    <div id="usersDiv">
+        <label for="usersTable">Online Users Table:</label><br>
+        <table class="ConsumerTables" id="usersTable">
             <thead>
-            <th>Users online:</th>
+            <th>User Name</th>
+            <th>User Type</th>
             </thead>
             <tbody>
             </tbody>
         </table>
     </div>
     <br>
-    <div class="stocksDiv">
-        <table class="stocksTable">
+    <div id="stocksDiv">
+        <label for="stocksTable">Stocks Table:</label><br>
+        <table class="ConsumerTables" id="stocksTable">
             <thead>
-            <th>stocks:</th>
+            <th>Company Name</th>
+            <th>Stock Symbol</th>
+            <th>Price</th>
+            <th>Turnpver</th>
             </thead>
             <tbody>
             </tbody>
         </table>
     </div>
-    <div class="accountMovementDiv">
-        <table class="accountMovementTable">
+    <br>
+    <div id="accountMovementDiv">
+        <label for="accountMovementTable">Account Movements Table:</label><br>
+        <table class="ConsumerTables" id="accountMovementTable">
             <thead>
-            <th>All Account Movement:</th>
+            <th>Action Type</th>
+            <th>Action Date</th>
+            <th>Action Price</th>
+            <th>Funds Before Action</th>
+            <th>Funds After Action</th>
             </thead>
             <tbody>
             </tbody>
@@ -99,6 +85,5 @@
 </div>
 <br>
 <br>
-<a href="../StockPage/StockPage.html"> page 3</a>
 </body>
 </html>

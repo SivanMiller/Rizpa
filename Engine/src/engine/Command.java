@@ -24,11 +24,11 @@ public abstract class Command {
     protected String Date;
     protected CmdDirection Direction;
     protected int Order;
-    protected User user;
+    protected User User;
 
-    public void setUser(User user) { this.user = user; }
+    public void setUser(User user) { this.User = user; }
 
-    public User getUser() { return user;  }
+    public User getUser() { return User;  }
 
     public int getPrice() {  return Price;  }
 

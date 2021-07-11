@@ -41,7 +41,7 @@ public class NewCmdOutcomeDTO {
             str += '\t' + NewCommand.toString() + '\n';
         }
         else {
-            str += "The command was completed"+ '\n';
+            str += "The command was completed" + '\n';
         }
 
         str += "Please see stock's Admin Tab for more information.";

@@ -1,3 +1,5 @@
+var StockPage = '../StockPage/StockPage.html';
+
 window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
@@ -65,7 +67,7 @@ function onAddStock(){
 
 function onAddFunds(){
 
-    var userFunds = $('#userFunds').val();
+    var userFunds = $('#addFunds').val();
     $.ajax(
         {
             url: 'mainPage',
@@ -88,7 +90,7 @@ function refreshUserFunds() {
             },
             type: 'GET',
             success: function(res){
-                $("#funds-placeholder").text("Funds: " + res);
+                $("#userFunds").val(res);
             }
         }
     );
@@ -121,21 +123,11 @@ function refreshUserAccountMovementList() {
 }
 function refreshUserAccountMovementListCallback(userActions) {
 
-    var userAccountMovementTable = $('.accountMovementTable tbody');
+    var userAccountMovementTable = $('#accountMovementTable tbody');
     userAccountMovementTable.empty();
 
-    var tr = $(document.createElement('tr'));
-    var td = $(document.createElement('td')).text("action type");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("action date");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("action price");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("user funds before action");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("user funds after action");
-    td.appendTo(tr);
-    tr.appendTo(userAccountMovementTable);
+    var tr;
+    var td;
 
     userActions.forEach(function(action) {
         tr = $(document.createElement('tr'));
@@ -154,15 +146,10 @@ function refreshUserAccountMovementListCallback(userActions) {
 }
 
 function refreshUserListCallback(users) {
-    var usersTable = $('.usersTable tbody');
+    var usersTable = $('#usersTable tbody');
     usersTable.empty();
-
-    var tr = $(document.createElement('tr'));
-    var td = $(document.createElement('td')).text("User Name");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("User Type");
-    td.appendTo(tr);
-    tr.appendTo(usersTable);
+    var tr;
+    var td;
 
     users.forEach(function (user) {
         tr = $(document.createElement('tr'));
@@ -187,23 +174,13 @@ function refreshStockList() {
     );
 }
 function refreshStockListCallback(stocks) {
-    var stocksTable = $('.stocksTable tbody');
+    var stocksTable = $('#stocksTable tbody');
     stocksTable.empty();
-
-    var tr = $(document.createElement('tr'));
-    var td = $(document.createElement('td')).text("company name");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("stock symbol");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("price");
-    td.appendTo(tr);
-    td = $(document.createElement('td')).text("turnover");
-    td.appendTo(tr);
-    tr.appendTo(stocksTable);
 
     stocks.forEach(function (stock) {
         tr = $(document.createElement('tr'));
-        td = $(document.createElement('td')).text(stock.companyName.value);
+        td = $(document.createElement('td'));
+        td.append('<a href="' + StockPage + '?stock=' + stock.stockSymbol.value +'">' + stock.companyName.value + '</a>')
         td.appendTo(tr);
         td = $(document.createElement('td')).text(stock.stockSymbol.value);
         td.appendTo(tr);

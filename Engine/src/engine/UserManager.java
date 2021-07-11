@@ -1,13 +1,10 @@
 package engine;
 
-import exception.StockNegPriceException;
-import exception.StockSymbolLowercaseException;
-import exception.XMLException;
+import exception.*;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseItem;
 import generated.RseStock;
-import objects.StockDTO;
-import objects.UserCommandDTO;
+import objects.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,12 +18,12 @@ public class UserManager {
 
     private Map<String, User> Users;
     private List<String> Admins;
-    private StockManager stocksManger;
+    private StockManager StocksManger;
 
     public UserManager() {
         Users = new HashMap<>();
         Admins = new ArrayList<>();
-        stocksManger = new StockManager();
+        StocksManger = new StockManager();
     }
 
     public synchronized void addAdmin(String AdminName)
@@ -34,14 +31,14 @@ public class UserManager {
         Admins.add(AdminName);
     }
 
-    public synchronized void addUser(String username)
+    public synchronized void addUser(String UserName)
     {
-        User newUser = new User(username);
-        Users.put(username, newUser);
+        User newUser = new User(UserName);
+        Users.put(UserName, newUser);
     }
 
-    public synchronized void removeUser(String username) {
-        Users.remove(username);
+    public synchronized void removeUser(String UserName) {
+        Users.remove(UserName);
     }
 
     public synchronized Map<String, User> getUsers() {
@@ -51,15 +48,15 @@ public class UserManager {
         return Collections.unmodifiableList(Admins);
     }
 
-    private boolean isUserExists(String username) {
-        return Users.containsKey(username);
+    private boolean isUserExists(String UserName) {
+        return Users.containsKey(UserName);
     }
-    private boolean isAdminExists(String adminName) {
-        return Admins.contains(adminName);
+    private boolean isAdminExists(String AdminName) {
+        return Admins.contains(AdminName);
     }
-    public boolean isExists(String name)
+    public boolean isExists(String Name)
 {
-    return isAdminExists(name) || isUserExists(name);
+    return isAdminExists(Name) || isUserExists(Name);
 }
 
     public void loadXML(InputStream in, String userName) throws StockNegPriceException, XMLException, JAXBException, StockSymbolLowercaseException {
@@ -84,7 +81,7 @@ public class UserManager {
 
     public Map<String, Stock> convertXMLStocks(RizpaStockExchangeDescriptor descriptor) throws XMLException, StockNegPriceException, StockSymbolLowercaseException {
         List<RseStock> stocks = descriptor.getRseStocks().getRseStock();
-        Map<String, Stock> res=new HashMap<>();
+        Map<String, Stock> res = new HashMap<>();
         Set<String> setCompanies = new HashSet<>(); // a SET of company name, to check if already exists
 
         // Converting XML Stocks to Engine stocks
@@ -92,7 +89,7 @@ public class UserManager {
             try {
                 Stock newStock = new Stock(stocks.get(i).getRseCompanyName(), stocks.get(i).getRseSymbol(), stocks.get(i).getRsePrice());
                 // if stock with same Symbol already exists
-                if (!this.stocksManger.isStockExists(newStock.getSymbol())) {
+                if (!this.StocksManger.isStockExists(newStock.getSymbol())) {
                     // if stock with same Company Name already exists
                     if (!setCompanies.contains(newStock.getCompanyName())) {
                         //Insert stock to stock map
@@ -114,12 +111,12 @@ public class UserManager {
         return res;
     }
 
-    public void convertXMLUserHolding(RizpaStockExchangeDescriptor descriptor,User user,Map<String, Stock> newStocks) throws XMLException {
+    public void convertXMLUserHolding(RizpaStockExchangeDescriptor descriptor, User user, Map<String, Stock> newStocks) throws XMLException {
         List<RseItem> items = descriptor.getRseHoldings().getRseItem();
 
         for (RseItem item : items) {
            //if stocks exists in thw system or loaded in the new Xml file its ok
-            if(this.stocksManger.isStockExists(item.getSymbol()) || newStocks.containsKey(item.getSymbol()))
+            if(this.StocksManger.isStockExists(item.getSymbol()) || newStocks.containsKey(item.getSymbol()))
             {
                 continue;
             }
@@ -131,10 +128,10 @@ public class UserManager {
        }
         //the file is proper and we can save the new data in the system
         for(Stock stock : newStocks.values())
-            this.stocksManger.addStock(stock.getSymbol(),stock);
+            this.StocksManger.addStock(stock.getSymbol(),stock);
 
        for (RseItem item : items) {
-            Stock stockToHold = this.stocksManger.getStocks().get(item.getSymbol().toUpperCase());
+            Stock stockToHold = this.StocksManger.getStocks().get(item.getSymbol().toUpperCase());
                 //check if the user already has this stock
                 Holding holding = user.getHolding(item.getSymbol().toUpperCase());
                 if (holding != null)
@@ -146,39 +143,107 @@ public class UserManager {
             }
     }
 
-    public StockDTO getStock(String Symbol) { return this.stocksManger.getStocks().get(Symbol).convertToDTO(); }
+    public StockDTO getStock(String Symbol) { return this.StocksManger.getStocks().get(Symbol).convertToDTO(); }
 
     public List<StockDTO> getStocks() {
-        List<StockDTO> res=new ArrayList<>();
-        for( String stockSymbol: this.stocksManger.getStocks().keySet())
+        List<StockDTO> res = new ArrayList<>();
+        for( String stockSymbol: this.StocksManger.getStocks().keySet())
         {
             res.add(getStock(stockSymbol));
         }
         return res;
     }
 
-    public List<UserCommandDTO> getUserAccountMovementList (String userName) {
+    public List<UserCommandDTO> getUserAccountMovementList (String UserName) {
 
-        return (this.Users.get(userName).getAllAccountMovements());
+        return (this.Users.get(UserName).getAllAccountMovements());
     }
-    public int getUserFunds(String userName){
-        return this.Users.get(userName).getFunds();
+    public int getUserFunds(String UserName){
+        return this.Users.get(UserName).getFunds();
     }
-    public void addUserFunds(String userName, int funds){
-        this.Users.get(userName).AddFunds(funds);
+    public void addUserFunds(String UserName, int Funds){
+        this.Users.get(UserName).AddFunds(Funds);
     }
 
-    public void addStock(String userName, String CompanyName, String Symbol, int Price, int Quantity) throws Exception {
+    public void addStock(String UserName, String CompanyName, String Symbol, int Price, int Quantity) throws Exception {
         Stock newStock = new Stock(CompanyName, Symbol.toUpperCase(), Price/Quantity);
-        if(this.stocksManger.isStockExists(newStock.getSymbol()))
+        if(this.StocksManger.isStockExists(newStock.getSymbol()))
             throw new Exception("The stock: "+ newStock.getSymbol() +" already exists in the system");
-        this.stocksManger.addStock(newStock.getSymbol(), newStock);
+        this.StocksManger.addStock(newStock.getSymbol(), newStock);
         Holding newHolding = new Holding(Quantity, newStock);
-        this.Users.get(userName).addHolding(newHolding);
+        this.Users.get(UserName).addHolding(newHolding);
 
     }
 
     public Set<String> getUserStocksSymbols(String UserName) {
         return this.Users.get(UserName).getHoldings().keySet();
+    }
+
+    public NewCmdOutcomeDTO addNewCommand(String UserName, String Symbol, String strType,
+                                          String strCmdDirection, int Price, int Quantity) throws NoSuchCmdTypeException, UserHoldingQuntityNotEnough, StockNegQuantityException, CommandNegPriceException, NoSuchStockException {
+        Command.CmdType Type = this.convertStringToCmdType(strType);
+        Command.CmdDirection CmdDirection = this.convertStringToCmdDirection(strCmdDirection);
+        Stock Stock = this.StocksManger.getStocks().get(Symbol);
+        User User = this.Users.get(UserName);
+
+        //Check if such Stock exists in Stock map
+        if (Stock == null) {
+            throw new NoSuchStockException();
+        }
+        else {
+            try {
+                if (CmdDirection == Command.CmdDirection.SELL) {
+                    int sellQuantity = 0;
+                    for (CommandDTO command : Stock.getExchangeCollection().getSellCommand()) {
+                        if (command.getUser() == UserName)
+                            sellQuantity += command.getQuantity();
+                    }
+                    if ((User.getHolding(Stock.getSymbol()).getQuantity() - sellQuantity) < Quantity) {
+                        throw new UserHoldingQuntityNotEnough(User.getName(), Stock.getCompanyName(), sellQuantity);
+                    }
+                }
+                    NewCmdOutcomeDTO newCmdOutcomeDTO = Stock.addNewCommand(User, Type, CmdDirection, Price, Quantity);
+
+                    //Commit transaction in users
+                    for (TransactionDTO transaction : newCmdOutcomeDTO.getNewTransaction()) {
+                        Users.get(transaction.getTransactionBuyUser()).commitBuyTransaction(Stock, transaction);
+                        Users.get(transaction.getTransactionSellUser()).commitSellTransaction(Stock, transaction);
+                    }
+
+                    return newCmdOutcomeDTO;
+
+            } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough e) {
+                throw e;
+            }
+        }
+    }
+
+    public Command.CmdDirection convertStringToCmdDirection(String CmdDirection){
+        switch(CmdDirection){
+            case("Sell"): {
+                return Command.CmdDirection.SELL;
+            }
+            case("Buy"): {
+                return Command.CmdDirection.BUY;
+            }
+        }
+        return null;
+    }
+    public Command.CmdType convertStringToCmdType(String CmdType){
+        switch(CmdType) {
+            case ("LMT"): {
+                return Command.CmdType.LMT;
+            }
+            case ("MKT"): {
+                return Command.CmdType.MKT;
+            }
+            case ("FOK"): {
+                return Command.CmdType.FOK;
+            }
+            case ("IOC"): {
+                return Command.CmdType.IOC;
+            }
+        }
+        return null;
     }
 }
