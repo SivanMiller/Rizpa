@@ -74,8 +74,8 @@ public class ExchangeCollection {
     }
 
     private NewCmdOutcomeDTO addBuyCommand(Command NewCommand) {
-        PriorityQueue<Command> tempSellCommands = this.SellCommands;
-        List<Transaction> tempTransactions = this.Transactions;
+        PriorityQueue<Command> tempSellCommands = new PriorityQueue<>(this.SellCommands);
+        List<Transaction> tempTransactions = new ArrayList<>(this.Transactions);
 
         NewCmdOutcomeDTO outcome = new NewCmdOutcomeDTO();
         int nQuantity;
@@ -154,8 +154,8 @@ public class ExchangeCollection {
     }
 
     private NewCmdOutcomeDTO addSellCommand(Command NewCommand) {
-        PriorityQueue<Command> tempBuyCommands = this.BuyCommands;
-        List<Transaction> tempTransactions = this.Transactions;
+        PriorityQueue<Command> tempBuyCommands = new PriorityQueue<>(this.BuyCommands);
+        List<Transaction> tempTransactions = new ArrayList<>(this.Transactions);
         NewCmdOutcomeDTO outcome = new NewCmdOutcomeDTO();
         int nQuantity;
         String sDate;

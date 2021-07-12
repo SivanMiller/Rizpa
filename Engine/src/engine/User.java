@@ -1,5 +1,7 @@
 package engine;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.OptimizedTransducedAccessorFactory;
+import javafx.util.Pair;
 import objects.HoldingDTO;
 import objects.TransactionDTO;
 import objects.UserCommandDTO;
@@ -16,13 +18,14 @@ public class User {
 //    private int HoldingsTurnover;
     private int Funds;
     private Map<String, Holding> Holdings;
-    private List<UserCommandDTO>  allAccountMovements;
-
+    private List<UserCommandDTO> AccountMovements;
+    private List<Pair<String, TransactionDTO>> UnreportedTransactions;
 
     public User(String name, Map<String, Holding> holdings) {
         Name = name;
         Holdings = holdings;
-        allAccountMovements=new ArrayList<>();
+        AccountMovements = new ArrayList<>();
+        UnreportedTransactions = new ArrayList<>();
         for (Holding holding : this.Holdings.values())
         {
 //            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
@@ -35,7 +38,8 @@ public class User {
         Holdings = new HashMap<>();
 //        HoldingsTurnover = 0;
         Funds = 0;
-        allAccountMovements=new ArrayList<>();
+        AccountMovements = new ArrayList<>();
+        UnreportedTransactions = new ArrayList<>();
 
     }
 
@@ -59,11 +63,7 @@ public class User {
 
     public Holding getHolding(String Symbol) { return Holdings.get(Symbol); }
 
-    public void setHoldings(Map<String, Holding> holdings) {
-        Holdings = holdings;
-    }
-
-//    public int getHoldingsTurnover() {
+    //    public int getHoldingsTurnover() {
 //        HoldingsTurnover = 0;
 //        for (Holding holding : this.Holdings.values())
 //        {
@@ -71,49 +71,64 @@ public class User {
 //        }
 //        return HoldingsTurnover;
 //    }
-    public List<UserCommandDTO> getAllAccountMovements() {
-        return allAccountMovements;
+
+    public List<UserCommandDTO> getAccountMovements() {
+        return AccountMovements;
     }
 
     public void AddFunds(int fundsToAdd) {
-        int tempFunds=this.Funds;
+        int beforeFunds = this.Funds;
         this.Funds += fundsToAdd;
-        UserCommandDTO newCommand=new UserCommandDTO(UserCommandDTO.CmdType.CHARGE.toString(),fundsToAdd,tempFunds,this.Funds);
+        UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.CHARGE.toString(),fundsToAdd,beforeFunds,this.Funds);
 
-        this.allAccountMovements.add(newCommand);
+        this.AccountMovements.add(newCommand);
 
     }
     public int getFunds() { return this.Funds; }
 
-    public void commitBuyTransaction(Stock stock, TransactionDTO transaction){
-        Holding stockHolding = this.getHolding(stock.getSymbol());
+    public void commitBuyTransaction(Stock Stock, TransactionDTO NewTransaction){
+        Holding stockHolding = this.getHolding(Stock.getSymbol());
         if (stockHolding == null)
         {
-            Holding newHolding = new Holding(transaction.getTransactionQuantity(), stock);
-            this.getHoldings().put(stock.getSymbol(), newHolding);
+            Holding newHolding = new Holding(NewTransaction.getTransactionQuantity(), Stock);
+            this.getHoldings().put(Stock.getSymbol(), newHolding);
         }
         else {
-            stockHolding.setQuantity(stockHolding.getQuantity() + transaction.getTransactionQuantity());
+            stockHolding.setQuantity(stockHolding.getQuantity() + NewTransaction.getTransactionQuantity());
         }
-        int tempFunds=this.Funds;
-        this.Funds += transaction.getTransactionQuantity() * transaction.getTransactionPrice();
-        UserCommandDTO newCommand= new UserCommandDTO(UserCommandDTO.CmdType.BUY.toString(),transaction.getTransactionDate(),transaction.getTransactionPrice(),tempFunds,this.Funds);
-        this.allAccountMovements.add(newCommand);
+
+        int beforeFunds = this.Funds;
+        this.Funds += NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
+
+        UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.BUY.toString(), NewTransaction.getTransactionDate(), NewTransaction.getTransactionPrice(), beforeFunds, this.Funds);
+        this.AccountMovements.add(newCommand);
+
+        this.UnreportedTransactions.add(new Pair(Stock.getSymbol(), NewTransaction));
     }
 
-    public void commitSellTransaction(Stock stock, TransactionDTO transaction) {
-        Holding stockHolding = this.getHolding(stock.getSymbol());
-        stockHolding.setQuantity(stockHolding.getQuantity() - transaction.getTransactionQuantity());
+    public void commitSellTransaction(Stock Stock, TransactionDTO NewTransaction) {
+        Holding stockHolding = this.getHolding(Stock.getSymbol());
+        stockHolding.setQuantity(stockHolding.getQuantity() - NewTransaction.getTransactionQuantity());
 
         if (stockHolding.getQuantity() == 0) {
-            this.getHoldings().remove(stock.getSymbol());
+            this.getHoldings().remove(Stock.getSymbol());
         }
-        int tempFunds=this.Funds;
 
-        this.Funds -= transaction.getTransactionQuantity() * transaction.getTransactionPrice();
-        UserCommandDTO newCommand= new UserCommandDTO(UserCommandDTO.CmdType.SELL.toString(),transaction.getTransactionDate(),transaction.getTransactionPrice(),tempFunds,this.Funds);
-        this.allAccountMovements.add(newCommand);
+        int beforeFunds = this.Funds;
+        this.Funds -= NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
 
+        UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.SELL.toString(), NewTransaction.getTransactionDate(), NewTransaction.getTransactionPrice(), beforeFunds, this.Funds);
+        this.AccountMovements.add(newCommand);
+
+        this.UnreportedTransactions.add(new Pair(Stock.getSymbol(), NewTransaction));
+    }
+
+    public List<Pair<String, TransactionDTO>> reportTransactions(){
+        List<Pair<String, TransactionDTO>> list = new ArrayList<>(UnreportedTransactions);
+
+        UnreportedTransactions.clear();
+
+        return list;
     }
 
     @Override
