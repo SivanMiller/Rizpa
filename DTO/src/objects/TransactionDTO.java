@@ -7,9 +7,9 @@ import javafx.beans.property.SimpleStringProperty;
 // Uniform class for Transaction DTO and Command DTO
 public class TransactionDTO {
 
-    private SimpleIntegerProperty transactionPrice;
-    private SimpleIntegerProperty transactionQuantity;
-    private SimpleStringProperty transactionDate;
+    private SimpleIntegerProperty  transactionPrice;
+    private SimpleIntegerProperty  transactionQuantity;
+    private SimpleStringProperty   transactionDate;
     protected SimpleStringProperty transactionBuyUser;
     protected SimpleStringProperty transactionSellUser;
 
@@ -17,7 +17,7 @@ public class TransactionDTO {
         this.transactionPrice = new SimpleIntegerProperty(price);
         this.transactionQuantity = new SimpleIntegerProperty(quantity);
         this.transactionDate = new SimpleStringProperty(date);
-        this.transactionBuyUser =new SimpleStringProperty(buyUser);
+        this.transactionBuyUser = new SimpleStringProperty(buyUser);
         this.transactionSellUser = new SimpleStringProperty(sellUser);
     }
 

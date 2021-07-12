@@ -4,36 +4,16 @@ window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
     $("#addStockForm").submit(onAddStock);
-    refreshUserList();
-    setInterval(refreshUserList, 2000);
-    refreshStockList();
-    setInterval(refreshStockList, 2000);
+    getUserList();
+    setInterval(getUserList, 2000);
+    getStockList();
+    setInterval(getStockList, 2000);
     refreshUserFunds();
     setInterval(refreshUserFunds, 2000);
-    refreshUserAccountMovementList();
-    setInterval(refreshUserAccountMovementList, 2000);
+    getUserAccountMovementList();
+    setInterval(getUserAccountMovementList, 2000);
+    setInterval(ReportUserTransaction, 2000);
 };
-
-$.ajax({
-    url: 'mainPage',
-    data: {
-        action: "isAdmin"
-    },
-    type: 'GET',
-    success: hideUserFields,
-    error: showUserFields
-});
-
-function showUserFields(){
-
-    $(".userFields").show();
-}
-
-function hideUserFields(){
-
-    $(".userFields").hide();
-}
-
 
 function onAddStock(){
     var newStockCompanyName = $('#newStockCompanyName').val();
@@ -43,7 +23,7 @@ function onAddStock(){
 
     $.ajax(
         {
-            url: 'mainPage',
+            url: 'stock',
             data: {
                 newStockCompanyName: newStockCompanyName,
                 newStockSymbol: newStockSymbol,
@@ -57,7 +37,7 @@ function onAddStock(){
             },
             success: function (res) {
                 alert(res);
-                refreshStockList();
+                getStockList();
             }
         }
     );
@@ -66,11 +46,10 @@ function onAddStock(){
 }
 
 function onAddFunds(){
-
     var userFunds = $('#addFunds').val();
     $.ajax(
         {
-            url: 'mainPage',
+            url: 'command',
             data: {
                 action: "addFunds",
                 userFunds: userFunds
@@ -81,99 +60,20 @@ function onAddFunds(){
     );
 }
 
-function refreshUserFunds() {
+function getStockList() {
     $.ajax(
         {
-            url: 'mainPage',
-            data: {
-                action: "userFunds"
-            },
-            type: 'GET',
-            success: function(res){
-                $("#userFunds").val(res);
-            }
-        }
-    );
-}
-
-function refreshUserList() {
-    $.ajax(
-        {
-            url: 'mainPage',
-            data: {
-                action: "getUsers"
-            },
-            type: 'GET',
-            success: refreshUserListCallback
-        }
-    );
-}
-
-function refreshUserAccountMovementList() {
-    $.ajax(
-        {
-            url: 'mainPage',
-            data: {
-                action: "userAccountMovements"
-            },
-            type: 'GET',
-            success: refreshUserAccountMovementListCallback
-        }
-    );
-}
-function refreshUserAccountMovementListCallback(userActions) {
-
-    var userAccountMovementTable = $('#accountMovementTable tbody');
-    userAccountMovementTable.empty();
-
-    var tr;
-    var td;
-
-    userActions.forEach(function(action) {
-        tr = $(document.createElement('tr'));
-        td = $(document.createElement('td')).text(action.Type);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.Date);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.Price);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.remainderBefore);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(action.remainderAfter);
-        td.appendTo(tr);
-        tr.appendTo(userAccountMovementTable);
-    });
-}
-
-function refreshUserListCallback(users) {
-    var usersTable = $('#usersTable tbody');
-    usersTable.empty();
-    var tr;
-    var td;
-
-    users.forEach(function (user) {
-        tr = $(document.createElement('tr'));
-        td = $(document.createElement('td')).text(user.key);
-        td.appendTo(tr);
-        td = $(document.createElement('td')).text(user.value);
-        td.appendTo(tr);
-        tr.appendTo(usersTable);
-    });
-}
-
-function refreshStockList() {
-    $.ajax(
-        {
-            url: 'mainPage',
+            url: 'stock',
             data: {
                 action: "getStocks"
             },
             type: 'GET',
-            success: refreshStockListCallback
+            success: refreshStockList
         }
     );
 }
-function refreshStockListCallback(stocks) {
+
+function refreshStockList(stocks) {
     var stocksTable = $('#stocksTable tbody');
     stocksTable.empty();
 
@@ -211,7 +111,7 @@ function ClickLoad() {
             },
             success: function (res) {
                 alert(res);
-                refreshStockList();
+                getStockList();
                 refreshUserFunds();
             }
         });
@@ -224,3 +124,128 @@ function ClickLoad() {
     // by default - we'll always return false so it doesn't redirect the user.
     return false;
 }
+
+function ReportUserTransaction(){
+    $.ajax(
+        {
+            url: 'command',
+            data: {
+                action: "reportTransactions"
+            },
+            type: 'GET',
+            success: alertNewTransaction
+        }
+    );
+}
+
+function alertNewTransaction(transaction) {
+    transaction.forEach(function (transaction) {
+        var message = "New transaction made! ";
+        message += transaction.value.transactionSellUser.value + " Sold " + transaction.value.transactionBuyUser.value + " ";
+        message += transaction.value.transactionQuantity.value + " of Stock " + transaction.key + " for the price of " + transaction.value.transactionPrice.value;
+        alert(message);
+    })
+}
+
+$.ajax({
+    url: 'user',
+    data: {
+        action: "isAdmin"
+    },
+    type: 'GET',
+    success: hideUserFields,
+    error: showUserFields
+});
+
+function showUserFields(){
+
+    $(".userFields").show();
+}
+
+function hideUserFields(){
+
+    $(".userFields").hide();
+}
+
+
+function refreshUserFunds() {
+    $.ajax(
+        {
+            url: 'user',
+            data: {
+                action: "userFunds"
+            },
+            type: 'GET',
+            success: function(res){
+                $("#userFunds").val(res);
+            }
+        }
+    );
+}
+
+function getUserAccountMovementList() {
+    $.ajax(
+        {
+            url: 'user',
+            data: {
+                action: "userAccountMovements"
+            },
+            type: 'GET',
+            success: refreshUserAccountMovementList
+        }
+    );
+}
+
+function refreshUserAccountMovementList(userActions) {
+
+    var userAccountMovementTable = $('#accountMovementTable tbody');
+    userAccountMovementTable.empty();
+
+    var tr;
+    var td;
+
+    userActions.forEach(function(action) {
+        tr = $(document.createElement('tr'));
+        td = $(document.createElement('td')).text(action.Type);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.Date);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.Price);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.remainderBefore);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(action.remainderAfter);
+        td.appendTo(tr);
+        tr.appendTo(userAccountMovementTable);
+    });
+}
+
+function getUserList() {
+    $.ajax(
+        {
+            url: 'user',
+            data: {
+                action: "getUsers"
+            },
+            type: 'GET',
+            success: refreshUserList
+        }
+    );
+}
+
+function refreshUserList(users) {
+    var usersTable = $('#usersTable tbody');
+    usersTable.empty();
+    var tr;
+    var td;
+
+    users.forEach(function (user) {
+        tr = $(document.createElement('tr'));
+        td = $(document.createElement('td')).text(user.key);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(user.value);
+        td.appendTo(tr);
+        tr.appendTo(usersTable);
+    });
+}
+

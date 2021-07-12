@@ -4,6 +4,7 @@ import exception.*;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseItem;
 import generated.RseStock;
+import javafx.util.Pair;
 import objects.*;
 
 import javax.xml.bind.JAXBContext;
@@ -37,10 +38,6 @@ public class UserManager {
         Users.put(UserName, newUser);
     }
 
-    public synchronized void removeUser(String UserName) {
-        Users.remove(UserName);
-    }
-
     public synchronized Map<String, User> getUsers() {
         return Collections.unmodifiableMap(Users);
     }
@@ -72,6 +69,7 @@ public class UserManager {
             throw e;
         }
     }
+
     //Converting XML Data with JAXB
     private static RizpaStockExchangeDescriptor deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
@@ -156,11 +154,13 @@ public class UserManager {
 
     public List<UserCommandDTO> getUserAccountMovementList (String UserName) {
 
-        return (this.Users.get(UserName).getAllAccountMovements());
+        return (this.Users.get(UserName).getAccountMovements());
     }
+
     public int getUserFunds(String UserName){
         return this.Users.get(UserName).getFunds();
     }
+
     public void addUserFunds(String UserName, int Funds){
         this.Users.get(UserName).AddFunds(Funds);
     }
@@ -168,7 +168,7 @@ public class UserManager {
     public void addStock(String UserName, String CompanyName, String Symbol, int Price, int Quantity) throws Exception {
         Stock newStock = new Stock(CompanyName, Symbol.toUpperCase(), Price/Quantity);
         if(this.StocksManger.isStockExists(newStock.getSymbol()))
-            throw new Exception("The stock: "+ newStock.getSymbol() +" already exists in the system");
+            throw new Exception("The stock: " + newStock.getSymbol() + " already exists in the system");
         this.StocksManger.addStock(newStock.getSymbol(), newStock);
         Holding newHolding = new Holding(Quantity, newStock);
         this.Users.get(UserName).addHolding(newHolding);
@@ -218,7 +218,11 @@ public class UserManager {
         }
     }
 
-    public Command.CmdDirection convertStringToCmdDirection(String CmdDirection){
+    public List<Pair<String, TransactionDTO>> reportTransactions(String UserName) {
+        return this.Users.get(UserName).reportTransactions();
+    }
+
+    public Command.CmdDirection convertStringToCmdDirection(String CmdDirection) {
         switch(CmdDirection){
             case("Sell"): {
                 return Command.CmdDirection.SELL;
@@ -229,7 +233,8 @@ public class UserManager {
         }
         return null;
     }
-    public Command.CmdType convertStringToCmdType(String CmdType){
+
+    public Command.CmdType convertStringToCmdType(String CmdType) {
         switch(CmdType) {
             case ("LMT"): {
                 return Command.CmdType.LMT;
