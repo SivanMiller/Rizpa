@@ -8,15 +8,14 @@
 </head>
 <body>
 <form  id="addCommandForm">
-<!--    <form name="CommandDir">-->
     <label>Command Direction:</label><br>
     <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
     <label for="newCommandSellRadio">Sell</label>
     <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
     <label for="newCommandBuyRadio">Buy</label><br>
-<!--    </form>-->
+
     <label for="newCommandStockSymbol">Stock Symbol:</label>
-    <select id="newCommandStockSymbol"></select><br>
+    <input type="text" id="newCommandStockSymbol" disabled><br>
 
     <label>Command Type:</label><br>
     <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT">

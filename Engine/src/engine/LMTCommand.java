@@ -14,7 +14,7 @@ public class LMTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
     }
 
-    public LMTCommand(User user,int Price, int Quantity, CmdDirection Direction) throws CommandNegPriceException, StockNegQuantityException {
+    public LMTCommand(User User,int Price, int Quantity, CmdDirection Direction) throws CommandNegPriceException, StockNegQuantityException {
         if (Price < 0)
             throw new CommandNegPriceException();
         if (Quantity < 0)
@@ -24,7 +24,7 @@ public class LMTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.Direction = Direction;
         this.Order = ORDER_COUNTER;
-        this.user=user;
+        this.User = User;
         ORDER_COUNTER++;
     }
 
@@ -40,7 +40,7 @@ public class LMTCommand extends Command {
 
     @Override
     public CommandDTO convertToDTO() {
-        return new CommandDTO(this.Date, "LMT", this.Quantity, this.Price,this.user.getName());
+        return new CommandDTO(this.Date, "LMT", this.Quantity, this.Price,this.User.getName());
     }
 }
 

@@ -85,15 +85,21 @@ public class Stock {
                '}';
     }
 
-    public NewCmdOutcomeDTO addNewCommand(User user, Command.CmdType Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
+    public NewCmdOutcomeDTO addNewCommand(User User, Command.CmdType Type, Command.CmdDirection Direction, int Price, int Quantity) throws StockNegQuantityException, CommandNegPriceException, NoSuchCmdTypeException {
         Command newCommand = null;
         try {
 
             if (Type == Command.CmdType.LMT) {
-                newCommand = new LMTCommand(user, Price, Quantity, Direction);
+                newCommand = new LMTCommand(User, Price, Quantity, Direction);
             }
             else if (Type == Command.CmdType.MKT) {
-                newCommand = new MKTCommand(user, Quantity, Direction);
+                newCommand = new MKTCommand(User, Quantity, Direction);
+            }
+            else if (Type == Command.CmdType.FOK) {
+                newCommand = new FOKCommand(User, Price, Quantity, Direction);
+            }
+            else if (Type == Command.CmdType.IOC) {
+                newCommand = new IOCCommand(User, Price, Quantity, Direction);
             }
             else {
                 throw new NoSuchCmdTypeException();

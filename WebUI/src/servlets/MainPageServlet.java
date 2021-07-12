@@ -2,8 +2,11 @@ package servlets;
 
 import com.google.gson.Gson;
 import constants.Constants;
+import engine.Command;
 import engine.UserManager;
+import exception.*;
 import javafx.util.Pair;
+import objects.NewCmdOutcomeDTO;
 import objects.UserCommandDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
@@ -92,12 +95,41 @@ public class MainPageServlet extends HttpServlet {
                     out.println(json);
                     out.flush();
                 }
+
+                break;
+            }
+            case ("addCommand"): {
+                this.addCommand(request, response);
                 break;
             }
         }
     }
+    public void addCommand(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson = new Gson();
+        String json = "";
+        String userNameFromSession = SessionUtils.getUsername(request);
+        String StockSymbol = request.getParameter("newCommandSymbol");
+        String CmdType = request.getParameter("CmdType");
+        String CmdDirection = request.getParameter("CmdDirection");
+        String StockQuantityFromParam = request.getParameter("newCommandQuantity");
+        int StockQuantity = Integer.parseInt(StockQuantityFromParam);
+        String StockPriceFromParam = request.getParameter("newCommandPrice");
+        int StockPrice = Integer.parseInt(StockPriceFromParam);
 
-    public void addStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        UserManager userManager = ServletUtils.getUserManager(getServletContext());
+
+        try (PrintWriter out = response.getWriter()) {
+            response.setContentType("application/json");
+            NewCmdOutcomeDTO outcome = userManager.addNewCommand(userNameFromSession, StockSymbol, CmdType, CmdDirection, StockPrice, StockQuantity);
+            json = gson.toJson(outcome);
+            out.println(json);
+            out.flush();
+        } catch (NoSuchCmdTypeException | UserHoldingQuntityNotEnough | StockNegQuantityException | CommandNegPriceException | NoSuchStockException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getOutputStream().println(e.getMessage());
+        }
+    }
+        public void addStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String CompanyName = request.getParameter("newStockCompanyName");
         String StockSymbol = request.getParameter("newStockSymbol");
         String StockQuantityFromParam = request.getParameter("newStockQuantity");

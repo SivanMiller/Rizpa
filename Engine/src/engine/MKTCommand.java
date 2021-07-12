@@ -21,7 +21,7 @@ public class MKTCommand extends Command {
         this.Date = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now());
         this.Direction = Direction;
         this.Order = ORDER_COUNTER;
-        this.user=user;
+        this.User =user;
 
         ORDER_COUNTER++;
     }
@@ -37,7 +37,7 @@ public class MKTCommand extends Command {
     }
 @Override
     public CommandDTO convertToDTO() {
-        return new CommandDTO(this.Date, "MKT", this.Quantity, this.Price,this.user.getName());
+        return new CommandDTO(this.Date, "MKT", this.Quantity, this.Price,this.User.getName());
     }
 }
 
