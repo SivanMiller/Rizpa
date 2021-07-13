@@ -5,8 +5,29 @@
     <title>Rizpa</title>
     <script src="../../jquery-3.6.0.min.js"></script>
     <script src="StockPageController.js"></script>
+    <link rel="stylesheet" type="text/css" href="StockPage.css">
 </head>
 <body>
+    <label  for="stockSymbol">Stock Symbol:</label>
+    <input type="text" id="stockSymbol"  disabled >
+    <label  for="stockCompanyName">Stock companyName:</label>
+    <input type="text" id="stockCompanyName"  disabled >
+    <label  for="stockPrice">Stock price:</label>
+    <input type="text" id="stockPrice"  disabled >
+
+<br>
+    <div id="stockDiv">
+        <label for="stockTranTable">Stock transaction Table:</label><br>
+        <table class="stockTranTables" id="stockTranTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 <form  id="addCommandForm">
     <label>Command Direction:</label><br>
     <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
@@ -18,13 +39,13 @@
     <input type="text" id="newCommandStockSymbol" disabled><br>
 
     <label>Command Type:</label><br>
-    <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT">
+    <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT"  onchange="togglePrice()">
     <label for="newCommandLMTRadio">LMT</label>
-    <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT">
+    <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT" onchange="togglePrice()">
     <label for="newCommandMKTRadio">MKT</label>
-    <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK">
+    <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK"  onchange="togglePrice()">
     <label for="newCommandFOKRadio">FOK</label>
-    <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC">
+    <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC" onchange="togglePrice()">
     <label for="newCommandIOCRadio">IOC</label><br>
 
     <label for="newCommandQuantity">Quantity:</label>
@@ -35,6 +56,7 @@
 
     <input type="Submit" value="Add New Command">
 </form><br>
+
 <button onclick="back()">Go Back</button>
 </body>
 </html>

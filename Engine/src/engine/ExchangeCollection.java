@@ -144,6 +144,7 @@ public class ExchangeCollection {
 
         if (NewCommand.getQuantity() == 0 || NewCommand.getClass() != FOKCommand.class){
             this.SellCommands = tempSellCommands;
+            this.Transactions.clear();
             for (Transaction transaction : tempTransactions) {
                 addNewTransaction(transaction);
                 outcome.addTransaction(transaction.convertToDTO());
@@ -222,6 +223,7 @@ public class ExchangeCollection {
 
         if (NewCommand.getQuantity() == 0 || NewCommand.getClass() != FOKCommand.class){
             this.BuyCommands = tempBuyCommands;
+            this.Transactions.clear();
             for (Transaction transaction : tempTransactions) {
                 addNewTransaction(transaction);
                 outcome.addTransaction(transaction.convertToDTO());

@@ -5,6 +5,7 @@
     <title>Rizpa</title>
     <script src="../../jquery-3.6.0.min.js"></script>
     <script src="StockPageController.js"></script>
+    <link rel="stylesheet" type="text/css" href="StockPage.css">
 </head>
 <body>
     <label  for="stockSymbol">Stock Symbol:</label>
@@ -38,13 +39,13 @@
     <input type="text" id="newCommandStockSymbol" disabled><br>
 
     <label>Command Type:</label><br>
-    <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT">
+    <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT"  onchange="togglePrice()">
     <label for="newCommandLMTRadio">LMT</label>
-    <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT">
+    <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT" onchange="togglePrice()">
     <label for="newCommandMKTRadio">MKT</label>
-    <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK">
+    <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK"  onchange="togglePrice()">
     <label for="newCommandFOKRadio">FOK</label>
-    <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC">
+    <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC" onchange="togglePrice()">
     <label for="newCommandIOCRadio">IOC</label><br>
 
     <label for="newCommandQuantity">Quantity:</label>

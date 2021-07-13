@@ -23,14 +23,16 @@ import java.util.Set;
 
 public class StockServlet extends HttpServlet {
 
+    private UserManager userManager;
+    private String userNameFromSession;
+    private Gson gson = new Gson();
+    private String json = "";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Gson gson = new Gson();
-        String json = "";
-        UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        String userNameFromSession = SessionUtils.getUsername(request);
         String actionFromParam = request.getParameter(Constants.ACTION);
+        this.userManager = ServletUtils.getUserManager(getServletContext());
+        this.userNameFromSession = SessionUtils.getUsername(request);
 
         switch (actionFromParam) {
             case ("getStocks"): {
@@ -62,16 +64,14 @@ public class StockServlet extends HttpServlet {
                 }
                 break;
             }
-
             case ("addStock"): {
                 this.addStock(request, response);
                 break;
             }
-          }
         }
+    }
 
-
-    public void addStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void addStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String CompanyName = request.getParameter("newStockCompanyName");
         String StockSymbol = request.getParameter("newStockSymbol");
         String StockQuantityFromParam = request.getParameter("newStockQuantity");
@@ -91,8 +91,7 @@ public class StockServlet extends HttpServlet {
         }
     }
 
-
-    public Set<String> getUserStocks(HttpServletRequest request) {
+    private Set<String> getUserStocks(HttpServletRequest request) {
         UserManager userManager = ServletUtils.getUserManager(getServletContext());
         String userNameFromSession = SessionUtils.getUsername(request);
         return userManager.getUserStocksSymbols(userNameFromSession);

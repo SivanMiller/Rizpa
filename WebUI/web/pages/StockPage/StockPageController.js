@@ -9,7 +9,9 @@ window.onload = function () {
     $('#newCommandStockSymbol').val(stock);
     $('#addCommandForm').submit(onAddCommand);
     setInterval(ReportUserTransaction, 2000);
+    setInterval(updateTransactionsList, 2000);
 };
+
 function updateStockDetails(stock)
 {
     $.ajax(
@@ -23,8 +25,8 @@ function updateStockDetails(stock)
             success: updateStockDetailsCallBack
         }
     );
-
 }
+
 function updateStockDetailsCallBack(stock)
 {
     $('#stockSymbol').val(stock.stockSymbol.value);
@@ -32,8 +34,10 @@ function updateStockDetailsCallBack(stock)
     $('#stockPrice').val(stock.stockPrice.value);
 
 }
-function updateTransactionsList(stock)
+
+function updateTransactionsList()
 {
+    var stock = $('#newCommandStockSymbol').val();
     $.ajax(
         {
             url: 'stock',
@@ -45,8 +49,8 @@ function updateTransactionsList(stock)
             success: refreshStockTransactionList
         }
     );
-
 }
+
 function refreshStockTransactionList(transactions) {
     var transactionTable = $('#stockTranTable tbody');
     transactionTable.empty();
@@ -64,6 +68,7 @@ function refreshStockTransactionList(transactions) {
         tr.appendTo(transactionTable);
     });
 }
+
 function onAddCommand(){
     var CmdDirection = $('input[name=CommandDir]:checked', '#addCommandForm').val();
     var newCommandSymbol = $('#newCommandStockSymbol').val();
@@ -88,10 +93,12 @@ function onAddCommand(){
                 newCommandPrice: newCommandPrice
             },
             type: 'GET',
-            success: ReportUserTransaction,
+            success: function () {
+                reportAddCommand();
+                ReportUserTransaction(); },
             error: function (error) {
                 alert(error.responseText);
-            },
+            }
         });
     }
 
@@ -99,12 +106,30 @@ function onAddCommand(){
     // by default - we'll always return false so it doesn't redirect the user.
     return false;
 }
+
 function back()
 {
     window.location = MainPage;
 }
 
-function ReportUserTransaction(){
+function togglePrice() {
+    var CmdType = $('input[name=CommandType]:checked', '#addCommandForm').val();
+    var stockPrice = $('#stockPrice').val();
+
+    if (CmdType == 'MKT'){
+        $('#newCommandPrice').val(stockPrice)
+        $('#newCommandPrice').prop('disabled', true);
+    }
+    else {
+        $('#newCommandPrice').prop('disabled', false);
+    }
+}
+
+function reportAddCommand() {
+        alert("Command Added!");
+}
+
+function ReportUserTransaction() {
     $.ajax(
         {
             url: 'command',
