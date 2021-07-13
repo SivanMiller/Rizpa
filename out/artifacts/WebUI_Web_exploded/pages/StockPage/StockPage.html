@@ -14,6 +14,8 @@
     <input type="text" id="stockCompanyName"  disabled >
     <label  for="stockPrice">Stock price:</label>
     <input type="text" id="stockPrice"  disabled >
+    <label  for="userHold" class="userFields">user hold:</label>
+    <input type="text" id="userHold"  class="userFields" disabled >
 
 <br>
     <div id="stockDiv">
@@ -28,7 +30,38 @@
             </tbody>
         </table>
     </div>
-<form  id="addCommandForm">
+    <br>
+    <br>
+
+    <div  class="adminFields" id="stockBuyDiv">
+        <label for="stockBuyTable">Stock buy Table:</label><br>
+        <table class="stockBuyTables" id="stockBuyTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>User</th>
+            <th>Type</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div  class="adminFields" id="stockSellDiv">
+        <label for="stockSellTable">Stock Sell Table:</label><br>
+        <table class="stockSellTables" id="stockSellTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>User</th>
+            <th>Type</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+<form  class="userFields" id="addCommandForm">
     <label>Command Direction:</label><br>
     <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
     <label for="newCommandSellRadio">Sell</label>

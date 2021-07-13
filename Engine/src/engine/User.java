@@ -26,11 +26,11 @@ public class User {
         Holdings = holdings;
         AccountMovements = new ArrayList<>();
         UnreportedTransactions = new ArrayList<>();
-        for (Holding holding : this.Holdings.values())
-        {
-//            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
-            Funds += holding.getQuantity() * holding.getStock().getPrice();
-        }
+//        for (Holding holding : this.Holdings.values())
+//        {
+//            Funds += holding.getQuantity() * holding.getStock().getPrice();
+//        }
+        this.Funds=0;
     }
 
     public User(String name) {
@@ -46,7 +46,7 @@ public class User {
     public void addHolding(Holding newHold)
     {
         Holdings.put(newHold.getStock().getSymbol(), newHold);
-        this.Funds += newHold.getQuantity() * newHold.getStock().getPrice();
+        //this.Funds += newHold.getQuantity() * newHold.getStock().getPrice();
     }
 
     public String getName() {
@@ -98,7 +98,7 @@ public class User {
         }
 
         int beforeFunds = this.Funds;
-        this.Funds += NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
+        this.Funds -= NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
 
         UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.BUY.toString(), NewTransaction.getTransactionDate(), NewTransaction.getTransactionPrice(), beforeFunds, this.Funds);
         this.AccountMovements.add(newCommand);
@@ -115,7 +115,7 @@ public class User {
         }
 
         int beforeFunds = this.Funds;
-        this.Funds -= NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
+        this.Funds += NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
 
         UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.SELL.toString(), NewTransaction.getTransactionDate(), NewTransaction.getTransactionPrice(), beforeFunds, this.Funds);
         this.AccountMovements.add(newCommand);

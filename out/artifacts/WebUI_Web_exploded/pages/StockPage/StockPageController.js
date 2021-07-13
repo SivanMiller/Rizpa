@@ -4,16 +4,42 @@ window.onload = function () {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const stock = urlParams.get('stock');
-    updateStockDetails(stock);
-    updateTransactionsList(stock);
+    updateStockDetails();
+    updateTransactionsList();
+    updateBuyCommandList();
+    updateSellCommandList();
     $('#newCommandStockSymbol').val(stock);
     $('#addCommandForm').submit(onAddCommand);
     setInterval(ReportUserTransaction, 2000);
-    setInterval(updateTransactionsList, 20000);
+    setInterval(updateTransactionsList, 2000);
+    setInterval(updateStockDetails, 2000);
+    setInterval(updateBuyCommandList, 2000);
+    setInterval(updateSellCommandList, 2000);
 };
+$.ajax({
+    url: 'user',
+    data: {
+        action: "isAdmin"
+    },
+    type: 'GET',
+    success: showAdminFields,
+    error: showUserField
+});
 
-function updateStockDetails(stock)
+function showAdminFields(){
+
+    $(".adminFields").show();
+    $(".userFields").hide();
+}
+function showUserField(){
+
+    $(".userFields").show();
+    $(".adminFields").hide();
+}
+function updateStockDetails()
 {
+    var stock = $('#newCommandStockSymbol').val();
+
     $.ajax(
         {
             url: 'stock',
@@ -25,9 +51,22 @@ function updateStockDetails(stock)
             success: updateStockDetailsCallBack
         }
     );
-
+    $.ajax(
+        {
+            url: 'user',
+            data: {
+                action: "getUserHoldForStock",
+                stock:stock
+            },
+            type: 'GET',
+            success: updateUserHoldCallBack
+        }
+    );
 }
-
+function updateUserHoldCallBack(Quantity)
+{
+    $('#userHold').val(Quantity);
+}
 function updateStockDetailsCallBack(stock)
 {
     $('#stockSymbol').val(stock.stockSymbol.value);
@@ -52,6 +91,7 @@ function updateTransactionsList()
     );
 }
 
+
 function refreshStockTransactionList(transactions) {
     var transactionTable = $('#stockTranTable tbody');
     transactionTable.empty();
@@ -69,7 +109,82 @@ function refreshStockTransactionList(transactions) {
         tr.appendTo(transactionTable);
     });
 }
+function updateBuyCommandList()
+{
+    var stock = $('#newCommandStockSymbol').val();
+    $.ajax(
+        {
+            url: 'stock',
+            data: {
+                action: "getBuyCommandList",
+                stock:stock
+            },
+            type: 'GET',
+            success: refreshStockBuyCommandList
+        }
+    );
+}
 
+function refreshStockBuyCommandList(commands)
+{
+    var buyTable = $('#stockBuyTable tbody');
+    buyTable.empty();
+
+    commands.forEach(function (command) {
+        tr = $(document.createElement('tr'));
+        td = $(document.createElement('td'));
+        td = $(document.createElement('td')).text(command.Date.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.Quantity.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.Price.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.User.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.Type.value);
+        td.appendTo(tr);
+
+        tr.appendTo(buyTable);
+    });
+}
+function updateSellCommandList()
+{
+    var stock = $('#newCommandStockSymbol').val();
+    $.ajax(
+        {
+            url: 'stock',
+            data: {
+                action: "getSellCommandList",
+                stock:stock
+            },
+            type: 'GET',
+            success: refreshStockSellCommandList
+        }
+    );
+}
+
+function refreshStockSellCommandList(commands)
+{
+    var sellTable = $('#stockSellTable tbody');
+    sellTable.empty();
+
+    commands.forEach(function (command) {
+        tr = $(document.createElement('tr'));
+        td = $(document.createElement('td'));
+        td = $(document.createElement('td')).text(command.Date.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.Quantity.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.Price.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.User.value);
+        td.appendTo(tr);
+        td = $(document.createElement('td')).text(command.Type.value);
+        td.appendTo(tr);
+
+        tr.appendTo(sellTable);
+    });
+}
 function onAddCommand(){
     var CmdDirection = $('input[name=CommandDir]:checked', '#addCommandForm').val();
     var newCommandSymbol = $('#newCommandStockSymbol').val();

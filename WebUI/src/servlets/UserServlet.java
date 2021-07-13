@@ -37,15 +37,7 @@ public class UserServlet extends HttpServlet {
                 this.getUsers(request, response);
                 break;
             }
-//            case ("getStocks"): {
-//                try (PrintWriter out = response.getWriter()) {
-//                    response.setContentType("application/json");
-//                    json = gson.toJson(userManager.getStocks());
-//                    out.println(json);
-//                    out.flush();
-//                }
-//                break;
-//            }
+
             case ("isAdmin"): {
                 if (!SessionUtils.isAdmin(request)) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -58,82 +50,34 @@ public class UserServlet extends HttpServlet {
                 this.getUserFunds(request, response);
                 break;
             }
-//            case ("addFunds"): {
-//                String userFundsFromParameter = request.getParameter(Constants.USER_FUNDS);
-//                int funds = Integer.parseInt(userFundsFromParameter);
-//                userManager.addUserFunds(userNameFromSession, funds);
-//                break;
-//            }
+
             case ("userAccountMovements"): {
                 this.getUserAccountMovements(request, response);
                 break;
             }
-//            case ("addStock"): {
-//                this.addStock(request, response);
-//                break;
-//            }
+
             case ("getUserStocks"): {
                 this.getUserStocks(request, response);
                 break;
             }
-//            case ("reportTransactions"): {
-//                try (PrintWriter out = response.getWriter()) {
-//                    response.setContentType("application/json");
-//                    json = gson.toJson(userManager.reportTransactions(userNameFromSession));
-//                    out.println(json);
-//                    out.flush();
-//                }
-//
-//                break;
-//            }
-//            case ("addCommand"): {
-//                this.addCommand(request, response);
-//                break;
-//            }
+            case ("getUserHoldForStock"): {
+                this.getUserHoldForStock(request,response);
+                break;
+            }
+
         }
     }
-//    public void addCommand(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        String userNameFromSession = SessionUtils.getUsername(request);
-//        String StockSymbol = request.getParameter("newCommandSymbol");
-//        String CmdType = request.getParameter("CmdType");
-//        String CmdDirection = request.getParameter("CmdDirection");
-//        String StockQuantityFromParam = request.getParameter("newCommandQuantity");
-//        int StockQuantity = Integer.parseInt(StockQuantityFromParam);
-//        String StockPriceFromParam = request.getParameter("newCommandPrice");
-//        int StockPrice = Integer.parseInt(StockPriceFromParam);
-//
-//        UserManager userManager = ServletUtils.getUserManager(getServletContext());
-//
-//        try (PrintWriter out = response.getWriter()) {
-//            response.setContentType("application/json");
-//            NewCmdOutcomeDTO outcome = userManager.addNewCommand(userNameFromSession, StockSymbol, CmdType, CmdDirection, StockPrice, StockQuantity);
-//            json = gson.toJson(outcome);
-//            out.println(json);
-//            out.flush();
-//        } catch (IOException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough | StockNegQuantityException | CommandNegPriceException | NoSuchStockException e) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            response.getOutputStream().println(e.getMessage());
-//        }
-//    }
-//    public void addStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        String CompanyName = request.getParameter("newStockCompanyName");
-//        String StockSymbol = request.getParameter("newStockSymbol");
-//        String StockQuantityFromParam = request.getParameter("newStockQuantity");
-//        int StockQuantity = Integer.parseInt(StockQuantityFromParam);
-//        String StockPriceFromParam = request.getParameter("newStockPrice");
-//        int StockPrice = Integer.parseInt(StockPriceFromParam);
-//
-//        UserManager userManager = ServletUtils.getUserManager(getServletContext());
-//        String userNameFromSession = SessionUtils.getUsername(request);
-//        try {
-//            userManager.addStock(userNameFromSession, CompanyName, StockSymbol, StockPrice, StockQuantity);
-//            response.setStatus(HttpServletResponse.SC_OK);
-//            response.getOutputStream().println("Congratulations! A new stock was Added!!");
-//        } catch (Exception e) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            response.getOutputStream().println(e.getMessage());
-//        }
-//    }
+
+    private void getUserHoldForStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String StockSymbol = request.getParameter("stock");
+        try (PrintWriter out = response.getWriter()) {
+            response.setContentType("application/json");
+            json = gson.toJson(this.userManager.getUserHoldForStock(userNameFromSession,StockSymbol));
+            out.println(json);
+            out.flush();
+        }
+
+    }
 
     private void getUsers(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Pair<String, String>> res = new ArrayList<>();

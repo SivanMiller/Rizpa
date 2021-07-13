@@ -2,6 +2,7 @@ package engine;
 
 import exception.StockNegPriceException;
 import exception.StockSymbolLowercaseException;
+import objects.CommandDTO;
 import objects.TransactionDTO;
 
 import java.util.Collections;
@@ -24,9 +25,18 @@ public class StockManager {
 
        Stocks.put(Symbol, newStock);
     }
-    public List<TransactionDTO> getStockTransactionsList(String stockSymbol){ return Stocks.get(stockSymbol).getTransactionsList();}
+    public List<TransactionDTO> getStockTransactionsList(String stockSymbol){
+        return Stocks.get(stockSymbol).getExchangeCollection().getTransaction();
+    }
 
-
+    public List<CommandDTO> getStockBuyCommandList(String stockSymbol)
+    {
+        return this.Stocks.get(stockSymbol).getExchangeCollection().getBuyCommand();
+    }
+    public List<CommandDTO> getStockSellCommandList(String stockSymbol)
+    {
+        return this.Stocks.get(stockSymbol).getExchangeCollection().getSellCommand();
+    }
 
 
     public synchronized void removeStock(String Symbol) {
