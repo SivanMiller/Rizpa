@@ -9,24 +9,24 @@
 </head>
 <body>
 <div title="Files">
-    <h2>Files</h2>
+    <h2 class="userFields">Files</h2>
     <form id="uploadForm" enctype="multipart/form-data" method="POST" class="userFields">
         <input type="file" name="file1" accept=".xml" class="userFields">
         <input type="Submit" value="Upload File" class="userFields">
     </form>
 </div>
 <div>
-    <h2>Commands:</h2>
+    <h2 class="userFields">Commands:</h2>
 
-    <label for="userFunds">Your Funds:</label>
-    <input type="text" id="userFunds" disabled><br>
+    <label class="userFields" for="userFunds">Your Funds:</label>
+    <input type="text" id="userFunds" class="userFields" disabled><br>
     <form>
         <input type="number"  class="userFields" id="addFunds">
         <input type="Submit" value="Add Funds" class="userFields" onclick="onAddFunds()">
     </form><br>
-    <br>
-    <br>
-    <br>
+    <br class="userFields">
+    <br class="userFields">
+    <br class="userFields">
     <form class="userFields" id="addStockForm">
         <label for="newStockCompanyName">Company Name:</label>
         <input type="text" id="newStockCompanyName"><br>
@@ -69,8 +69,8 @@
     </div>
     <br>
     <div id="accountMovementDiv">
-        <label for="accountMovementTable">Account Movements Table:</label><br>
-        <table class="ConsumerTables" id="accountMovementTable">
+        <label for="accountMovementTable" class="userFields">Account Movements Table:</label><br>
+        <table class="ConsumerTables" id="accountMovementTable" class="userFields">
             <thead>
             <th>Action Type</th>
             <th>Action Date</th>

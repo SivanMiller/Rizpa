@@ -7,6 +7,26 @@
     <script src="StockPageController.js"></script>
 </head>
 <body>
+    <label  for="stockSymbol">Stock Symbol:</label>
+    <input type="text" id="stockSymbol"  disabled >
+    <label  for="stockCompanyName">Stock companyName:</label>
+    <input type="text" id="stockCompanyName"  disabled >
+    <label  for="stockPrice">Stock price:</label>
+    <input type="text" id="stockPrice"  disabled >
+
+<br>
+    <div id="stockDiv">
+        <label for="stockTranTable">Stock transaction Table:</label><br>
+        <table class="stockTranTables" id="stockTranTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 <form  id="addCommandForm">
     <label>Command Direction:</label><br>
     <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
@@ -35,6 +55,7 @@
 
     <input type="Submit" value="Add New Command">
 </form><br>
+
 <button onclick="back()">Go Back</button>
 </body>
 </html>

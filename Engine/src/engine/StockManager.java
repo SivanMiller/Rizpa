@@ -2,9 +2,11 @@ package engine;
 
 import exception.StockNegPriceException;
 import exception.StockSymbolLowercaseException;
+import objects.TransactionDTO;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StockManager {
@@ -22,6 +24,7 @@ public class StockManager {
 
        Stocks.put(Symbol, newStock);
     }
+    public List<TransactionDTO> getStockTransactionsList(String stockSymbol){ return Stocks.get(stockSymbol).getTransactionsList();}
 
 
 

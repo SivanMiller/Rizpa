@@ -140,6 +140,7 @@ public class UserManager {
                 }
             }
     }
+    public List<TransactionDTO> getStockTransactionsList(String stockSymbol){ return this.StocksManger.getStockTransactionsList(stockSymbol);}
 
     public StockDTO getStock(String Symbol) { return this.StocksManger.getStocks().get(Symbol).convertToDTO(); }
 
