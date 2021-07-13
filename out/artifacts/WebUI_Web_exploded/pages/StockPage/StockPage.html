@@ -17,9 +17,11 @@
     <label  for="userHold" class="userFields">user hold:</label>
     <input type="text" id="userHold"  class="userFields" disabled >
 
-<br>
+    <br>
+    <br>
+    <br>
     <div id="stockDiv">
-        <label for="stockTranTable">Stock transaction Table:</label><br>
+        <label class="Title" for="stockTranTable">Stock transaction Table:</label><br>
         <table class="stockTranTables" id="stockTranTable">
             <thead>
             <th>Date</th>
@@ -32,9 +34,9 @@
     </div>
     <br>
     <br>
-
+    <br>
     <div  class="adminFields" id="stockBuyDiv">
-        <label for="stockBuyTable">Stock buy Table:</label><br>
+        <label class="Title" for="stockBuyTable">Stock buy Table:</label><br>
         <table class="stockBuyTables" id="stockBuyTable">
             <thead>
             <th>Date</th>
@@ -47,8 +49,9 @@
             </tbody>
         </table>
     </div>
+    <br><br>
     <div  class="adminFields" id="stockSellDiv">
-        <label for="stockSellTable">Stock Sell Table:</label><br>
+        <label class="Title" for="stockSellTable">Stock Sell Table:</label><br>
         <table class="stockSellTables" id="stockSellTable">
             <thead>
             <th>Date</th>
@@ -61,8 +64,11 @@
             </tbody>
         </table>
     </div>
+    <br>
+    <br>
 <form  class="userFields" id="addCommandForm">
-    <label>Command Direction:</label><br>
+    <label class="Title">NEW COMMAND:</label><br>
+    <label>Command Direction:</label>
     <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
     <label for="newCommandSellRadio">Sell</label>
     <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">

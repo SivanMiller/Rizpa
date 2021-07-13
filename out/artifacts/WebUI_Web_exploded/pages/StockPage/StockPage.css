@@ -24,3 +24,12 @@ th {
   background-color: #0764b4;
   color: white;
 }
+.Title {
+  color: #b71235;
+  font-weight: bold;
+  width:800px;
+  display: inline-block;
+   float: left;
+  font-family: Arial;
+
+}
