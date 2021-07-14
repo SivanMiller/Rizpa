@@ -33,10 +33,26 @@ function onAddStock(){
             },
             type: 'GET',
             error: function (error) {
-                alert(error.responseText);
+                $("#snackbar").text(error.responseText);
+                // Get the snackbar DIV
+                var x = document.getElementById("snackbar");
+
+                // Add the "show" class to DIV
+                x.className = "show";
+
+                // After 3 seconds, remove the show class from DIV
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
             },
             success: function (res) {
-                alert(res);
+                $("#snackbar").text(res);
+                // Get the snackbar DIV
+                var x = document.getElementById("snackbar");
+
+                // Add the "show" class to DIV
+                x.className = "show";
+
+                // After 3 seconds, remove the show class from DIV
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
                 getStockList();
             }
         }

@@ -26,11 +26,11 @@ public class User {
         Holdings = holdings;
         AccountMovements = new ArrayList<>();
         UnreportedTransactions = new ArrayList<>();
-        for (Holding holding : this.Holdings.values())
-        {
-//            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
-            Funds += holding.getQuantity() * holding.getStock().getPrice();
-        }
+//        for (Holding holding : this.Holdings.values())
+//        {
+////            HoldingsTurnover += holding.getQuantity() * holding.getStock().getPrice();
+//            Funds += holding.getQuantity() * holding.getStock().getPrice();
+//        }
     }
 
     public User(String name) {
@@ -98,7 +98,7 @@ public class User {
         }
 
         int beforeFunds = this.Funds;
-        this.Funds += NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
+        this.Funds -= NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
 
         UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.BUY.toString(), NewTransaction.getTransactionDate(), NewTransaction.getTransactionPrice(), beforeFunds, this.Funds);
         this.AccountMovements.add(newCommand);
@@ -115,7 +115,7 @@ public class User {
         }
 
         int beforeFunds = this.Funds;
-        this.Funds -= NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
+        this.Funds += NewTransaction.getTransactionQuantity() * NewTransaction.getTransactionPrice();
 
         UserCommandDTO newCommand = new UserCommandDTO(UserCommandDTO.CmdType.SELL.toString(), NewTransaction.getTransactionDate(), NewTransaction.getTransactionPrice(), beforeFunds, this.Funds);
         this.AccountMovements.add(newCommand);
@@ -148,5 +148,4 @@ public class User {
 
         return new UserDTO(this.getName(), this.Funds, holdings);
     }
-
 }

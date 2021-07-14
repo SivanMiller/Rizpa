@@ -9,7 +9,7 @@ window.onload = function () {
     $('#newCommandStockSymbol').val(stock);
     $('#addCommandForm').submit(onAddCommand);
     setInterval(ReportUserTransaction, 2000);
-    setInterval(updateTransactionsList, 20000);
+    setInterval(updateTransactionsList, 2000);
 };
 
 function updateStockDetails(stock)
@@ -25,7 +25,6 @@ function updateStockDetails(stock)
             success: updateStockDetailsCallBack
         }
     );
-
 }
 
 function updateStockDetailsCallBack(stock)
