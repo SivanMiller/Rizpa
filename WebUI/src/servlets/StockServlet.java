@@ -54,6 +54,24 @@ public class StockServlet extends HttpServlet {
                 }
                 break;
             }
+            case ("getBuyCommandList"): {
+                String StockSymbol = request.getParameter("stock");
+                try (PrintWriter out = response.getWriter()) {
+                    response.setContentType("application/json");
+                    json = gson.toJson(userManager.getStockBuyCommandsList(StockSymbol));
+                    out.println(json);
+                    out.flush();
+                }
+            }
+            case ("getSellCommandList"): {
+                String StockSymbol = request.getParameter("stock");
+                try (PrintWriter out = response.getWriter()) {
+                    response.setContentType("application/json");
+                    json = gson.toJson(userManager.getStockSellCommandsList(StockSymbol));
+                    out.println(json);
+                    out.flush();
+                }
+            }
             case ("getTransactionList"): {
                 String StockSymbol = request.getParameter("stock");
                 try (PrintWriter out = response.getWriter()) {
@@ -68,6 +86,7 @@ public class StockServlet extends HttpServlet {
                 this.addStock(request, response);
                 break;
             }
+
         }
     }
 

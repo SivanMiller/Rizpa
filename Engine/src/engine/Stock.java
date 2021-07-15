@@ -134,12 +134,6 @@ public class Stock {
     public List<Pair<String, Integer>> getPriceHistory() {
         return priceHistory;
     }
-    public List<TransactionDTO> getTransactionsList(){
-        List<TransactionDTO> res = new ArrayList<>();
-        for (int i = this.ExchangeCollection.getTransactions().size() - 1; i >= 0 ; i--) {
 
-            res.add(this.ExchangeCollection.getTransactions().get(i).convertToDTO());
-        }
-        return res;
-    }
+
 }

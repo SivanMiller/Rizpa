@@ -44,7 +44,14 @@ public class UserManager {
     public synchronized List<String> getAdmins() {
         return Collections.unmodifiableList(Admins);
     }
-
+    public int getUserHoldForStock(String userName, String Symbol)
+    {
+        Holding holding=this.Users.get(userName).getHolding(Symbol);
+        if(holding==null)
+            return 0;
+        else
+            return holding.getQuantity();
+    }
     private boolean isUserExists(String UserName) {
         return Users.containsKey(UserName);
     }
@@ -101,6 +108,8 @@ public class UserManager {
                                 "Please make sure all stocks are from different companies");
                     }
                 }
+                else
+                    res.put(newStock.getSymbol(), newStock);
             } catch (StockNegPriceException | StockSymbolLowercaseException e) {
                 throw e;
             }
@@ -113,8 +122,8 @@ public class UserManager {
         List<RseItem> items = descriptor.getRseHoldings().getRseItem();
 
         for (RseItem item : items) {
-           //if stocks exists in thw system or loaded in the new Xml file its ok
-            if(this.StocksManger.isStockExists(item.getSymbol()) || newStocks.containsKey(item.getSymbol()))
+           //if stocks loaded in the new Xml file its ok
+            if(newStocks.containsKey(item.getSymbol()))
             {
                 continue;
             }
@@ -125,8 +134,11 @@ public class UserManager {
             }
        }
         //the file is proper and we can save the new data in the system
-        for(Stock stock : newStocks.values())
-            this.StocksManger.addStock(stock.getSymbol(),stock);
+        for(Stock stock : newStocks.values()) {
+            //enter to the file only the new stocks
+            if(!this.StocksManger.isStockExists(stock.getSymbol()))
+            this.StocksManger.addStock(stock.getSymbol(), stock);
+        }
 
        for (RseItem item : items) {
             Stock stockToHold = this.StocksManger.getStocks().get(item.getSymbol().toUpperCase());
@@ -141,7 +153,8 @@ public class UserManager {
             }
     }
     public List<TransactionDTO> getStockTransactionsList(String stockSymbol){ return this.StocksManger.getStockTransactionsList(stockSymbol);}
-
+    public List<CommandDTO> getStockBuyCommandsList(String stockSymbol){ return this.StocksManger.getStockBuyCommandList(stockSymbol);}
+    public List<CommandDTO> getStockSellCommandsList(String stockSymbol){ return this.StocksManger.getStockSellCommandList(stockSymbol);}
     public StockDTO getStock(String Symbol) { return this.StocksManger.getStocks().get(Symbol).convertToDTO(); }
 
     public List<StockDTO> getStocks() {
