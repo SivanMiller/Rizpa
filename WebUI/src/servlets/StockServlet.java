@@ -27,12 +27,14 @@ public class StockServlet extends HttpServlet {
     private String userNameFromSession;
     private Gson gson = new Gson();
     private String json = "";
+    String StockSymbol = "";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String actionFromParam = request.getParameter(Constants.ACTION);
         this.userManager = ServletUtils.getUserManager(getServletContext());
         this.userNameFromSession = SessionUtils.getUsername(request);
+        this.StockSymbol = request.getParameter(Constants.SYMBOL);
 
         switch (actionFromParam) {
             case ("getStocks"): {
@@ -45,7 +47,6 @@ public class StockServlet extends HttpServlet {
                 break;
             }
             case ("getStock"): {
-                String StockSymbol = request.getParameter("stock");
                 try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(userManager.getStock(StockSymbol));
@@ -55,7 +56,6 @@ public class StockServlet extends HttpServlet {
                 break;
             }
             case ("getBuyCommandList"): {
-                String StockSymbol = request.getParameter("stock");
                 try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(userManager.getStockBuyCommandsList(StockSymbol));
@@ -64,7 +64,6 @@ public class StockServlet extends HttpServlet {
                 }
             }
             case ("getSellCommandList"): {
-                String StockSymbol = request.getParameter("stock");
                 try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(userManager.getStockSellCommandsList(StockSymbol));
@@ -73,7 +72,6 @@ public class StockServlet extends HttpServlet {
                 }
             }
             case ("getTransactionList"): {
-                String StockSymbol = request.getParameter("stock");
                 try (PrintWriter out = response.getWriter()) {
                     response.setContentType("application/json");
                     json = gson.toJson(userManager.getStockTransactionsList(StockSymbol));
@@ -98,8 +96,6 @@ public class StockServlet extends HttpServlet {
         String StockPriceFromParam = request.getParameter("newStockPrice");
         int StockPrice = Integer.parseInt(StockPriceFromParam);
 
-        UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        String userNameFromSession = SessionUtils.getUsername(request);
         try {
             userManager.addStock(userNameFromSession, CompanyName, StockSymbol, StockPrice, StockQuantity);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -111,8 +107,6 @@ public class StockServlet extends HttpServlet {
     }
 
     private Set<String> getUserStocks(HttpServletRequest request) {
-        UserManager userManager = ServletUtils.getUserManager(getServletContext());
-        String userNameFromSession = SessionUtils.getUsername(request);
         return userManager.getUserStocksSymbols(userNameFromSession);
     }
     /**

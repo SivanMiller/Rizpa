@@ -3,8 +3,6 @@ var MainPage = "pages/mainPage/MainPage.html";
 function sendRedirect(res)
 {
     window.location = MainPage;
-
-    alert(res);
 }
 
 function checkLogin() {
@@ -24,10 +22,9 @@ function checkLogin() {
         success: sendRedirect,
         error: function (error)
         {
-            alert(error.responseText);
+            showSnackbar(error.responseText);
         }
     });
 
 }
-
 

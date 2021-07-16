@@ -21,59 +21,56 @@ function onAddStock(){
     var newStockQuantity    = $('#newStockQuantity').val();
     var newStockPrice       = $('#newStockPrice').val();
 
-    $.ajax(
-        {
-            url: 'stock',
-            data: {
-                newStockCompanyName: newStockCompanyName,
-                newStockSymbol: newStockSymbol,
-                newStockQuantity: newStockQuantity,
-                newStockPrice: newStockPrice,
-                action: "addStock"
-            },
-            type: 'GET',
-            error: function (error) {
-                $("#snackbar").text(error.responseText);
-                // Get the snackbar DIV
-                var x = document.getElementById("snackbar");
-
-                // Add the "show" class to DIV
-                x.className = "show";
-
-                // After 3 seconds, remove the show class from DIV
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-            },
-            success: function (res) {
-                $("#snackbar").text(res);
-                // Get the snackbar DIV
-                var x = document.getElementById("snackbar");
-
-                // Add the "show" class to DIV
-                x.className = "show";
-
-                // After 3 seconds, remove the show class from DIV
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 5000);
-                getStockList();
+    if (newStockCompanyName != "" && newStockSymbol != "" &&
+        newStockQuantity != "" && newStockPrice != "") {
+        $.ajax(
+            {
+                url: 'stock',
+                data: {
+                    newStockCompanyName: newStockCompanyName,
+                    newStockSymbol: newStockSymbol,
+                    newStockQuantity: newStockQuantity,
+                    newStockPrice: newStockPrice,
+                    action: "addStock"
+                },
+                type: 'GET',
+                error: function(error) { showSnackbar(error.responseText); },
+                success: function (res) {
+                    showSnackbar(res);
+                    getStockList();
+                }
             }
-        }
-    );
+        );
+    }
+    else{
+        showSnackbar("Please fill all 'Add Stock' fields");
+    }
+
 
     return false;
 }
 
 function onAddFunds(){
     var userFunds = $('#addFunds').val();
-    $.ajax(
-        {
-            url: 'command',
-            data: {
-                action: "addFunds",
-                userFunds: userFunds
-            },
-            type: 'GET',
-            success: refreshUserFunds()
-        }
-    );
+    if (userFunds != "") {
+        $.ajax(
+            {
+                url: 'command',
+                data: {
+                    action: "addFunds",
+                    userFunds: userFunds
+                },
+                type: 'GET',
+                success: function() {
+                    refreshUserFunds();
+                    showSnackbar("Funds added!");
+                }
+            }
+        );
+    }
+    else{
+        showSnackbar("Please enter funds!");
+    }
 }
 
 function getStockList() {
@@ -123,17 +120,17 @@ function ClickLoad() {
             processData: false, // Don't process the files
             contentType: false, // Set content type to false as jQuery will tell the server its a query string request
             error: function (error) {
-                alert(error.responseText);
+                showSnackbar(error.responseText);
             },
             success: function (res) {
-                alert(res);
+                showSnackbar(res);
                 getStockList();
                 refreshUserFunds();
             }
         });
     }
     else{
-        alert("Please choose a file!!");
+        showSnackbar("Please choose a file!!");
     }
 
     // return value of the submit operation
@@ -141,27 +138,6 @@ function ClickLoad() {
     return false;
 }
 
-function ReportUserTransaction(){
-    $.ajax(
-        {
-            url: 'command',
-            data: {
-                action: "reportTransactions"
-            },
-            type: 'GET',
-            success: alertNewTransaction
-        }
-    );
-}
-
-function alertNewTransaction(transaction) {
-    transaction.forEach(function (transaction) {
-        var message = "New transaction made! ";
-        message += transaction.value.transactionSellUser.value + " Sold " + transaction.value.transactionBuyUser.value + " ";
-        message += transaction.value.transactionQuantity.value + " of Stock " + transaction.key + " for the price of " + transaction.value.transactionPrice.value;
-        alert(message);
-    })
-}
 
 $.ajax({
     url: 'user',
@@ -182,7 +158,6 @@ function hideUserFields(){
 
     $(".userFields").hide();
 }
-
 
 function refreshUserFunds() {
     $.ajax(
@@ -264,4 +239,5 @@ function refreshUserList(users) {
         tr.appendTo(usersTable);
     });
 }
+
 

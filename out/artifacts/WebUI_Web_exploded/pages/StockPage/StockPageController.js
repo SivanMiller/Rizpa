@@ -4,16 +4,17 @@ window.onload = function () {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const stock = urlParams.get('stock');
-    updateStockDetails();
-    updateTransactionsList();
-    updateBuyCommandList();
-    updateSellCommandList();
     $('#newCommandStockSymbol').val(stock);
     $('#addCommandForm').submit(onAddCommand);
-    setInterval(ReportUserTransaction, 2000);
-    setInterval(updateTransactionsList, 2000);
+    updateStockDetails();
     setInterval(updateStockDetails, 2000);
+    ReportUserTransaction();
+    setInterval(ReportUserTransaction, 2000);
+    updateTransactionsList();
+    setInterval(updateTransactionsList, 2000);
+    updateBuyCommandList();
     setInterval(updateBuyCommandList, 2000);
+    updateSellCommandList();
     setInterval(updateSellCommandList, 2000);
 };
 $.ajax({
@@ -38,14 +39,14 @@ function showUserField(){
 }
 function updateStockDetails()
 {
-    var stock = $('#newCommandStockSymbol').val();
+    var symbol = $('#newCommandStockSymbol').val();
 
     $.ajax(
         {
             url: 'stock',
             data: {
                 action: "getStock",
-                stock:stock
+                symbol: symbol
             },
             type: 'GET',
             success: updateStockDetailsCallBack
@@ -56,7 +57,7 @@ function updateStockDetails()
             url: 'user',
             data: {
                 action: "getUserHoldForStock",
-                stock:stock
+                symbol: symbol
             },
             type: 'GET',
             success: updateUserHoldCallBack
@@ -67,30 +68,29 @@ function updateUserHoldCallBack(Quantity)
 {
     $('#userHold').val(Quantity);
 }
+
 function updateStockDetailsCallBack(stock)
 {
     $('#stockSymbol').val(stock.stockSymbol.value);
     $('#stockCompanyName').val(stock.companyName.value);
     $('#stockPrice').val(stock.stockPrice.value);
-
 }
 
 function updateTransactionsList()
 {
-    var stock = $('#newCommandStockSymbol').val();
+    var symbol = $('#newCommandStockSymbol').val();
     $.ajax(
         {
             url: 'stock',
             data: {
                 action: "getTransactionList",
-                stock:stock
+                symbol: symbol
             },
             type: 'GET',
             success: refreshStockTransactionList
         }
     );
 }
-
 
 function refreshStockTransactionList(transactions) {
     var transactionTable = $('#stockTranTable tbody');
@@ -111,13 +111,13 @@ function refreshStockTransactionList(transactions) {
 }
 function updateBuyCommandList()
 {
-    var stock = $('#newCommandStockSymbol').val();
+    var symbol = $('#newCommandStockSymbol').val();
     $.ajax(
         {
             url: 'stock',
             data: {
                 action: "getBuyCommandList",
-                stock:stock
+                symbol: symbol
             },
             type: 'GET',
             success: refreshStockBuyCommandList
@@ -149,13 +149,13 @@ function refreshStockBuyCommandList(commands)
 }
 function updateSellCommandList()
 {
-    var stock = $('#newCommandStockSymbol').val();
+    var symbol = $('#newCommandStockSymbol').val();
     $.ajax(
         {
             url: 'stock',
             data: {
                 action: "getSellCommandList",
-                stock:stock
+                symbol: symbol
             },
             type: 'GET',
             success: refreshStockSellCommandList
@@ -195,7 +195,7 @@ function onAddCommand(){
     if(CmdDirection == undefined || CmdType == undefined ||
         newCommandQuantity == "" || newCommandPrice == "")
     {
-        alert("Please fill all the fields!")
+        showSnackbar("Please fill all the fields!")
     }
     else {
         $.ajax({
@@ -213,7 +213,7 @@ function onAddCommand(){
                 reportAddCommand();
                 ReportUserTransaction(); },
             error: function (error) {
-                alert(error.responseText);
+                showSnackbar(error.responseText);
             }
         });
     }
@@ -242,27 +242,5 @@ function togglePrice() {
 }
 
 function reportAddCommand() {
-        alert("Command Added!");
-}
-
-function ReportUserTransaction() {
-    $.ajax(
-        {
-            url: 'command',
-            data: {
-                action: "reportTransactions"
-            },
-            type: 'GET',
-            success: alertNewTransaction
-        }
-    );
-}
-
-function alertNewTransaction(transaction) {
-    transaction.forEach(function (transaction) {
-        var message = "New transaction made! ";
-        message += transaction.value.transactionSellUser.value + " Sold " + transaction.value.transactionBuyUser.value + " ";
-        message += transaction.value.transactionQuantity.value + " of Stock " + transaction.key + " for the price of " + transaction.value.transactionPrice.value;
-        alert(message);
-    })
+        showSnackbar("Command Added!");
 }

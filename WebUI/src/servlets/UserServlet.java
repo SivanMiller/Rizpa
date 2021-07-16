@@ -57,6 +57,10 @@ public class UserServlet extends HttpServlet {
                 this.getUserStocks(request, response);
                 break;
             }
+            case ("getUserHoldForStock"): {
+                this.getUserHoldForStock(request, response);
+                break;
+            }
         }
     }
 
@@ -101,11 +105,23 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    public void getUserStocks(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void getUserStocks(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         try (PrintWriter out = response.getWriter()) {
             response.setContentType("application/json");
             json = gson.toJson(userManager.getUserStocksSymbols(userNameFromSession));
+            out.println(json);
+            out.flush();
+        }
+    }
+
+    private void getUserHoldForStock(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String stockSymbol = request.getParameter(Constants.SYMBOL);
+
+        try (PrintWriter out = response.getWriter()) {
+            response.setContentType("application/json");
+            json = gson.toJson(userManager.getUserHoldingQuantity(userNameFromSession, stockSymbol));
             out.println(json);
             out.flush();
         }

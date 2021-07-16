@@ -193,6 +193,10 @@ public class UserManager {
         return this.Users.get(UserName).getHoldings().keySet();
     }
 
+    public int getUserHoldingQuantity(String UserName, String Symbol) {
+        return this.Users.get(UserName).getHolding(Symbol).getQuantity();
+    }
+
     public NewCmdOutcomeDTO addNewCommand(String UserName, String Symbol, String strType,
                                           String strCmdDirection, int Price, int Quantity) throws NoSuchCmdTypeException, UserHoldingQuntityNotEnough, StockNegQuantityException, CommandNegPriceException, NoSuchStockException {
         Command.CmdType Type = this.convertStringToCmdType(strType);
