@@ -46,7 +46,7 @@ public class User {
     public void addHolding(Holding newHold)
     {
         Holdings.put(newHold.getStock().getSymbol(), newHold);
-        this.Funds += newHold.getQuantity() * newHold.getStock().getPrice();
+//        this.Funds += newHold.getQuantity() * newHold.getStock().getPrice();
     }
 
     public String getName() {
