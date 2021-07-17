@@ -77,13 +77,14 @@ public class CommandServlet extends HttpServlet {
 
         try (PrintWriter out = response.getWriter()) {
             response.setContentType("application/json");
-            NewCmdOutcomeDTO outcome = userManager.addNewCommand(userNameFromSession, StockSymbol, CmdType, CmdDirection, StockPrice, StockQuantity);
-            json = gson.toJson(outcome);
+            try {
+                NewCmdOutcomeDTO outcome = userManager.addNewCommand(userNameFromSession, StockSymbol, CmdType, CmdDirection, StockPrice, StockQuantity);
+                json = gson.toJson(outcome.toString());
+            } catch (NoSuchCmdTypeException | UserHoldingQuntityNotEnough | StockNegQuantityException | CommandNegPriceException | NoSuchStockException e) {
+                json = gson.toJson(e.getMessage());
+            }
             out.println(json);
             out.flush();
-        } catch (IOException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough | StockNegQuantityException | CommandNegPriceException | NoSuchStockException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getOutputStream().println(e.getMessage());
         }
     }
     /**

@@ -19,12 +19,13 @@ public class UserManager {
     private Map<String, User> Users;
     private List<String> Admins;
     private StockManager StocksManger;
-    private ChatManager chatManager;
+    private ChatManager ChatManager;
 
     public UserManager() {
         Users = new HashMap<>();
         Admins = new ArrayList<>();
         StocksManger = new StockManager();
+        ChatManager = new ChatManager();
     }
 
     public synchronized void addAdmin(String AdminName)
@@ -46,8 +47,8 @@ public class UserManager {
     }
     public int getUserHoldForStock(String userName, String Symbol)
     {
-        Holding holding=this.Users.get(userName).getHolding(Symbol);
-        if(holding==null)
+        Holding holding = this.Users.get(userName).getHolding(Symbol);
+        if(holding == null)
             return 0;
         else
             return holding.getQuantity();
@@ -277,11 +278,11 @@ public class UserManager {
 
     public void addMessage(String message,String userName)
     {
-
+        this.ChatManager.addMessage(new Message(message, userName));
     }
 
     public List<Message> getChatList()
     {
-        return  this.chatManager.getChatDataList();
+        return  this.ChatManager.getChatDataList();
     }
 }
