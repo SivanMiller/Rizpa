@@ -1,5 +1,4 @@
 package engine;
-
 import exception.*;
 import generated.RizpaStockExchangeDescriptor;
 import generated.RseItem;
@@ -20,6 +19,7 @@ public class UserManager {
     private Map<String, User> Users;
     private List<String> Admins;
     private StockManager StocksManger;
+    private ChatManager chatManager;
 
     public UserManager() {
         Users = new HashMap<>();
@@ -194,7 +194,12 @@ public class UserManager {
     }
 
     public int getUserHoldingQuantity(String UserName, String Symbol) {
-        return this.Users.get(UserName).getHolding(Symbol).getQuantity();
+
+        Holding holding= this.Users.get(UserName).getHolding(Symbol);
+        if(holding==null)
+            return 0;
+        else
+            return holding.getQuantity();
     }
 
     public NewCmdOutcomeDTO addNewCommand(String UserName, String Symbol, String strType,
@@ -268,5 +273,15 @@ public class UserManager {
             }
         }
         return null;
+    }
+
+    public void addMessage(String message,String userName)
+    {
+
+    }
+
+    public List<Message> getChatList()
+    {
+        return  this.chatManager.getChatDataList();
     }
 }

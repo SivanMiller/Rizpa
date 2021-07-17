@@ -209,12 +209,11 @@ function onAddCommand(){
                 newCommandPrice: newCommandPrice
             },
             type: 'GET',
+            error: function(error) { showSnackbar(error.responseText); },
             success: function () {
                 reportAddCommand();
-                ReportUserTransaction(); },
-            error: function (error) {
-                showSnackbar(error.responseText);
-            }
+                ReportUserTransaction(); }
+
         });
     }
 

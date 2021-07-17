@@ -17,6 +17,10 @@ tr:hover {
     background-color: #ddd;
 }
 
+.userinchat {
+    display: flex
+}
+
 th {
     padding-top: 8px;
     padding-bottom: 8px;

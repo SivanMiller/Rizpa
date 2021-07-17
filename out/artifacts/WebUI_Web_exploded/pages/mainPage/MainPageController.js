@@ -4,8 +4,11 @@ window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
     $("#addStockForm").submit(onAddStock);
+    $("#chatform").submit(onAddMessage);
+    getChatList();
     getUserList();
     setInterval(getUserList, 2000);
+    setInterval(getChatList, 2000);
     getStockList();
     setInterval(getStockList, 2000);
     refreshUserFunds();
@@ -14,6 +17,69 @@ window.onload = function ()
     setInterval(getUserAccountMovementList, 2000);
     setInterval(ReportUserTransaction, 2000);
 };
+
+function getChatList()
+{
+    $.ajax(
+        {
+            url: 'chat',
+            data: {
+                action: "getChatList"
+            },
+           success: appendToChatArea
+        }
+    );
+
+
+}
+
+function appendToChatArea(entries) {
+
+   $.each(entries || [], appendChatEntry);
+
+    // handle the scroller to auto scroll to the end of the chat area
+    var scroller = $("#chatarea");
+    var height = scroller[0].scrollHeight - $(scroller).height();
+    $(scroller).stop().animate({ scrollTop: height }, "slow");
+}
+
+function appendChatEntry(index, entry){
+    var entryElement = createChatEntry(entry);
+    $("#chatarea").append(entryElement).append("<br>");
+}
+
+function createChatEntry (entry){
+    // entry.chatString = entry.chatString.replace (":)", "<img class='smiley-image' src='../../common/images/smiley.png'/>");
+    return $("<span class=\"success\">").append(entry.username + "> " + entry.chatString);
+}
+
+
+
+
+function onAddMessage()
+{
+    var newMessage = $('#userstring').val();
+
+    if(newMessage != "")
+    $.ajax({
+        data: {
+            newMessage: newMessage,
+            action: "addMessage"
+        },
+        url: 'chat',
+        timeout: 2000,
+        error: function() {
+            console.error("Failed to submit");
+        }
+    });
+    else
+        showSnackbar("Please write new message ");
+
+
+
+    return false;
+
+}
 
 function onAddStock(){
     var newStockCompanyName = $('#newStockCompanyName').val();

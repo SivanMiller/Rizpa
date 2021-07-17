@@ -5,7 +5,7 @@
     <title>Rizpa</title>
     <script src="../../jquery-3.6.0.min.js"></script>
     <script src="../../common/JS/snackbar.js"></script>
-    <script src="../../common/JS/Transactions.js.js"></script>
+    <script src="../../common/JS/Transactions.js"></script>
     <script src="MainPageController.js"></script>
     <link rel="stylesheet" type="text/css" href="../../common/css/snackbar.css">
     <link rel="stylesheet" type="text/css" href="../../common/css/table.css">
@@ -23,9 +23,10 @@
     <label class="userFields" for="userFunds">Your Funds:</label>
     <input type="text" id="userFunds" class="userFields" disabled><br>
     <form>
-        <input type="number"  class="userFields" id="addFunds">
+        <input type="number" class="userFields" id="addFunds">
         <input type="Submit" value="Add Funds" class="userFields" onclick="onAddFunds()">
-    </form><br>
+    </form>
+    <br>
     <br class="userFields">
     <br class="userFields">
     <br class="userFields">
@@ -43,16 +44,28 @@
 </div>
 <div>
     <h2>Tables:</h2>
-    <div id="usersDiv">
-        <label for="usersTable">Online Users Table:</label><br>
-        <table class="ConsumerTables" id="usersTable">
-            <thead>
-            <th>User Name</th>
-            <th>User Type</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="userinchat" >
+        <div id="usersDiv" class="user">
+            <label for="usersTable">Online Users Table:</label><br>
+            <table class="ConsumerTables" id="usersTable">
+                <thead>
+                <th>User Name</th>
+                <th>User Type</th>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div id="chatwindow" class="windowChat">
+            <h4>Chat</h4>
+            <div id="chatarea"></div>
+
+            <form id="chatform" method="POST" action="sendChat">
+                <input type="text" id="userstring" name="userstring"/>
+                <input type="submit" value="Send"/>
+            </form>
+
+        </div>
     </div>
     <br>
     <div id="stocksDiv">
@@ -84,6 +97,7 @@
         </table>
     </div>
 </div>
+
 
 <div id="snackbar"></div>
 
