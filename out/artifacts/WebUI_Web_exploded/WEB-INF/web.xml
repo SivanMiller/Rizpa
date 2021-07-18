@@ -8,6 +8,10 @@
         <servlet-class>servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ChatServlet</servlet-name>
+        <servlet-class>servlets.ChatServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>StockServlet</servlet-name>
         <servlet-class>servlets.StockServlet</servlet-class>
     </servlet>
@@ -54,5 +58,9 @@
     <servlet-mapping>
         <servlet-name>CommandServlet</servlet-name>
         <url-pattern>/pages/StockPage/command</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChatServlet</servlet-name>
+        <url-pattern>/pages/mainPage/chat</url-pattern>
     </servlet-mapping>
 </web-app>
