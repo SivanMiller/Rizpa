@@ -2,7 +2,11 @@ var StockPage = '../StockPage/StockPage.html';
 var resreshRate = 1000;
 
 window.onload = function ()
-{
+{   
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userName = urlParams.get('userName');
+    $('#userTitle').append("Hello " + userName);
     $("#uploadForm").submit(ClickLoad);
     $("#addStockForm").submit(onAddStock);
     $("#chatForm").submit(onAddMessage);
