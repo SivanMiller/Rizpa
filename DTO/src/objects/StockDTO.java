@@ -80,15 +80,16 @@ import java.util.Map;
 public class StockDTO {
     public final SimpleStringProperty companyName;
     public final SimpleStringProperty stockSymbol;
-    //todo: change to stock turnover
+    public final SimpleIntegerProperty stockTurnover;
     public final SimpleIntegerProperty stockQuantity;
     public final SimpleIntegerProperty stockPrice;
 
-    public StockDTO(String companyName, String stockSymbol,int stockQuantity, int stockPrice) {
+    public StockDTO(String companyName, String stockSymbol,int stockQuantity, int stockPrice, int stockTurnover) {
         this.companyName = new SimpleStringProperty(companyName);
         this.stockSymbol = new SimpleStringProperty(stockSymbol);
         this.stockQuantity = new SimpleIntegerProperty(stockQuantity);
         this.stockPrice = new SimpleIntegerProperty(stockPrice);
+        this.stockTurnover = new SimpleIntegerProperty(stockTurnover);
     }
 
     public String getCompanyName() {

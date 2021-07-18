@@ -23,9 +23,9 @@
     <h2 class="userFields">Commands:</h2>
     <label class="userFields" for="userFunds">Your Funds:</label>
     <input type="text" id="userFunds" class="userFields" disabled><br>
-    <form>
+    <form id="addFundsForm">
         <input type="number" class="userFields" id="addFunds">
-        <input type="Submit" value="Add Funds" class="userFields" onclick="onAddFunds()">
+        <input type="Submit" value="Add Funds" class="userFields" >
     </form>
     <br>
     <br class="userFields">
@@ -99,8 +99,7 @@
     </div>
 </div>
 
-
-<div id="snackbar"></div>
+<div id="snackbar-container"></div>
 
 </body>
 </html>

@@ -6,6 +6,7 @@ window.onload = function ()
     $("#uploadForm").submit(ClickLoad);
     $("#addStockForm").submit(onAddStock);
     $("#chatForm").submit(onAddMessage);
+    $("#addFundsForm").submit(onAddFunds);
     getUserList();
     setInterval(getUserList, resreshRate);
     getChatList();
@@ -132,6 +133,8 @@ function onAddFunds(){
     else{
         showSnackbar("Please enter funds!");
     }
+
+    return false;
 }
 
 function getStockList() {
@@ -160,7 +163,7 @@ function refreshStockList(stocks) {
         td.appendTo(tr);
         td = $(document.createElement('td')).text(stock.stockPrice.value);
         td.appendTo(tr);
-        td = $(document.createElement('td')).text(stock.stockQuantity.value);
+        td = $(document.createElement('td')).text(stock.stockTurnover.value);
         td.appendTo(tr);
 
         tr.appendTo(stocksTable);

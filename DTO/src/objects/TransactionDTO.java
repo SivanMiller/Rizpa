@@ -26,7 +26,7 @@ public class TransactionDTO {
     public String toString() {
         return "Price = " + getTransactionPrice() +
                 ", Quantity = " + getTransactionQuantity() +
-                ", Date = '" + getTransactionDate() + '\'' +
+//                ", Date = '" + getTransactionDate() + '\'' +
                 ", BuyUser = " + getTransactionBuyUser()+
                 ", SellUser = " + getTransactionSellUser();
     }

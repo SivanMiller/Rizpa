@@ -1,5 +1,39 @@
-.userInChat {
+.userInChat, .bodyDiv{
   display: flex;
+}
+.tablesDiv {
+  display: inline;
+}
+
+.actionsDiv {
+  display: inline;
+}
+
+.grid-container {
+  display: inline-grid;
+  grid-template-columns: auto;
+}
+
+.grid-item {
+  padding: 3px;
+}
+
+label {
+  font-weight: bold;
+}
+
+.Title {
+  color: #b71235;
+  font-weight: bold;
+  width:800px;
+  /*display: inline-block;*/
+  text-align: left;
+  font-family: Arial;
+}
+
+.subTitle {
+  text-decoration: underline;
+  font-size: 20px;
 }
 
 

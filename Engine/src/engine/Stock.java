@@ -128,7 +128,7 @@ public class Stock {
     }
 
     public StockDTO convertToDTO() {
-        return new StockDTO(this.getCompanyName(), this.getSymbol(),0, this.getPrice());
+        return new StockDTO(this.getCompanyName(), this.getSymbol(),0, this.getPrice(), this.ExchangeCollection.getTurnover());
     }
 
     public List<Pair<String, Integer>> getPriceHistory() {
