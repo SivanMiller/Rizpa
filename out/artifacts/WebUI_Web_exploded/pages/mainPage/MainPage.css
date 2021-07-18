@@ -1,21 +1,13 @@
-.userInChat, .bodyDiv{
+.bodyDiv, .userInChat {
   display: flex;
+  flex-direction: row;
 }
-.tablesDiv {
-  display: inline;
-}
-
-.actionsDiv {
-  display: inline;
+.tablesDiv{
+  flex: 1 1 20%;
 }
 
-.grid-container {
-  display: inline-grid;
-  grid-template-columns: auto;
-}
-
-.grid-item {
-  padding: 3px;
+.actionsDiv{
+  flex: 3 1 80%;
 }
 
 label {
