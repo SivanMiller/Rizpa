@@ -9,6 +9,7 @@
     <script src="MainPageController.js"></script>
     <link rel="stylesheet" type="text/css" href="../../common/css/snackbar.css">
     <link rel="stylesheet" type="text/css" href="../../common/css/table.css">
+    <link rel="stylesheet" type="text/css" href="MainPage.css">
 </head>
 <body>
 <div title="Files">
@@ -44,7 +45,7 @@
 </div>
 <div>
     <h2>Tables:</h2>
-    <div class="userinchat" >
+    <div class="userInChat" >
         <div id="usersDiv" class="user">
             <label for="usersTable">Online Users Table:</label><br>
             <table class="ConsumerTables" id="usersTable">
@@ -56,12 +57,12 @@
                 </tbody>
             </table>
         </div>
-        <div id="chatwindow" class="windowChat">
+        <div id="chatWindow" class="chatWindow">
             <h4>Chat</h4>
-            <div id="chatarea"></div>
+            <div id="chatArea"></div>
 
-            <form id="chatform" method="POST" action="sendChat">
-                <input type="text" id="userstring" name="userstring"/>
+            <form id="chatForm" method="POST" action="sendChat">
+                <input type="text" id="userString" name="userString"/>
                 <input type="submit" value="Send"/>
             </form>
 
