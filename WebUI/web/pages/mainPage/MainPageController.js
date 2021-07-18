@@ -1,21 +1,22 @@
 var StockPage = '../StockPage/StockPage.html';
+var resreshRate = 1000;
 
 window.onload = function ()
 {
     $("#uploadForm").submit(ClickLoad);
     $("#addStockForm").submit(onAddStock);
-    $("#chatform").submit(onAddMessage);
-    getChatList();
+    $("#chatForm").submit(onAddMessage);
     getUserList();
-    setInterval(getUserList, 2000);
-    setInterval(getChatList, 2000);
+    setInterval(getUserList, resreshRate);
+    getChatList();
+    setInterval(getChatList, resreshRate);
     getStockList();
-    setInterval(getStockList, 2000);
+    setInterval(getStockList, resreshRate);
     refreshUserFunds();
-    setInterval(refreshUserFunds, 2000);
+    setInterval(refreshUserFunds, resreshRate);
     getUserAccountMovementList();
-    setInterval(getUserAccountMovementList, 2000);
-    setInterval(ReportUserTransaction, 2000);
+    setInterval(getUserAccountMovementList, resreshRate);
+    setInterval(ReportUserTransaction, resreshRate);
 };
 
 function getChatList()
@@ -29,23 +30,24 @@ function getChatList()
            success: appendToChatArea
         }
     );
-
-
 }
 
 function appendToChatArea(entries) {
 
+    var chatArea = $('#chatArea');
+    chatArea.empty();
+
    $.each(entries || [], appendChatEntry);
 
     // handle the scroller to auto scroll to the end of the chat area
-    var scroller = $("#chatarea");
+    var scroller = $("#chatArea");
     var height = scroller[0].scrollHeight - $(scroller).height();
     $(scroller).stop().animate({ scrollTop: height }, "slow");
 }
 
 function appendChatEntry(index, entry){
     var entryElement = createChatEntry(entry);
-    $("#chatarea").append(entryElement).append("<br>");
+    $("#chatArea").append(entryElement).append("<br>");
 }
 
 function createChatEntry (entry){
@@ -53,30 +55,23 @@ function createChatEntry (entry){
     return $("<span class=\"success\">").append(entry.username + "> " + entry.chatString);
 }
 
-
-
-
 function onAddMessage()
 {
-    var newMessage = $('#userstring').val();
+    var newMessage = $('#userString').val();
 
-    if(newMessage != "")
-    $.ajax({
-        data: {
-            newMessage: newMessage,
-            action: "addMessage"
-        },
-        url: 'chat',
-        timeout: 2000,
-        error: function() {
-            console.error("Failed to submit");
-        }
-    });
-    else
+    if(newMessage != "") {
+        $.ajax({
+            data: {
+                newMessage: newMessage,
+                action: "addMessage"
+            },
+            url: 'chat'
+        });
+    }
+    else {
         showSnackbar("Please write new message ");
-
-
-
+    }
+    $('#userString').val("");
     return false;
 
 }

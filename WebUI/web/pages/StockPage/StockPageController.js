@@ -209,10 +209,13 @@ function onAddCommand(){
                 newCommandPrice: newCommandPrice
             },
             type: 'GET',
-            error: function(error) { showSnackbar(error.responseText); },
-            success: function () {
-                reportAddCommand();
-                ReportUserTransaction(); }
+            complete: function(json) {
+                showSnackbar(json.responseJSON);
+            }
+            // error: function(error) { showSnackbar(error.responseText); },
+            // success: function () {
+            //     reportAddCommand();
+            //     ReportUserTransaction(); }
 
         });
     }

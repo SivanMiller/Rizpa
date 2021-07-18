@@ -5,9 +5,9 @@ public class Message {
     private String username;
     private long time;
 
-    public Message(String chatString, String username, long time) {
+    public Message(String chatString, String username) {
         this.chatString = chatString;
         this.username = username;
-        this.time = time;
+        this.time = System.currentTimeMillis();;
     }
 }
