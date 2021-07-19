@@ -52,6 +52,7 @@
 .snackbar {
     visibility: hidden;
     min-width: 150px;
+    max-width: 300px;
     margin-left: -100px;
     background-color: #333;
     margin-bottom : 20px;

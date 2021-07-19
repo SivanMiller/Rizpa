@@ -1,0 +1,20 @@
+.welcomeSpan {
+    font-size: 60px;
+}
+
+
+.mainDiv{
+    text-align: center;
+    font-family: Calibri;
+}
+
+
+.mainBody{
+    background: #93c692;
+    font-family: Calibri;
+}
+
+label {
+    font-size: 20px;
+    font-family: Calibri;
+}

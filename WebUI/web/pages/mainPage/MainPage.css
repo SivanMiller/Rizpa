@@ -1,13 +1,29 @@
-.bodyDiv, .userInChat {
+.mainDiv, .usersDiv {
+  margin: 10px 10px 0 10px;
   display: flex;
   flex-direction: row;
-}
-.tablesDiv{
-  flex: 1 1 20%;
+  font-family: Calibri;
+  width: 100%;
 }
 
-.actionsDiv{
-  flex: 3 1 80%;
+.tablesDiv, .chatWindow{
+  flex: 2 0 50%;
+  margin-right: 20px;
+}
+
+.actionsDiv, .usersTablesDiv{
+  margin-left: 20px;
+  flex: 1 0 50%;
+  margin-right: 20px;
+}
+.mainBody{
+  background: #93c692;
+  font-family: Calibri;
+}
+
+.usersTable{
+  width: 300px;
+  margin-right: 20px;
 }
 
 label {
@@ -15,17 +31,43 @@ label {
 }
 
 .Title {
-  color: #b71235;
+  font-size: 30px;
   font-weight: bold;
-  width:800px;
-  /*display: inline-block;*/
+  width: 200px;
   text-align: left;
-  font-family: Arial;
+  margin-bottom: 20px;
 }
 
 .subTitle {
+  padding-bottom: 15px;
   text-decoration: underline;
   font-size: 20px;
 }
+.userNameSpan {
+  margin: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: Calibri;
+}
 
+.emptySpan {
+
+}
+
+.logoSpan{
+  position: absolute;
+  right: 5px;
+}
+
+.image {
+  height: 50px;
+  width: 100px;
+  margin-right: 30px;
+  margin-top: 5px;
+}
+
+.toolBarDiv{
+  height: 60px;
+  background: rgba(147, 198, 146, 0.82);
+}
 
