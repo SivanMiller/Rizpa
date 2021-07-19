@@ -171,7 +171,9 @@ public class ExchangeCollection {
 
                 if (NewCommand.getClass() != FOKCommand.class && NewCommand.getClass() != IOCCommand.class)
                     this.SellCommands.add(NewCommand);
+
                 outcome.addCommand(NewCommand.convertToDTO());
+
                 break;
             }
             //there is a compatibility of prices! lets SELL!

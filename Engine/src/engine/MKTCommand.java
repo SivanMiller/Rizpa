@@ -37,7 +37,7 @@ public class MKTCommand extends Command {
     }
 @Override
     public CommandDTO convertToDTO() {
-        return new CommandDTO(this.Date, "MKT", this.Quantity, this.Price,this.User.getName());
+        return new CommandDTO(this.Date, "MKT", this.Quantity, this.Price,this.User.getName(), this.getDirection().toString());
     }
 }
 

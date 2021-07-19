@@ -157,11 +157,14 @@ function getStockList() {
 function refreshStockList(stocks) {
     var stocksTable = $('#stocksTable tbody');
     stocksTable.empty();
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userName = urlParams.get('userName');
 
     stocks.forEach(function (stock) {
         tr = $(document.createElement('tr'));
         td = $(document.createElement('td'));
-        td.append('<a href="' + StockPage + '?stock=' + stock.stockSymbol.value +'">' + stock.companyName.value + '</a>')
+        td.append('<a href="' + StockPage + '?stock=' + stock.stockSymbol.value + '&userName=' + userName +'">' + stock.companyName.value + '</a>')
         td.appendTo(tr);
         td = $(document.createElement('td')).text(stock.stockSymbol.value);
         td.appendTo(tr);

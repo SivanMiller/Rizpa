@@ -28,7 +28,7 @@ public class FOKCommand extends Command{
 
     @Override
     public CommandDTO convertToDTO() {
-        return new CommandDTO(this.Date, "FOK", this.Quantity, this.Price,this.User.getName());
+        return new CommandDTO(this.Date, "FOK", this.Quantity, this.Price,this.User.getName(), this.getDirection().toString());
     }
 
     @Override
