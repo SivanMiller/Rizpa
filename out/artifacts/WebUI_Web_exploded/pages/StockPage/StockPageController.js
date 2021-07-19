@@ -5,6 +5,8 @@ window.onload = function () {
     const urlParams = new URLSearchParams(queryString);
     const stock = urlParams.get('stock');
     $('#newCommandStockSymbol').val(stock);
+    const userName = urlParams.get('userName');
+    $('#userTitle').append("Hello " + userName);
     $('#addCommandForm').submit(onAddCommand);
     updateStockDetails();
     setInterval(updateStockDetails, 2000);
@@ -227,7 +229,10 @@ function onAddCommand(){
 
 function back()
 {
-    window.location = MainPage;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userName = urlParams.get('userName');
+    window.location = MainPage + '?userName=' + userName;
 }
 
 function togglePrice() {

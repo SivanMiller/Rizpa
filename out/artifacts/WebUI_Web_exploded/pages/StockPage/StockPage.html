@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../../common/css/table.css">
 </head>
 <body>
+    <h2 id="userTitle"></h2>
     <label  for="stockSymbol">Stock Symbol:</label>
     <input type="text" id="stockSymbol"  disabled >
     <label  for="stockCompanyName">Stock companyName:</label>
@@ -22,7 +23,37 @@
     <input type="text" id="userHold"  class="userFields" disabled >
     <br>
     <br>
-    <br>
+
+    <label class="Title userFields" for="addCommandForm" >NEW COMMAND:</label><br>
+    <form  class="userFields" id="addCommandForm">
+        <label>Command Direction:</label>
+        <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
+        <label for="newCommandSellRadio">Sell</label>
+        <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
+        <label for="newCommandBuyRadio">Buy</label><br>
+
+        <label for="newCommandStockSymbol">Stock Symbol:</label>
+        <input type="text" id="newCommandStockSymbol" disabled><br>
+
+        <label>Command Type:</label><br>
+        <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT"  onchange="togglePrice()">
+        <label for="newCommandLMTRadio">LMT</label>
+        <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT" onchange="togglePrice()">
+        <label for="newCommandMKTRadio">MKT</label>
+        <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK"  onchange="togglePrice()">
+        <label for="newCommandFOKRadio">FOK</label>
+        <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC" onchange="togglePrice()">
+        <label for="newCommandIOCRadio">IOC</label><br>
+
+        <label for="newCommandQuantity">Quantity:</label>
+        <input type="number" id="newCommandQuantity"><br>
+
+        <label for="newCommandPrice">Price:</label>
+        <input type="number" id="newCommandPrice"><br>
+
+        <input type="Submit" value="Add New Command">
+    </form><br>
+
     <div id="stockDiv">
         <label class="Title" for="stockTranTable">Stock Transactions Table:</label><br>
         <table class="stockTranTables" id="stockTranTable">
@@ -71,35 +102,6 @@
     </div>
     <br>
     <br>
-    <label class="Title userFields" for="addCommandForm" >NEW COMMAND:</label><br>
-    <form  class="userFields" id="addCommandForm">
-        <label>Command Direction:</label>
-        <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
-        <label for="newCommandSellRadio">Sell</label>
-        <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
-        <label for="newCommandBuyRadio">Buy</label><br>
-
-        <label for="newCommandStockSymbol">Stock Symbol:</label>
-        <input type="text" id="newCommandStockSymbol" disabled><br>
-
-        <label>Command Type:</label><br>
-        <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT"  onchange="togglePrice()">
-        <label for="newCommandLMTRadio">LMT</label>
-        <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT" onchange="togglePrice()">
-        <label for="newCommandMKTRadio">MKT</label>
-        <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK"  onchange="togglePrice()">
-        <label for="newCommandFOKRadio">FOK</label>
-        <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC" onchange="togglePrice()">
-        <label for="newCommandIOCRadio">IOC</label><br>
-
-        <label for="newCommandQuantity">Quantity:</label>
-        <input type="number" id="newCommandQuantity"><br>
-
-        <label for="newCommandPrice">Price:</label>
-        <input type="number" id="newCommandPrice"><br>
-
-        <input type="Submit" value="Add New Command">
-    </form><br>
 
     <button onclick="back()">Go Back</button>
 
