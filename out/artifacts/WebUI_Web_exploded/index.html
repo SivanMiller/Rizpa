@@ -6,21 +6,26 @@
     <script src="common/JS/snackbar.js"></script>
     <script src="pages/login/LoginControl.js"></script>
     <link rel="stylesheet" type="text/css" href="common/css/snackbar.css">
-    <title>Rizpa</title>
+    <link rel="stylesheet" type="text/css" href="pages/login/Login.css">
+    <title>Login</title>
 </head>
-<body>
-    <div class="container">
-        <h1>Welcome to Rizpa!</h1>
+<body class="mainBody">
+    <div class="mainDiv">
+        <span class="welcomeSpan">Welcome to Rizpa!</span>
         <br/>
-        <h2>Please enter a unique user name:</h2>
         <form id="loginForm" onsubmit="checkLogin()">
-            <input type="text" name="userName" class="userName"/>
-            <input  type="checkbox" id="isAdmin" name="isAdmin" class="isAdmin"/>
-            <label for="isAdmin">is Admin?</label>
+            <div>
+                <label for="userName">Please enter your name:</label>
+                <input type="text" id="userName" class="userName"/>
+            </div>
+            <div>
+                <label for="isAdmin">Admin:</label>
+                <input  type="checkbox" id="isAdmin" name="isAdmin" class="isAdmin"/>
+            </div>
             <input type="submit" value="Login"/>
         </form>
+        <br>
+        <img src="pages/login/Stock.png">
     </div>
-
-    <div id="snackbar"></div>
 </body>
 </html>
