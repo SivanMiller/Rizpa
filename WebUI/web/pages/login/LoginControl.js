@@ -2,7 +2,8 @@ var MainPage = "pages/mainPage/MainPage.html";
 
 function sendRedirect(res)
 {
-    window.location = MainPage;
+    var userName = $('.userName').val();
+    window.location = MainPage + "?userName=" + userName;
 }
 
 function checkLogin() {

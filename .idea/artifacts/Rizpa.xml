@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="Web">
-    <output-path>$PROJECT_DIR$/out/artifacts/Web</output-path>
-    <root id="archive" name="Web.war">
+  <artifact type="war" name="Rizpa">
+    <output-path>$PROJECT_DIR$/out/artifacts/Rizpa</output-path>
+    <root id="archive" name="Rizpa.war">
       <element id="artifact" artifact-name="WebUI:Web exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">

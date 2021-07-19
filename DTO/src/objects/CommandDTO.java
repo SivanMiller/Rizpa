@@ -22,7 +22,7 @@ public class CommandDTO {
     public String toString() {
         return "Price = " + getPrice() +
                 ", Quantity = " + getQuantity() +
-                ", Date = '" + getDate() + '\'' +
+//                ", Date = '" + getDate() + '\'' +
                 ", User = " + getUser();
     }
 

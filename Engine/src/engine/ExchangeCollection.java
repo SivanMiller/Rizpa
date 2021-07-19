@@ -75,7 +75,7 @@ public class ExchangeCollection {
 
     private NewCmdOutcomeDTO addBuyCommand(Command NewCommand) {
         PriorityQueue<Command> tempSellCommands = new PriorityQueue<>(this.SellCommands);
-        List<Transaction> tempTransactions = new ArrayList<>(this.Transactions);
+        List<Transaction> tempTransactions = new ArrayList<>();
 
         NewCmdOutcomeDTO outcome = new NewCmdOutcomeDTO();
         int nQuantity;
@@ -144,7 +144,6 @@ public class ExchangeCollection {
 
         if (NewCommand.getQuantity() == 0 || NewCommand.getClass() != FOKCommand.class){
             this.SellCommands = tempSellCommands;
-            this.Transactions.clear();
             for (Transaction transaction : tempTransactions) {
                 addNewTransaction(transaction);
                 outcome.addTransaction(transaction.convertToDTO());
@@ -156,7 +155,7 @@ public class ExchangeCollection {
 
     private NewCmdOutcomeDTO addSellCommand(Command NewCommand) {
         PriorityQueue<Command> tempBuyCommands = new PriorityQueue<>(this.BuyCommands);
-        List<Transaction> tempTransactions = new ArrayList<>(this.Transactions);
+        List<Transaction> tempTransactions = new ArrayList<>();
         NewCmdOutcomeDTO outcome = new NewCmdOutcomeDTO();
         int nQuantity;
         String sDate;
@@ -223,7 +222,6 @@ public class ExchangeCollection {
 
         if (NewCommand.getQuantity() == 0 || NewCommand.getClass() != FOKCommand.class){
             this.BuyCommands = tempBuyCommands;
-            this.Transactions.clear();
             for (Transaction transaction : tempTransactions) {
                 addNewTransaction(transaction);
                 outcome.addTransaction(transaction.convertToDTO());

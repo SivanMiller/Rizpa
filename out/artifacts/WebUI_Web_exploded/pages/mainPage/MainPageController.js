@@ -2,10 +2,15 @@ var StockPage = '../StockPage/StockPage.html';
 var resreshRate = 1000;
 
 window.onload = function ()
-{
+{   
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userName = urlParams.get('userName');
+    $('#userTitle').append("Hello " + userName);
     $("#uploadForm").submit(ClickLoad);
     $("#addStockForm").submit(onAddStock);
     $("#chatForm").submit(onAddMessage);
+    $("#addFundsForm").submit(onAddFunds);
     getUserList();
     setInterval(getUserList, resreshRate);
     getChatList();
@@ -132,6 +137,8 @@ function onAddFunds(){
     else{
         showSnackbar("Please enter funds!");
     }
+
+    return false;
 }
 
 function getStockList() {
@@ -160,7 +167,7 @@ function refreshStockList(stocks) {
         td.appendTo(tr);
         td = $(document.createElement('td')).text(stock.stockPrice.value);
         td.appendTo(tr);
-        td = $(document.createElement('td')).text(stock.stockQuantity.value);
+        td = $(document.createElement('td')).text(stock.stockTurnover.value);
         td.appendTo(tr);
 
         tr.appendTo(stocksTable);

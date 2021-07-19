@@ -44,8 +44,6 @@ public class NewCmdOutcomeDTO {
             str += "The command was completed" + '\n';
         }
 
-        str += "Please see stock's Admin Tab for more information.";
-
         return str;
     }
 }

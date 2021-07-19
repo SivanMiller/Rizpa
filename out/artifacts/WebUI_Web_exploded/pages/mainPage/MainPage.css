@@ -1,5 +1,31 @@
-.userInChat {
+.bodyDiv, .userInChat {
   display: flex;
+  flex-direction: row;
+}
+.tablesDiv{
+  flex: 1 1 20%;
+}
+
+.actionsDiv{
+  flex: 3 1 80%;
+}
+
+label {
+  font-weight: bold;
+}
+
+.Title {
+  color: #b71235;
+  font-weight: bold;
+  width:800px;
+  /*display: inline-block;*/
+  text-align: left;
+  font-family: Arial;
+}
+
+.subTitle {
+  text-decoration: underline;
+  font-size: 20px;
 }
 
 
