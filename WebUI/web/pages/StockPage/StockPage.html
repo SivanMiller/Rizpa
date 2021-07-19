@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../../common/css/table.css">
 </head>
 <body>
+<br>
     <label  for="stockSymbol">Stock Symbol:</label>
     <input type="text" id="stockSymbol"  disabled >
     <label  for="stockCompanyName">Stock companyName:</label>
@@ -22,54 +23,8 @@
     <input type="text" id="userHold"  class="userFields" disabled >
     <br>
     <br>
-    <br>
-    <div id="stockDiv">
-        <label class="Title" for="stockTranTable">Stock Transactions Table:</label><br>
-        <table class="stockTranTables" id="stockTranTable">
-            <thead>
-            <th>Date</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <br>
-    <br>
-    <div  class="adminFields" id="stockBuyDiv">
-        <label class="Title" for="stockBuyTable">Stock buy Table:</label><br>
-        <table class="stockBuyTables" id="stockBuyTable">
-            <thead>
-            <th>Date</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>User</th>
-            <th>Type</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    <br><br>
-    <div  class="adminFields" id="stockSellDiv">
-        <label class="Title" for="stockSellTable">Stock Sell Table:</label><br>
-        <table class="stockSellTables" id="stockSellTable">
-            <thead>
-            <th>Date</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>User</th>
-            <th>Type</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    <br>
-    <br>
-    <label class="Title" for="addCommandForm" class="userFields">NEW COMMAND:</label><br>
+
+    <label class="Title userFields" for="addCommandForm" >NEW COMMAND:</label><br>
     <form  class="userFields" id="addCommandForm">
         <label>Command Direction:</label>
         <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
@@ -98,6 +53,55 @@
 
         <input type="Submit" value="Add New Command">
     </form><br>
+
+    <div id="stockDiv">
+        <label class="Title" for="stockTranTable">Stock Transactions Table:</label><br>
+        <table class="stockTranTables" id="stockTranTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="adminTable">
+    <div  class="adminFields" id="stockBuyDiv">
+        <label class="Title" for="stockBuyTable">Stock buy Table:</label><br>
+        <table class="stockBuyTables" id="stockBuyTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>User</th>
+            <th>Type</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div  class="adminFields" id="stockSellDiv">
+        <label class="Title" for="stockSellTable">Stock Sell Table:</label><br>
+        <table class="stockSellTables" id="stockSellTable">
+            <thead>
+            <th>Date</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>User</th>
+            <th>Type</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <br>
+    <br>
 
     <button onclick="back()">Go Back</button>
 

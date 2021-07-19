@@ -1,4 +1,7 @@
-
+.adminTable {
+  display: flex;
+  flex-direction: row;
+}
 .Title {
   color: #b71235;
   font-weight: bold;
