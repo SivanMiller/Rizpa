@@ -5,7 +5,24 @@
   font-family: Calibri;
   width: 100%;
 }
+.commandContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.newCommandDiv {
+  flex: 1 0 0;
+  margin: 20px;
+}
 
+.stockDiv {
+  flex: 1 0 0;
+  margin: 20px;
+}
+
+.addCommandButton {
+  margin-top: 10px;
+}
 .buyTableDiv {
   flex: 1 0 50%;
   margin-right: 20px;
@@ -40,6 +57,11 @@ label {
   font-weight: bold;
 }
 
+.commandItem {
+  margin-right: 10px;
+  margin-top: 5px;
+  min-width: 50px;
+}
 .stockDetailsSpan {
   padding-left: 10px;
 }

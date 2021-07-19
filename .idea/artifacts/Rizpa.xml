@@ -1,14 +1,14 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="Rizpa">
+  <artifact type="war" build-on-make="true" name="Rizpa">
     <output-path>$PROJECT_DIR$/out/artifacts/Rizpa</output-path>
     <root id="archive" name="Rizpa.war">
-      <element id="artifact" artifact-name="WebUI:Web exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Engine" />
           <element id="module-output" name="DTO" />
         </element>
       </element>
+      <element id="artifact" artifact-name="WebUI:war exploded" />
     </root>
   </artifact>
 </component>

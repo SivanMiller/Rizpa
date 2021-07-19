@@ -41,66 +41,68 @@
         </div>
         <br>
         <br>
-        <div class="newCommandDiv">
-            <label class="subTitle userFields" for="addCommandForm" >New Command:</label><br>
-            <form  class="userFields" id="addCommandForm">
-                <div>
-                    <label>Command Direction:</label>
-                </div>
-                <div>
-                    <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
-                    <label for="newCommandSellRadio">Sell</label>
-                    <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
-                    <label for="newCommandBuyRadio">Buy</label>
-                </div>
-                <div>
-                    <label for="newCommandStockSymbol">Stock Symbol:</label>
-                </div>
-                <div>
-                    <input type="text" id="newCommandStockSymbol" disabled>
-                </div>
-                <div>
-                <label>Command Type:</label>
-                </div>
-                <div>
-                    <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT"  onchange="togglePrice()">
-                    <label for="newCommandLMTRadio">LMT</label>
-                    <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT" onchange="togglePrice()">
-                    <label for="newCommandMKTRadio">MKT</label>
-                    <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK"  onchange="togglePrice()">
-                    <label for="newCommandFOKRadio">FOK</label>
-                    <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC" onchange="togglePrice()">
-                    <label for="newCommandIOCRadio">IOC</label>
-                </div>
-                <div>
-                    <label for="newCommandQuantity">Quantity:</label>
-                </div>
-                <div>
-                    <input type="number" id="newCommandQuantity"><br>
-                </div>
-                <div>
-                     <label for="newCommandPrice">Price:</label>
-                </div>
-                <div>
-                    <input type="number" id="newCommandPrice"><br>
-                </div>
-                <input type="Submit" value="Add New Command">
-            </form><br>
+        <div class="commandContainer">
+            <div id="stockDiv">
+                <label class="subTitle" for="stockTranTable">Stock Transactions Table:</label><br>
+                <table class="stockTranTables" id="stockTranTable">
+                    <thead>
+                    <th>Date</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="newCommandDiv">
+                <label class="subTitle userFields" for="addCommandForm" >New Command:</label><br>
+                <form  class="userFields" id="addCommandForm">
+                    <div class="commandItem">
+                        <label>Command Direction:</label>
+                    </div>
+                    <div class="commandItem">
+                        <input type="radio" id="newCommandSellRadio" name="CommandDir" value="Sell">
+                        <label for="newCommandSellRadio">Sell</label>
+                        <input type="radio" id="newCommandBuyRadio" name="CommandDir" value="Buy">
+                        <label for="newCommandBuyRadio">Buy</label>
+                    </div>
+                    <div class="commandItem">
+                        <label for="newCommandStockSymbol">Stock Symbol:</label>
+                    </div>
+                    <div class="commandItem">
+                        <input type="text" id="newCommandStockSymbol" disabled>
+                    </div>
+                    <div class="commandItem">
+                        <label>Command Type:</label>
+                    </div>
+                    <div class="commandItem">
+                        <input type="radio" id="newCommandLMTRadio" name="CommandType" value="LMT"  onchange="togglePrice()">
+                        <label for="newCommandLMTRadio">LMT</label>
+                        <input type="radio" id="newCommandMKTRadio" name="CommandType" value="MKT" onchange="togglePrice()">
+                        <label for="newCommandMKTRadio">MKT</label>
+                        <input type="radio" id="newCommandFOKRadio" name="CommandType" value="FOK"  onchange="togglePrice()">
+                        <label for="newCommandFOKRadio">FOK</label>
+                        <input type="radio" id="newCommandIOCRadio" name="CommandType" value="IOC" onchange="togglePrice()">
+                        <label for="newCommandIOCRadio">IOC</label>
+                    </div>
+                    <div class="commandItem">
+                        <label for="newCommandQuantity">Quantity:</label>
+                    </div>
+                    <div class="commandItem">
+                        <input type="number" id="newCommandQuantity"><br>
+                    </div>
+                    <div class="commandItem">
+                        <label for="newCommandPrice">Price:</label>
+                    </div>
+                    <div class="commandItem">
+                        <input type="number" id="newCommandPrice"><br>
+                    </div>
+                    <div class="commandItem">
+                         <input type="Submit" value="Add New Command" class="addCommandButton">
+                    </div>
+                </form><br>
+            </div>
         </div>
-        <div id="stockDiv">
-            <label class="subTitle" for="stockTranTable">Stock Transactions Table:</label><br>
-            <table class="stockTranTables" id="stockTranTable">
-                <thead>
-                <th>Date</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <br>
-        <br>
         <br>
         <div class="adminTable">
             <div  class="adminFields buyTableDiv" id="stockBuyDiv">
@@ -133,10 +135,7 @@
             </div>
         </div>
         <br>
-        <br>
-
         <button onclick="back()">Go Back</button>
-
         <div id="snackbar-container"></div>
     </div>
 </body>
