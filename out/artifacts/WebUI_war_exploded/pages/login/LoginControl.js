@@ -11,21 +11,23 @@ function checkLogin() {
     event.preventDefault();
     var userName = $('.userName').val();
     var isAdmin = $('.isAdmin').is(':checked');
-
-    $.ajax
-    ({
-        url: 'loginResponse',
-        data: {
-            userName: userName,
-            isAdmin: isAdmin
-        },
-        type: 'GET',
-        success: sendRedirect,
-        error: function (error)
-        {
-            showSnackbar(error.responseText);
-        }
-    });
-
+    if (userName == "") {
+        showSnackbar("Please enter your name");
+    }
+    else {
+        $.ajax
+        ({
+            url: 'loginResponse',
+            data: {
+                userName: userName,
+                isAdmin: isAdmin
+            },
+            type: 'GET',
+            success: sendRedirect,
+            error: function (error) {
+                showSnackbar(error.responseText);
+            }
+        });
+    }
 }
 
