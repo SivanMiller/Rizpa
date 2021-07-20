@@ -131,7 +131,7 @@ public class UserManager {
             //stock doesn't exist!!
             else {
                 throw new XMLException("You are trying to load a holding of stock '" +
-                        item.getSymbol() + "'. This stock does not exist. Please make sure all holdings are of valid stocks");
+                        item.getSymbol() + "'. This stock does not exist in this file. Please make sure all holdings are of valid stocks from the file you are loading!");
             }
        }
         //the file is proper and we can save the new data in the system
@@ -204,7 +204,7 @@ public class UserManager {
     }
 
     public NewCmdOutcomeDTO addNewCommand(String UserName, String Symbol, String strType,
-                                          String strCmdDirection, int Price, int Quantity) throws NoSuchCmdTypeException, UserHoldingQuntityNotEnough, StockNegQuantityException, CommandNegPriceException, NoSuchStockException {
+                                          String strCmdDirection, int Price, int Quantity) throws NoSuchCmdTypeException, UserHoldingQuntityNotEnough, StockNegQuantityException, CommandNegPriceException, NoSuchStockException, NoSuchHolding {
         Command.CmdType Type = this.convertStringToCmdType(strType);
         Command.CmdDirection CmdDirection = this.convertStringToCmdDirection(strCmdDirection);
         Stock Stock = this.StocksManger.getStocks().get(Symbol);
@@ -217,6 +217,9 @@ public class UserManager {
         else {
             try {
                 if (CmdDirection == Command.CmdDirection.SELL) {
+                    if (User.getHolding(Stock.getSymbol()) == null) {
+                        throw new NoSuchHolding(User.getName(), Stock.getCompanyName());
+                    }
                     int sellQuantity = 0;
                     for (CommandDTO command : Stock.getExchangeCollection().getSellCommand()) {
                         if (command.getUser() == UserName)
@@ -236,7 +239,7 @@ public class UserManager {
 
                     return newCmdOutcomeDTO;
 
-            } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough e) {
+            } catch (StockNegQuantityException | CommandNegPriceException | NoSuchCmdTypeException | UserHoldingQuntityNotEnough | NoSuchHolding e) {
                 throw e;
             }
         }

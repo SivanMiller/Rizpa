@@ -80,7 +80,7 @@ public class CommandServlet extends HttpServlet {
             try {
                 NewCmdOutcomeDTO outcome = userManager.addNewCommand(userNameFromSession, StockSymbol, CmdType, CmdDirection, StockPrice, StockQuantity);
                 json = gson.toJson(outcome.toString());
-            } catch (NoSuchCmdTypeException | UserHoldingQuntityNotEnough | StockNegQuantityException | CommandNegPriceException | NoSuchStockException e) {
+            } catch (NoSuchCmdTypeException | UserHoldingQuntityNotEnough | StockNegQuantityException | CommandNegPriceException | NoSuchStockException | NoSuchHolding e) {
                 json = gson.toJson(e.getMessage());
             }
             out.println(json);
