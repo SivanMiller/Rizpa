@@ -4,6 +4,7 @@ table {
     width: 500px;
     background: cornsilk;
     padding: 15px;
+    margin-right: 15px;
 }
 
 td, th {
